@@ -1,0 +1,20 @@
+.offscreen_tablet{
+	display:none;
+}
+.header img{
+	width:60%;
+}
+ul.menu {
+	width:76%;	
+}
+div.FilAriane {
+	width:60%;
+}
+
+.moyen{
+	width:100%;
+}
+
+table.mceLayout {
+	width:95% !important;
+}

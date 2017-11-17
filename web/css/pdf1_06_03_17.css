@@ -1,0 +1,81 @@
+body{
+	font-size : 11pt;
+}
+.pointpoint
+{
+	width:100px;
+}
+.numpage1 {
+	/*border: 2px solid green;*/
+    clear: both;
+    float: right;
+    font-size: 8.5pt;
+	position: absolute;
+    top : 130mm;
+	margin-left: 105mm;
+}
+
+.numpage2 {
+	/*border: 2px solid green;*/
+    clear: both;
+    float: right;
+    font-size: 8.5pt;
+    position: absolute;
+    top : 130mm;
+	margin-left: 105mm;
+}
+.nomprototype1 {
+	/*border: 2px solid green;*/
+    clear: both;
+    float: right;
+    font-size: 7.5pt;
+	position: absolute;
+    top : 110mm;
+	margin-left: 45mm;
+}
+
+.nomprototype2 {
+	/*border: 2px solid green;*/
+    clear: both;
+    float: right;
+    font-size: 7.5pt;
+    position: absolute;
+    top : 110mm;
+	margin-left: 45mm;
+}
+table tr td{
+	font-family: times new roman;
+    font-size: 9.5pt;
+}
+.tableMatiere {
+	font-size: 9pt;
+	font-family: times new roman;
+}
+.conteneur {
+	/*height: auto;  
+	height: 209mm;
+	width: 294mm;*/
+	
+	/*border: 2px solid red;*/
+	overflow: hidden; /* Empêche le dépassement des flottants. */
+	/*margin-bottom: 61.5mm;*/
+	height: 20.9cm;
+ 	width: 29.7cm;
+	position: relative;
+}
+.colonne1 {
+	/*border: 1px double #000;*/
+	width: 111mm;
+	height: 138.5mm;
+	float: left;
+	padding-left: 16mm;
+    padding-right: 18mm;
+}
+.colonne2 {
+	/*border: 1px double #000;*/
+	width: 111mm;
+	height: 138.5mm;
+	float: right;
+	padding-left: 18mm;
+    padding-right: 18mm;
+}

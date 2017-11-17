@@ -1,0 +1,26 @@
+.offscreen_smartphone{
+	display:none;
+}
+
+.header img{
+	width:95%;
+}
+
+ul.menu {
+	width:100%;	
+}
+div.FilAriane {
+	width:90%;
+}
+
+#conteneur
+{	
+	margin: 0;
+}
+.moyen{
+	width:100%;
+}
+
+table.mceLayout {
+	width:95% !important;
+}

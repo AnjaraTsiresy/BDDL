@@ -1,0 +1,108 @@
+#tableau {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    margin: 10px 0;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+#tableau th {
+    font-size: 13px;
+    font-weight: normal;
+    padding: 8px;
+    background: #b9c9fe ;
+    border-top: 2px solid #d3ddff;
+    border-bottom: 1px solid #fff;
+    color: #039;
+}
+#tableau td {
+    padding: 8px;
+    border-bottom: 1px solid #fff;
+    color: #669;
+    border-top: 1px solid #fff;
+    background: #e8edff;
+}
+#tableau tfoot tr td {
+    background: #e8edff;
+    font-size: 16px;
+    color: #99c;
+    text-align:center;
+}
+#tableau tbody tr:hover td {
+    background: #d0dafd ;
+    color: #339;
+}
+#tableau a:hover {
+    text-decoration:underline;
+}
+input[type=button],input[type=submit] {
+    background: none repeat scroll 0 0 #4479ba;
+    border: 1px solid #20538d;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 1px 1px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    padding: 8px 12px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+table{
+	border:1px solid black; 
+	width:700px
+}
+#recherche {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    margin: 10px 0;
+    width: 50%;
+    text-align: left;
+    border-collapse: collapse;
+}
+#recherche th {
+    font-size: 13px;
+    font-weight: normal;
+    padding: 8px;
+    background: #b9c9fe ;
+    border-top: 2px solid #d3ddff;
+    border-bottom: 1px solid #fff;
+    color: #039;
+}
+#recherche td {
+    padding: 8px;
+    border-bottom: 1px solid #fff;
+    color: #669;
+    border-top: 1px solid #fff;
+    background: #e8edff;
+}
+#recherche tfoot tr td {
+    background: #e8edff;
+    font-size: 16px;
+    color: #99c;
+    text-align:center;
+}
+#recherche tbody tr:hover td {
+    background: #d0dafd ;
+    color: #339;
+}
+#recherche a:hover {
+    text-decoration:underline;
+}
+a, input[type=submit] , input[type=button]{
+    background: none repeat scroll 0 0 #4479ba;
+    border: 1px solid #20538d;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 1px 1px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    padding: 8px 12px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+
+a {
+    color: #ffffff;
+    display: block;
+    font-size: 15px;
+    height: 26px;
+    line-height: 21pt;
+    margin-left: 2px;
+    padding-left: 9px;
+}

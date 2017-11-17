@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>{% block title %}E-learning{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+		<link rel="stylesheet" media="all" href="{{ asset('stagiaires_files/forma2plus.css') }}">
+		<link rel="stylesheet" media="screen and (max-width: 1000px)" href="{{ asset('stagiaires_files/tablet.css') }}">
+		<link rel="stylesheet" media="screen and (max-width: 650px)" href="{{ asset('stagiaires_files/smartphone.css') }}">
+		 <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+		<script type="text/javascript" src="{{ asset('js/jquery-1.9.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.form.js') }}"></script>
+
+    </head>
+	<body>
+		<div class="header">
+			<img src="{{ asset('images/logo.jpeg') }}" border="0">
+			<span>Base lexicale</span>			
+		</div>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

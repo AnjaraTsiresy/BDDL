@@ -1,0 +1,53 @@
+body{
+	font-size : 11pt;
+}
+.pointpoint
+{
+	width:100px;
+}
+
+.numpage1 {
+    clear: both;
+    float: right;
+    font-size: 8.5pt;
+    margin-left: 200mm;
+    position: absolute;
+    top: 150mm;
+}
+.nomprototype1 {
+    clear: both;
+    float: right;
+    font-size: 7.5pt;
+    margin-left: 145mm;
+    position: absolute;
+    top: 122mm;
+}
+.nomprototype2 {
+	/*border: 2px solid green;*/
+    clear: both;
+    float: right;
+    font-size: 7.5pt;
+    position: absolute;
+    top : 110mm;
+	margin-left: 45mm;
+}
+table tr td{
+	font-family: times new roman;
+    font-size: 11.5pt;
+}
+.tableMatiere {
+	font-size: 9pt;
+	font-family: times new roman;
+}
+.conteneur {
+	/*height: auto;  
+	height: 209mm;
+	width: 294mm;*/
+	
+	/*border: 2px solid red;*/
+	overflow: hidden; /* Empêche le dépassement des flottants. */
+	/*margin-bottom: 61.5mm;*/
+	height: 20.9cm;
+ 	width: 23.7cm;
+	position: relative;
+}
