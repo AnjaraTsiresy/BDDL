@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Language
+ * Prototype
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\LanguageRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\PrototypeRepository")
  */
-class Language
+class Prototype
 {
     /**
      * @var integer
@@ -24,9 +24,9 @@ class Language
     /**
      * @var string
      *
-     * @ORM\Column(name="libelle_language", type="string", length=255)
+     * @ORM\Column(name="libelle_prototype", type="string", length=255)
      */
-    private $libelle_language;
+    private $libellePrototype;
 
 
     /**
@@ -40,25 +40,25 @@ class Language
     }
 
     /**
-     * Set libelle_language
+     * Set libellePrototype
      *
-     * @param string $libelle_language
-     * @return Language
+     * @param string $libellePrototype
+     * @return Prototype
      */
-    public function setLibelleLanguage($libelle_language)
+    public function setLibellePrototype($libellePrototype)
     {
-        $this->libelle_language = $libelle_language;
+        $this->libellePrototype = $libellePrototype;
 
         return $this;
     }
 
     /**
-     * Get libelle_language
+     * Get libellePrototype
      *
      * @return string 
      */
-    public function getLibelleLanguage()
+    public function getLibellePrototype()
     {
-        return $this->libelle;
+        return $this->libellePrototype;
     }
 }

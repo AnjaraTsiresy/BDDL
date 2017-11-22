@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Language
+ * Departement
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\LanguageRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\DepartementRepository")
  */
-class Language
+class Departement
 {
     /**
      * @var integer
@@ -24,9 +24,9 @@ class Language
     /**
      * @var string
      *
-     * @ORM\Column(name="libelle_language", type="string", length=255)
+     * @ORM\Column(name="libelle_departement", type="string", length=255)
      */
-    private $libelle_language;
+    private $libelleDepartement;
 
 
     /**
@@ -40,25 +40,25 @@ class Language
     }
 
     /**
-     * Set libelle_language
+     * Set libelleDepartement
      *
-     * @param string $libelle_language
-     * @return Language
+     * @param string $libelleDepartement
+     * @return Departement
      */
-    public function setLibelleLanguage($libelle_language)
+    public function setLibelleDepartement($libelleDepartement)
     {
-        $this->libelle_language = $libelle_language;
+        $this->libelleDepartement = $libelleDepartement;
 
         return $this;
     }
 
     /**
-     * Get libelle_language
+     * Get libelleDepartement
      *
      * @return string 
      */
-    public function getLibelleLanguage()
+    public function getLibelleDepartement()
     {
-        return $this->libelle;
+        return $this->libelleDepartement;
     }
 }
