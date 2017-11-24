@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace Formation\VocabulaireBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Societe
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\SocieteRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\SocieteRepository")
  */
 class Societe
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id_societe", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -73,14 +73,14 @@ class Societe
     /**
      * @var string
      *
-     * @ORM\Column(name="address1", type="string", length=255)
+     * @ORM\Column(name="adress1", type="string", length=255)
      */
     private $address1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address2", type="string", length=255)
+     * @ORM\Column(name="adress2", type="string", length=255)
      */
     private $address2;
 

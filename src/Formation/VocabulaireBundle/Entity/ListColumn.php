@@ -1,21 +1,21 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace Formation\VocabulaireBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ListColumn
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\ListColumnRepository")
+ * @ORM\Table(name="listcolumn")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\ListColumnRepository")
  */
 class ListColumn
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id_column", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

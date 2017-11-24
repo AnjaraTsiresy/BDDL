@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace Formation\VocabulaireBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Source
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\SourceRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\SourceRepository")
  */
 class Source
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id_source", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

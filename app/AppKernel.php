@@ -16,7 +16,9 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new \Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new AppBundle\AppBundle(),
+            new Formation\VocabulaireBundle\FormationVocabulaireBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

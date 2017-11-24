@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace Formation\VocabulaireBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Vocabulaire
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\VocabulaireRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireRepository")
  */
 class Vocabulaire
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id_vocabulaire", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -84,7 +84,21 @@ class Vocabulaire
      */
     private $nbreLigneLo;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Language", inversedBy="vocabulaires")
+     * @ORM\JoinColumn(name="id_language", referencedColumnName="id_language")
+     */
+    private $language;
 
+    public function setLanguage(\Formation\VocabulaireBundle\Entity\Language $language)
+    {
+        $this->language = $language;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
+    }
     /**
      * Get id
      *
