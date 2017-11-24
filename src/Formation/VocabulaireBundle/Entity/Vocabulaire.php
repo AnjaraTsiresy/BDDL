@@ -90,6 +90,12 @@ class Vocabulaire
      */
     private $language;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Source", inversedBy="vocabulaires")
+     * @ORM\JoinColumn(name="id_source", referencedColumnName="id_source")
+     */
+    private $source;
+
     public function setLanguage(\Formation\VocabulaireBundle\Entity\Language $language)
     {
         $this->language = $language;
@@ -98,6 +104,16 @@ class Vocabulaire
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    public function setSource(\Formation\VocabulaireBundle\Entity\Source $source)
+    {
+        $this->source = $source;
+    }
+
+    public function getSource()
+    {
+        return $this->source;
     }
     /**
      * Get id

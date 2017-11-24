@@ -2,6 +2,7 @@
 
 namespace Formation\VocabulaireBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,6 +50,29 @@ class Source
      */
     private $lien;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Vocabulaire", mappedBy="Source")
+     */
+    private $vocabulaires;
+
+    public function __construct()
+    {
+        $this->vocabulaires = new ArrayCollection();
+    }
+
+    public function addVocabulaire(\Formation\VocabulaireBundle\Entity\Vocabulaire $vocabulaire){
+        $this->vocabulaires[] = $vocabulaire;
+        return $this;
+    }
+
+    public function removeVocabulaire(\Formation\VocabulaireBundle\Entity\Vocabulaire $vocabulaire){
+        $this->vocabulaires->removeElement($vocabulaire);
+    }
+
+    public function getVocabulaires()
+    {
+        return $this->vocabulaires;
+    }
 
     /**
      * Get id

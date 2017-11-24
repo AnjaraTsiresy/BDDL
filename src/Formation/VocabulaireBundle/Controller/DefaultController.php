@@ -345,7 +345,7 @@ class DefaultController extends Controller
 
                         if ($vocabulaire != null) {
 
-                                $vocabulaire->setDateModification($date);
+                                $vocabulaire->setDateModification(new \DateTime($date));
                                 $em->merge($vocabulaire);
                                 $em->flush();
 
@@ -369,20 +369,40 @@ class DefaultController extends Controller
                             }
 
                             //insertion vocabulaire
+                            $repositoryLanguage = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Language');
+                            $language = $repositoryLanguage->find($id_language);
+                            if (!$language ) {
+                                throw $this->createNotFoundException(
+                                    'Aucun language trouvé pour cet id : '.$id_language
+                                );
+                            }
+
+                            $repositorySource = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Source');
+                            $sourcce = $repositorySource->find($id_source);
+                            if (!$source ) {
+                                throw $this->createNotFoundException(
+                                    'Aucun source trouvé pour cet id : '.$id_source
+                                );
+                            }
+
                             $vocab = new Vocabulaire();
-                            $vocab->setDateCreation($date);
+                            $vocab->setDateCreation(new \DateTime($date));
                             $vocab->setLangueOrigine($langue_origine_avec_maj);
                             $vocab->setLangueOrigineSansModif($langue_origine_sans_modif);
                             $vocab->setLangueTraduction($langue_traduction1);
                             $vocab->setRang($rang);
                             $vocab->setIsAffiche(1);
                             $vocab->setNbreCaractLo($nb_caract);
+                            $vocab->setLanguage($language);
+                            $vocab->setSource($source);
+                            $vocab->setNbreLigneLo(0);
                             $em->merge($vocab);
                             $em->flush();
+                            die();
                             $id_vocabulaire = $vocab->getId();
                         }
 
-                        /*if($secteur != ""){
+                       if($secteur != ""){
                             //verif secteur d'activité
                             $sql_secteur ="select * from secteur where libelle_secteur='$secteur' ";
                             $query_secteur= mysql_query($sql_secteur) or die(mysql_error());
@@ -403,7 +423,7 @@ class DefaultController extends Controller
                             }
                         }
 
-                        if($departement != ""){
+                        /* if($departement != ""){
                             //verif departement
                             $sql_departement ="select * from departement where libelle_departement='$departement' ";
                             $query_departement= mysql_query($sql_departement) or die(mysql_error());
