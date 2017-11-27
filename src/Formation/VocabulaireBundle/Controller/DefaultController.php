@@ -2,8 +2,10 @@
 
 namespace Formation\VocabulaireBundle\Controller;
 
+use Formation\VocabulaireBundle\Entity\Secteur;
 use Formation\VocabulaireBundle\Entity\Source;
 use Formation\VocabulaireBundle\Entity\Vocabulaire;
+use Formation\VocabulaireBundle\Entity\VocabulaireSecteur;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -398,32 +400,53 @@ class DefaultController extends Controller
                             $vocab->setNbreLigneLo(0);
                             $em->merge($vocab);
                             $em->flush();
-                            die();
                             $id_vocabulaire = $vocab->getId();
                         }
 
                        if($secteur != ""){
                             //verif secteur d'activité
-                            $sql_secteur ="select * from secteur where libelle_secteur='$secteur' ";
-                            $query_secteur= mysql_query($sql_secteur) or die(mysql_error());
-                            $row_secteur = mysql_fetch_array($query_secteur);
-                            if($row_secteur['id_secteur'] != 0){
-                                $id_secteur = $row_secteur['id_secteur'];
+                           $repositorySecteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Secteur');
+                           $secteur = $repositorySecteur->findOneBy(array('ibelleSecteur' => $secteur));
+
+                            if($secteur != null){
+                                $id_secteur = $secteur->getId();
                             }else{
-                                $secteur_sql = "INSERT IGNORE INTO secteur VALUES ('', '$sect eur')";
-                                mysql_query($secteur_sql);
-                                $id_secteur = mysql_insert_id() ;
+                                $secteur = new Secteur();
+                                $secteur->setLibelleSecteur($secteur);
+                                $em->merge($vocab);
+                                $em->flush();
+                                $id_secteur = $secteur->getId();
                             }
-                            $sql_test_secteur ="select * from vocabulaire_secteur where id_secteur='$id_secteur' AND id_vocabulaire='$id_vocabulaire' ";
-                            $query_test_secteur= mysql_query($sql_test_secteur) or die(mysql_error());
-                            $row_test_secteur = mysql_fetch_array($query_test_secteur);
-                            if($row_test_secteur['id_vocabulaire_secteur'] == 0 || $row_test_secteur['id_vocabulaire_secteur'] == ""){
-                                $vocab_secteur_sql = "INSERT IGNORE INTO vocabulaire_secteur VALUES ('','$id_secteur','$id_vocabulaire')";
-                                mysql_query($vocab_secteur_sql);
+
+                           $repositoryVocabulaireSecteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSecteur');
+                           $vocabulaireSecteur = $repositoryVocabulaireSecteur->findOneBy(array('secteur' => $id_secteur, 'vocabulaire' => $id_vocabulaire));
+                           if($vocabulaireSecteur == null){
+
+                               $vocabulaireSecteur = new VocabulaireSecteur();
+                               $repositorySecteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Secteur');
+                               $secteur = $repositorySecteur->find($id_secteur);
+                               if (!$secteur ) {
+                                   throw $this->createNotFoundException(
+                                       'Aucun secteur trouvé pour cet id : '.$id_secteur
+                                   );
+                               }
+
+                               $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+                               $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
+                               if (!$vocabulaire ) {
+                                   throw $this->createNotFoundException(
+                                       'Aucun vocabulaire trouvé pour cet id : '.$id_vocabulaire
+                                   );
+                               }
+
+                               $vocabulaireSecteur->setSecteur($secteur);
+                               $vocabulaireSecteur->setVocabulaire($vocabulaire);
+                               $em->merge($vocabulaireSecteur);
+                               $em->flush();
                             }
                         }
 
-                        /* if($departement != ""){
+                         if($departement != ""){
                             //verif departement
                             $sql_departement ="select * from departement where libelle_departement='$departement' ";
                             $query_departement= mysql_query($sql_departement) or die(mysql_error());
@@ -443,7 +466,7 @@ class DefaultController extends Controller
                                 mysql_query($vocab_dept_sql);
                             }
                         }
-
+                       /*
                         $id_theme = 0;
                         if($theme != ""){
                             //verif theme
