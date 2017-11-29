@@ -148,7 +148,7 @@ class PrototypeAccess
         return $this->societe;
     }
 
-    public function setTraducteur(\Formation\VocabulaireBundle\Entity\Societe $traducteur)
+    public function setTraducteur(\Formation\VocabulaireBundle\Entity\Traducteur $traducteur)
     {
         $this->traducteur= $traducteur;
     }
