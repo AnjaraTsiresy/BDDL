@@ -14,11 +14,12 @@
 
     </head>
 	<body>
-		<div class="header">
-			<img src="{{ asset('images/logo.jpeg') }}" border="0">
-			<span>Base lexicale</span>			
-		</div>
-        {% block body %}{% endblock %}
+	<div class="header">
+		<div class="retourMenu"><a href="{{ path('homepage') }}">Retour au menu</a></div>
+		<img src="{{  asset('images/logo.jpeg') }}" border="0">
+		<span>Base lexicale</span>
+	</div>
+    {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
