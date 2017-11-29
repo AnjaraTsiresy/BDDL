@@ -727,9 +727,9 @@ class DefaultController extends Controller
                 }
 
                 if ($id_societe == 653) {
-                    echo "<SCRIPT language=javascript> window.location = '/consulter_vocabulaire';</SCRIPT>";
+                    return $this->redirect($this->generateUrl('consulter_prototype'));
                 } else {
-                    echo "<SCRIPT language=javascript> window.location = '/mise_a_jour_vocab';</SCRIPT>";
+                    return $this->redirect($this->generateUrl('mise_a_jour_vocab'));
                 }
 
             }
