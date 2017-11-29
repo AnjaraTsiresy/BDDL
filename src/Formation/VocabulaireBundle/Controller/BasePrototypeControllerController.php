@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BasePrototypeControllerController extends Controller
 {
@@ -83,9 +84,49 @@ class BasePrototypeControllerController extends Controller
 
 
         }
-        return $this->render('FormationVocabulaireBundle:Default:exportPrototype.html.twig', array(
-            'prototype_accesss_array' => $prototype_accesss_array
-        ));
+
+        // ask the service for a Excel5
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+
+        $phpExcelObject->getProperties()->setCreator("liuggio")
+            ->setTitle('PROTOTYPE')
+            ->setSubject('PROTOTYPE');
+
+        $sheet = $phpExcelObject->setActiveSheetIndex(0);
+
+        $sheet->setCellValue('A1', 'Société');
+        $sheet->setCellValue('B1', 'Prototype');
+        $sheet->setCellValue('C1', 'Date de création');
+
+        $counter = 2;
+        foreach ($prototype_accesss_array as $prototype_accesss) {
+            $sheet->setCellValue('A' . $counter, $prototype_accesss->getSociete()->getDescription());
+            $sheet->setCellValue('B' . $counter, $prototype_accesss->getType());
+            $sheet->setCellValue('C' . $counter, $prototype_accesss->getDate()->format('d/m/Y'));
+            $counter++;
+        }
+
+        $phpExcelObject->getActiveSheet()->setTitle('PROTOTYPE');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // adding headers
+        $dispositionHeader = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'liste_prototype.xls'
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+
     }
 
 
