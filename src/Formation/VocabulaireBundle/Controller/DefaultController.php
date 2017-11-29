@@ -727,9 +727,9 @@ class DefaultController extends Controller
                 }
 
                 if ($id_societe == 653) {
-                    echo "<SCRIPT language=javascript> window.location = 'consulterVocabulaire.php';</SCRIPT>";
+                    echo "<SCRIPT language=javascript> window.location = '/consulter_vocabulaire';</SCRIPT>";
                 } else {
-                    echo "<SCRIPT language=javascript> window.location = 'modifPrototype.php?id=$id_prot';</SCRIPT>";
+                    echo "<SCRIPT language=javascript> window.location = '/mise_a_jour_vocab';</SCRIPT>";
                 }
 
             }
