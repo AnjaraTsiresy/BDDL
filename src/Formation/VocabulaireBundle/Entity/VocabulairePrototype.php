@@ -5,33 +5,33 @@ namespace Formation\VocabulaireBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VocabulaireSecteur
+ * VocabulairePrototype
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireSecteurRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulairePrototypeRepository")
  */
-class VocabulaireSecteur
+class VocabulairePrototype
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_vocabulaire_secteur", type="integer")
+     * @ORM\Column(name="id_vocabulaire_prototype", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireSecteurs")
+     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulairePrototypes")
      * @ORM\JoinColumn(name="id_vocabulaire", referencedColumnName="id_vocabulaire")
      */
     private $vocabulaire;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="vocabulaireSecteurs")
-     * @ORM\JoinColumn(name="id_secteur", referencedColumnName="id_secteur")
+     * @ORM\ManyToOne(targetEntity="Prototype", inversedBy="vocabulairePrototypes")
+     * @ORM\JoinColumn(name="id_prototype", referencedColumnName="id_prototype")
      */
-    private $secteur;
+    private $prototype;
 
     public function setVocabulaire(\Formation\VocabulaireBundle\Entity\Vocabulaire $vocabulaire)
     {
@@ -43,14 +43,14 @@ class VocabulaireSecteur
         return $this->vocabulaire;
     }
 
-    public function setSecteur(\Formation\VocabulaireBundle\Entity\Secteur $secteur)
+    public function setPrototype(\Formation\VocabulaireBundle\Entity\Prototype $prototype)
     {
-        $this->secteur = $secteur;
+        $this->prototype = $prototype;
     }
 
-    public function getSecteur()
+    public function getPrototype()
     {
-        return $this->secteur;
+        return $this->prototype;
     }
     
     /**

@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        #prepage1 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+        //background: red;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<br/><br/>
+<DIV id="prepage1" class="waiting" style="display:none;">
+    <img src="{{ asset('images/ajax_loader.gif') }}"/>
+</DIV>
+<div class="titreMenu">
+    <p style="font-size : 10px;">Veuillez sélectionner un ou plusieurs prototypes et cliquer sur "Afficher les LE"</p>
+</div>
+<div id="listPrttp">
+    <table id="tableau">
+        <thead>
+        <tr>
+            <th scope="col">Prototypes<input type="checkbox" onClick="checkAllProt('listePrototype[]', this.checked);" /> Tout cocher/décocher</th>
+        </tr>
+        </thead>
+        <tbody>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#resultDivLE").hide();
+            $("#prepage1").hide();
+            $("#boutonProt").click(function(){
+                var valeursprot = [];
+                //$('input[type=checkbox]:checked').each(function(){
+                $('div#listPrttp input[type=checkbox]').each(function() {
+                    if ($(this).is(":checked")) {
+                        valeursprot.push($(this).val());
+                    }
+                });
+                var $id_secteur = $("#id_secteur").val();
+                //alert(valeursprot);
+                $.ajax({
+                    url: "listLE.php",
+                    data: 'valProt='+valeursprot+'&id_secteur='+$id_secteur,
+                    dataType: 'html',
+                    beforeSend : function(jqXHR, settings){
+                        $("#prepage1").show();
+                    },
+                    complete : function(jqXHR, textStatus){
+                        $("#prepage1").hide();
+                    },
+                    success:function(html){
+                        $("#resultDivLE").html(html);
+                        $("#resultDivLE").show();
+                    }
+                });
+            });
+        });
+        $("#resultDivLE").empty();
+
+    </script>
+    <script>
+        function checkAllProt(name, checked){
+            var inputs = document.getElementsByTagName('input');
+            var ischecked = 0;
+            var allids = "0";
+            var j = 0;
+            for(var i=0; i<inputs.length; i++){
+                if(inputs[i].type == 'checkbox' && inputs[i].name == name){
+                    inputs[i].checked = checked;
+                    if(inputs[i].checked == true){
+                        ischecked = 1;
+                    }
+                    var id_prototype_access = inputs[i].value;
+                    allids = allids+","+id_prototype_access;
+                    j++;
+                }
+            }
+            //alert(allids);
+        }
+    </script>
+{% endblock %}

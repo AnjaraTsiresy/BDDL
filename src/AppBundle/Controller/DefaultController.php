@@ -24,9 +24,20 @@ class DefaultController extends Controller
      */
     public function adminAction(Request $request)
     {
-       
+
         return $this->render('default/admin.html.twig', array(
-            
+
+        ));
+    }
+
+    /**
+     * @Route("/producteur", name="producteurpage")
+     */
+    public function producteurAction(Request $request)
+    {
+
+        return $this->render('default/producteur.html.twig', array(
+
         ));
     }
 

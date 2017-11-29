@@ -5,33 +5,33 @@ namespace Formation\VocabulaireBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VocabulaireSecteur
+ * VocabulaireSociete
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireSecteurRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireSocieteRepository")
  */
-class VocabulaireSecteur
+class VocabulaireSociete
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_vocabulaire_secteur", type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireSecteurs")
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireSocietes")
      * @ORM\JoinColumn(name="id_vocabulaire", referencedColumnName="id_vocabulaire")
      */
     private $vocabulaire;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="vocabulaireSecteurs")
-     * @ORM\JoinColumn(name="id_secteur", referencedColumnName="id_secteur")
+     * @ORM\ManyToOne(targetEntity="Societe", inversedBy="vocabulaireSocietes")
+     * @ORM\JoinColumn(name="id_societe", referencedColumnName="id_societe")
      */
-    private $secteur;
+    private $societe;
 
     public function setVocabulaire(\Formation\VocabulaireBundle\Entity\Vocabulaire $vocabulaire)
     {
@@ -43,16 +43,17 @@ class VocabulaireSecteur
         return $this->vocabulaire;
     }
 
-    public function setSecteur(\Formation\VocabulaireBundle\Entity\Secteur $secteur)
+    public function setSociete(\Formation\VocabulaireBundle\Entity\Societe $societe)
     {
-        $this->secteur = $secteur;
+        $this->societe = $societe;
     }
 
-    public function getSecteur()
+    public function getSociete()
     {
-        return $this->secteur;
+        return $this->societe;
     }
     
+
     /**
      * Get id
      *
@@ -62,4 +63,6 @@ class VocabulaireSecteur
     {
         return $this->id;
     }
+	
+	
 }

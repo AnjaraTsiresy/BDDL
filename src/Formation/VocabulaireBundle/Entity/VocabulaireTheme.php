@@ -5,33 +5,33 @@ namespace Formation\VocabulaireBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VocabulaireSecteur
+ * VocabulaireTheme
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireSecteurRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireThemeRepository")
  */
-class VocabulaireSecteur
+class VocabulaireTheme
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_vocabulaire_secteur", type="integer")
+     * @ORM\Column(name="id_vocabulaire_theme", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
+	
+		/**
      * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireSecteurs")
      * @ORM\JoinColumn(name="id_vocabulaire", referencedColumnName="id_vocabulaire")
      */
     private $vocabulaire;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="vocabulaireSecteurs")
-     * @ORM\JoinColumn(name="id_secteur", referencedColumnName="id_secteur")
+     * @ORM\ManyToOne(targetEntity="Theme", inversedBy="vocabulaireThemes")
+     * @ORM\JoinColumn(name="id_theme", referencedColumnName="id_theme")
      */
-    private $secteur;
+    private $theme;
 
     public function setVocabulaire(\Formation\VocabulaireBundle\Entity\Vocabulaire $vocabulaire)
     {
@@ -43,16 +43,16 @@ class VocabulaireSecteur
         return $this->vocabulaire;
     }
 
-    public function setSecteur(\Formation\VocabulaireBundle\Entity\Secteur $secteur)
+    public function setTheme(\Formation\VocabulaireBundle\Entity\Theme $theme)
     {
-        $this->secteur = $secteur;
+        $this->theme = $theme;
     }
 
-    public function getSecteur()
+    public function getTheme()
     {
-        return $this->secteur;
+        return $this->theme;
     }
-    
+
     /**
      * Get id
      *

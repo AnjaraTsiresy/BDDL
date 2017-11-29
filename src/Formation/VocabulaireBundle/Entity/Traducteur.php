@@ -2,6 +2,7 @@
 
 namespace Formation\VocabulaireBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +36,48 @@ class Traducteur
      */
     private $fonction;
 
+    /**
+     * @ORM\OneToMany(targetEntity="PrototypeAccess", mappedBy="traducteur")
+     */
+    private $prototypeAccesss;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="VocabulaireTraducteur", mappedBy="traducteur")
+     */
+    private $vocabulaireTraducteurs;
+
+    public function __construct()
+    {
+        $this->vocabulaireTraducteurs = new ArrayCollection();
+        $this->prototypeAccesss = new ArrayCollection();
+    }
+    public function addPrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess){
+        $this->prototypeAccesss[] = $prototypeAccess;
+        return $this;
+    }
+
+    public function removePrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess){
+        $this->prototypeAccesss->removeElement($prototypeAccess);
+    }
+
+    public function getPrototypeAccess()
+    {
+        return $this->prototypeAccesss;
+    }
+    public function addVocabulaireTraducteur(\Formation\VocabulaireBundle\Entity\VocabulaireTraducteur $vocabulaireTraducteur){
+        $this->vocabulaireTraducteurs[] = $vocabulaireTraducteur;
+        return $this;
+    }
+
+    public function removeVocabulaire(\Formation\VocabulaireBundle\Entity\VocabulaireTraducteur $vocabulaireTraducteur){
+        $this->vocabulaireTraducteurs->removeElement($vocabulaireTraducteur);
+    }
+
+    public function getVocabulaireTraducteur()
+    {
+        return $this->vocabulaireTraducteurs;
+    }
 
     /**
      * Get id

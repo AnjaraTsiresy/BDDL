@@ -1,0 +1,20 @@
+<?php
+    header('Content-Encoding: UTF-8');
+    header("content-type:application/csv;charset=UTF-8");
+    header("Content-Disposition: attachment; filename=listePrototype.xls");
+?>
+ <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+ <TABLE border=1>
+    <TR>
+        <TD>Société</TD>
+        <TD>Prototype</TD>
+        <TD>Date de création</TD>
+    </TR>
+    <TR>
+        {% for proto in prototype_accesss_array %}
+            <TD>{{ proto.societe.description }}</TD>
+            <TD>{{ proto.type }}</TD>
+            <TD>{{ proto.date | date('d/m/Y') }}</TD>
+        {% endfor %}
+    </TR>
+</TABLE>

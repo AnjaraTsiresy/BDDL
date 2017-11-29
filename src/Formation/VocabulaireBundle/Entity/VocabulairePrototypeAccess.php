@@ -5,33 +5,33 @@ namespace Formation\VocabulaireBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VocabulaireSecteur
+ * VocabulairePrototypeAccess
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireSecteurRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulairePrototypeAccessRepository")
  */
-class VocabulaireSecteur
+class VocabulairePrototypeAccess
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_vocabulaire_secteur", type="integer")
+     * @ORM\Column(name="id_vocabulaire_prototype_access", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
-    /**
+	/**
      * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireSecteurs")
      * @ORM\JoinColumn(name="id_vocabulaire", referencedColumnName="id_vocabulaire")
      */
     private $vocabulaire;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="vocabulaireSecteurs")
-     * @ORM\JoinColumn(name="id_secteur", referencedColumnName="id_secteur")
+     * @ORM\ManyToOne(targetEntity="PrototypeAccess", inversedBy="vocabulairePrototypeAccesss")
+     * @ORM\JoinColumn(name="id_prototype_access", referencedColumnName="id_prototype_access")
      */
-    private $secteur;
+    private $prototypeAccess;
 
     public function setVocabulaire(\Formation\VocabulaireBundle\Entity\Vocabulaire $vocabulaire)
     {
@@ -43,16 +43,16 @@ class VocabulaireSecteur
         return $this->vocabulaire;
     }
 
-    public function setSecteur(\Formation\VocabulaireBundle\Entity\Secteur $secteur)
+    public function setPrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess)
     {
-        $this->secteur = $secteur;
+        $this->prototypeAccess = $prototypeAccess;
     }
 
-    public function getSecteur()
+    public function getPrototypeAccess()
     {
-        return $this->secteur;
+        return $this->prototypeAccess;
     }
-    
+	
     /**
      * Get id
      *

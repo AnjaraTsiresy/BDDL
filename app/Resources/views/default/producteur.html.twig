@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="conteneur">
+        <br/><br/><br/>
+        <ul class="menu">
+            <li class="PrincipalPetit"><a href="{{ path('recherche_thematique') }}"><strong>recherche par secteur d'activité</strong></a></li>
+            <li class="PrincipalPetit"><a href="{{ path('recherche_le') }}"><strong>recherche par intitulé de LE</strong></a></li>
+            <li class="PrincipalPetit"><a href="{{ path('vocabulaire_par_theme') }}"><strong>recherche par expression</strong></a></li>
+        </ul>
+    </div>
+{% endblock %}

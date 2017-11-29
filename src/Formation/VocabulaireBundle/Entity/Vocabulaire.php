@@ -98,13 +98,182 @@ class Vocabulaire
     private $source;
 
     /**
+     * @ORM\OneToMany(targetEntity="VocabulaireDepartement", mappedBy="vocabulaire")
+     */
+    private $vocabulaireDepartements;
+
+    /**
      * @ORM\OneToMany(targetEntity="VocabulaireSecteur", mappedBy="vocabulaire")
      */
     private $vocabulaireSecteurs;
-
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulaireTheme", mappedBy="vocabulaire")
+     */
+    private $vocabulaireThemes;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulaireFonction", mappedBy="vocabulaire")
+     */
+    private $vocabulaireFonctions;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulairePhraseSource", mappedBy="phrase_source")
+     */
+    private $vocabulairePhraseSources;
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulaireEnvirUsage", mappedBy="vocabulaire")
+     */
+    private $vocabulaireEnvironnementUsages;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulairePrototype", mappedBy="vocabulaire")
+     */
+    private $vocabulairePrototypes;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulairePrototypeAccess", mappedBy="vocabulaire")
+     */
+    private $vocabulairePrototypeAccesss;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulaireTraducteur", mappedBy="vocabulaire")
+     */
+    private $vocabulaireTraducteurs;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulaireSociete", mappedBy="vocabulaire")
+     */
+    private $vocabulaireSocietes;
+	
     public function __construct()
     {
+		$this->vocabulaireSocietes = new ArrayCollection();
+		$this->vocabulairePhraseSources = new ArrayCollection();
         $this->vocabulaireSecteurs = new ArrayCollection();
+        $this->vocabulaireDepartements = new ArrayCollection();
+		$this->vocabulaireThemes = new ArrayCollection();
+		$this->vocabulaireFonctions = new ArrayCollection();
+		$this->vocabulaireEnvironnementUsages = new ArrayCollection();
+		$this->vocabulairePrototypes = new ArrayCollection();
+		$this->vocabulaireTraducteurs = new ArrayCollection();
+		$this->vocabulairePrototypeAccesss = new ArrayCollection();
+    }
+	
+	
+	public function addVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAcces $vocabulairePrototypeAcces){
+        $this->vocabulairePrototypeAccesss[] = $vocabulairePrototypeAcces;
+        return $this;
+    }
+
+    public function removeVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAcces $vocabulairePrototypeAcces){
+        $this->vocabulaireSocietes->removeElement($PrototypeAcces);
+    }
+
+    public function getVocabulairePrototypeAcces()
+    {
+        return $this->vocabulairePrototypeAccesss;
+    }
+	
+	public function addVocabulaireSociete(\Formation\VocabulaireBundle\Entity\VocabulaireSociete $vocabulaireSociete){
+        $this->vocabulaireSocietes[] = $vocabulaireSociete;
+        return $this;
+    }
+
+    public function removeVocabulaireSociete(\Formation\VocabulaireBundle\Entity\VocabulaireSociete $vocabulaireSociete){
+        $this->vocabulaireSocietes->removeElement($vocabulaireSociete);
+    }
+
+    public function getVocabulaireSociete()
+    {
+        return $this->vocabulaireSocietes;
+    }
+
+	
+	public function addVocabulaireTraducteur(\Formation\VocabulaireBundle\Entity\VocabulaireTraducteur $vocabulaireTraducteur){
+        $this->vocabulaireTraducteurs[] = $vocabulaireTraducteur;
+        return $this;
+    }
+
+    public function removeVocabulaireTraducteur(\Formation\VocabulaireBundle\Entity\VocabulaireTraducteur $vocabulaireTraducteur){
+        $this->vocabulaireTraducteurs->removeElement($vocabulaireTraducteur);
+    }
+
+    public function getVocabulaireTraducteur()
+    {
+        return $this->vocabulaireTraducteurs;
+    }
+
+	
+	public function addVocabulairePrototype(\Formation\VocabulaireBundle\Entity\VocabulairePrototype $vocabulairePrototype){
+        $this->vocabulairePrototypes[] = $vocabulairePrototype;
+        return $this;
+    }
+
+    public function removeVocabulairePrototype(\Formation\VocabulaireBundle\Entity\VocabulairePrototype $vocabulairePrototype){
+        $this->vocabulairePrototypes->removeElement($vocabulairePrototype);
+    }
+
+    public function getVocabulairePrototype()
+    {
+        return $this->vocabulairePrototypes;
+    }
+
+	
+	public function addVocabulairePhraseSource(\Formation\VocabulaireBundle\Entity\VocabulairePhraseSource $vocabulairePhraseSource){
+        $this->vocabulairePhraseSources[] = $vocabulairePhraseSource;
+        return $this;
+    }
+
+    public function removeVocabulairePhraseSource(\Formation\VocabulaireBundle\Entity\VocabulairePhraseSource $vocabulairePhraseSource){
+        $this->vocabulairePhraseSources->removeElement($vocabulairePhraseSource);
+    }
+
+    public function getVocabulairePhraseSource()
+    {
+        return $this->vocabulairePhraseSources;
+    }
+	
+	 public function addVocabulaireEnvironnementUsage(\Formation\VocabulaireBundle\Entity\VocabulaireEnvirUsage $vocabulaireEnvironnementUsage){
+        $this->vocabulaireEnvironnementUsages[] = $vocabulaireEnvironnementUsage;
+        return $this;
+    }
+
+    public function removeVocabulaireEnvironnementUsage(\Formation\VocabulaireBundle\Entity\VocabulaireEnvirUsage $vocabulaireEnvironnementUsage){
+        $this->vocabulaireEnvironnementUsages->removeElement($vocabulaireEnvironnementUsage);
+    }
+
+    public function getVocabulaireEnvironnementUsage()
+    {
+        return $this->vocabulaireEnvironnementUsages;
+    }
+	
+	public function addVocabulaireTheme(\Formation\VocabulaireBundle\Entity\VocabulaireTheme $vocabulaireTheme){
+        $this->vocabulaireThemes[] = $vocabulaireTheme;
+        return $this;
+    }
+
+    public function removeVocabulaireTheme(\Formation\VocabulaireBundle\Entity\VocabulaireTheme $vocabulaireTheme){
+        $this->vocabulaireThemes->removeElement($vocabulaireTheme);
+    }
+
+    public function getVocabulaireTheme()
+    {
+        return $this->vocabulaireThemes;
+    }
+	
+	public function addVocabulaireFonction(\Formation\VocabulaireBundle\Entity\VocabulaireFonction $vocabulaireFonction){
+        $this->vocabulaireFonctions[] = $vocabulaireFonction;
+        return $this;
+    }
+
+    public function removeVocabulaireFonction(\Formation\VocabulaireBundle\Entity\VocabulaireFonction $vocabulaireFonction){
+        $this->vocabulaireFonctions->removeElement($vocabulaireFonction);
+    }
+
+    public function getVocabulaireFonction()
+    {
+        return $this->vocabulaireFonctions;
     }
 
     public function addVocabulaireSecteur(\Formation\VocabulaireBundle\Entity\VocabulaireSecteur $vocabulaireSecteur){
@@ -112,13 +281,28 @@ class Vocabulaire
         return $this;
     }
 
-    public function removeVocabulaire(\Formation\VocabulaireBundle\Entity\VocabulaireSecteur $vocabulaireSecteur){
+    public function removeVocabulaireSecteur(\Formation\VocabulaireBundle\Entity\VocabulaireSecteur $vocabulaireSecteur){
         $this->vocabulaireSecteurs->removeElement($vocabulaireSecteur);
     }
+
 
     public function getVocabulaireSecteur()
     {
         return $this->vocabulaireSecteurs;
+    }
+
+    public function addVocabulaireDepartement(\Formation\VocabulaireBundle\Entity\VocabulaireDepartement $vocabulaireDepartement){
+        $this->vocabulaireDepartements[] = $vocabulaireDepartement;
+        return $this;
+    }
+
+    public function removeVocabulaireDepartement(\Formation\VocabulaireBundle\Entity\VocabulaireDepartement $vocabulaireDepartement){
+        $this->vocabulaireDepartements->removeElement($vocabulaireDepartement);
+    }
+
+    public function getVocabulaireDepartement()
+    {
+        return $this->vocabulaireDepartements;
     }
 
     public function setLanguage(\Formation\VocabulaireBundle\Entity\Language $language)

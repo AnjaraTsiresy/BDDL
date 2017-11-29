@@ -2,6 +2,7 @@
 
 namespace Formation\VocabulaireBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -112,6 +113,69 @@ class Societe
      */
     private $faxStandard;
 
+	/**
+     * @ORM\OneToMany(targetEntity="SuffixeSociete", mappedBy="societe")
+     */
+    private $suffixeSocietes;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="Lexique", mappedBy="societe")
+     */
+    private $lexiques;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="VocabulaireSociete", mappedBy="societe")
+     */
+    private $vocabulaireSocietes;
+
+    public function __construct()
+    {
+		$this->suffixeSocietes = new ArrayCollection();
+        $this->vocabulaireSocietes = new ArrayCollection();
+		$this->lexiques = new ArrayCollection();
+    }
+	
+	public function addLexique(\Formation\VocabulaireBundle\Entity\Lexique $lexique){
+        $this->lexiques[] = $lexique;
+        return $this;
+    }
+
+    public function removeLexique(\Formation\VocabulaireBundle\Entity\Lexique $lexique){
+        $this->lexiques->removeElement($lexique);
+    }
+
+    public function getLexique()
+    {
+        return $this->lexiques;
+    }
+	
+	public function addSuffixeSociete(\Formation\VocabulaireBundle\Entity\SuffixeSociete $suffixeSociete){
+        $this->suffixeSocietes[] = $suffixeSociete;
+        return $this;
+    }
+
+    public function removeSuffixeSociete(\Formation\VocabulaireBundle\Entity\SuffixeSociete $suffixeSociete){
+        $this->suffixeSocietes->removeElement($suffixeSociete);
+    }
+
+    public function getSuffixeSociete()
+    {
+        return $this->suffixeSocietes;
+    }
+
+    public function addVocabulaireSociete(\Formation\VocabulaireBundle\Entity\VocabulaireSociete $vocabulaireSociete){
+        $this->vocabulaireSocietes[] = $vocabulaireSociete;
+        return $this;
+    }
+
+    public function removeVocabulaire(\Formation\VocabulaireBundle\Entity\VocabulaireSociete $vocabulaireSociete){
+        $this->vocabulaireSocietes->removeElement($vocabulaireSociete);
+    }
+
+    public function getVocabulaireSociete()
+    {
+        return $this->vocabulaireSocietes;
+    }
 
     /**
      * Get id

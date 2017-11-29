@@ -5,33 +5,33 @@ namespace Formation\VocabulaireBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VocabulaireSecteur
+ * VocabulaireFonction
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireSecteurRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireFonctionRepository")
  */
-class VocabulaireSecteur
+class VocabulaireFonction
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_vocabulaire_secteur", type="integer")
+     * @ORM\Column(name="id_vocabulaire_fonction", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireSecteurs")
+     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireFonctions")
      * @ORM\JoinColumn(name="id_vocabulaire", referencedColumnName="id_vocabulaire")
      */
     private $vocabulaire;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="vocabulaireSecteurs")
-     * @ORM\JoinColumn(name="id_secteur", referencedColumnName="id_secteur")
+     * @ORM\ManyToOne(targetEntity="Fonction", inversedBy="vocabulaireFonctions")
+     * @ORM\JoinColumn(name="id_fonction", referencedColumnName="id_fonction")
      */
-    private $secteur;
+    private $fonction;
 
     public function setVocabulaire(\Formation\VocabulaireBundle\Entity\Vocabulaire $vocabulaire)
     {
@@ -43,14 +43,14 @@ class VocabulaireSecteur
         return $this->vocabulaire;
     }
 
-    public function setSecteur(\Formation\VocabulaireBundle\Entity\Secteur $secteur)
+    public function setFonction(\Formation\VocabulaireBundle\Entity\Fonction $fonction)
     {
-        $this->secteur = $secteur;
+        $this->fonction = $fonction;
     }
 
-    public function getSecteur()
+    public function getFonction()
     {
-        return $this->secteur;
+        return $this->fonction;
     }
     
     /**
