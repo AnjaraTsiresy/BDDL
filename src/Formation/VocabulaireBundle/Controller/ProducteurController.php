@@ -26,8 +26,9 @@ class ProducteurController extends Controller
         if ($request->get('id_secteur')) {
             $id_secteur = $request->get('id_secteur');
             $secteur = $repositorySecteur->find($id_secteur);
-            $libelle_secteur = $secteur->getLibelleSecteur();
+
             if ($secteur != null) {
+                $libelle_secteur = $secteur->getLibelleSecteur();
                  $vocabulaireSecteurs = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSecteur')->findBy(array('secteur' => $secteur));
                 if ($request->get('id_suffixe')) {
                    
