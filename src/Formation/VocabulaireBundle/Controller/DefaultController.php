@@ -17,6 +17,7 @@ use Formation\VocabulaireBundle\Entity\VocabulaireEnvirUsage;
 use Formation\VocabulaireBundle\Entity\VocabulaireFonction;
 use Formation\VocabulaireBundle\Entity\VocabulairePrototype;
 use Formation\VocabulaireBundle\Entity\VocabulaireSecteur;
+use Formation\VocabulaireBundle\Entity\VocabulaireSociete;
 use Formation\VocabulaireBundle\Entity\VocabulaireTheme;
 
 use Formation\VocabulaireBundle\Entity\VocabulaireTraducteur;
@@ -671,58 +672,64 @@ class DefaultController extends Controller
                               */
                            }
 
-                           /*   $sql_test_societe ="select * from vocabulaire_societe where id_societe='$id_societe' AND id_vocabulaire='$id_vocabulaire' ";
-                         $query_test_societe= mysql_query($sql_test_societe) or die(mysql_error());
-                         $row_test_societe = mysql_fetch_array($query_test_societe);
-                         if($row_test_societe['id_vocabulaire_societe'] == 0 || $row_test_societe['id_vocabulaire_societe'] == ""){
-                             $vocab_soc_sql = "INSERT IGNORE INTO vocabulaire_societe VALUES ('','$id_societe','$id_vocabulaire')";
-                             mysql_query($vocab_soc_sql);
-                         }
+                        $vocabulaireSociete = new VocabulaireSociete();
+                        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
+                        $societe = $repositorySociete ->find($id_societe);
 
-                         if($suffixe != ""){
-                             //verif suffixe
-                             //$suffixe_verif = strtolower($suffixe);
-                             $sql_suffixe ="select * from suffixe where libelle_suffixe='$suffixe' and millesime='$millesime' ";
-                             $query_suffixe= mysql_query($sql_suffixe) or die(mysql_error());
-                             $row_suffixe = mysql_fetch_array($query_suffixe);
-                             if($row_suffixe['id_suffixe'] != 0){
-                                 $id_suffixe = $row_suffixe['id_suffixe'];
-                             }else{
-                                 $suffixe_sql = "INSERT IGNORE INTO suffixe VALUES ('', '$suffixe', '$millesime')";
-                                 mysql_query($suffixe_sql);
-                                 $id_suffixe = mysql_insert_id() ;
-                             }
-                             $sql_test_suffixe ="select * from suffixe_societe where id_suffixe='$id_suffixe' AND id_societe='$id_societe' ";
-                             $query_test_suffixe= mysql_query($sql_test_suffixe) or die(mysql_error());
-                             $row_test_suffixe = mysql_fetch_array($query_test_suffixe);
-                             if($row_test_suffixe['id_suffixe_societe'] == 0 || $row_test_suffixe['id_suffixe_societe'] == ""){
-                                 $vocab_sfx_sql = "INSERT IGNORE INTO suffixe_societe VALUES ('','$id_suffixe','$id_societe')";
-                                 mysql_query($vocab_sfx_sql);
-                             }
-                         }
+                        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+                        $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
 
-                         //phrase source non vide
-                         if($index_phrase_source != null && $index_phrase_source != 0){
-                             $phrase_source = htmlspecialchars($tab[$index_phrase_source]);
-                             //verif phrase source
-                             $sql_phrase_source ="select * from phrase_source where libelle_phrase_source='$phrase_source' ";
-                             $query_phrase_source= mysql_query($sql_phrase_source) or die(mysql_error());
-                             $row_phrase_source = mysql_fetch_array($query_phrase_source);
-                             if($row_phrase_source['id_phrase_source'] != 0){
-                                 $id_phrase_source = $row_phrase_source['id_phrase_source'];
-                             }else{
-                                 $phrase_source_sql = "INSERT IGNORE INTO phrase_source VALUES ('', '$phrase_source')";
-                                 mysql_query($phrase_source_sql);
-                                 $id_phrase_source = mysql_insert_id() ;
-                             }
-                             $sql_test_phrase_source ="select * from vocabulaire_phrase_source where id_phrase_source='$id_phrase_source' AND id_vocabulaire='$id_vocabulaire' ";
-                             $query_test_phrase_source= mysql_query($sql_test_phrase_source) or die(mysql_error());
-                             $row_test_phrase_source = mysql_fetch_array($query_test_phrase_source);
-                             if($row_test_phrase_source['id_vocabulaire_phrase_source'] == 0 || $row_test_phrase_source['id_vocabulaire_phrase_source'] == ""){
-                                 $vocab_phrase_source_sql = "INSERT IGNORE INTO vocabulaire_phrase_source VALUES ('','$id_phrase_source','$id_vocabulaire')";
-                                 mysql_query($vocab_phrase_source_sql);
-                             }
-                         }*/
+                        if ($vocabulaire != null && $societe != null) {
+                            $vocabulaireSociete->setSociete($societe);
+                            $vocabulaireSociete->setVocabulaire($vocabulaire);
+                            $em->persist($vocabulaireSociete);
+                            $em->flush();
+                        }
+
+                        /*    if($suffixe != ""){
+                              //verif suffixe
+                              //$suffixe_verif = strtolower($suffixe);
+                              $sql_suffixe ="select * from suffixe where libelle_suffixe='$suffixe' and millesime='$millesime' ";
+                              $query_suffixe= mysql_query($sql_suffixe) or die(mysql_error());
+                              $row_suffixe = mysql_fetch_array($query_suffixe);
+                              if($row_suffixe['id_suffixe'] != 0){
+                                  $id_suffixe = $row_suffixe['id_suffixe'];
+                              }else{
+                                  $suffixe_sql = "INSERT IGNORE INTO suffixe VALUES ('', '$suffixe', '$millesime')";
+                                  mysql_query($suffixe_sql);
+                                  $id_suffixe = mysql_insert_id() ;
+                              }
+                              $sql_test_suffixe ="select * from suffixe_societe where id_suffixe='$id_suffixe' AND id_societe='$id_societe' ";
+                              $query_test_suffixe= mysql_query($sql_test_suffixe) or die(mysql_error());
+                              $row_test_suffixe = mysql_fetch_array($query_test_suffixe);
+                              if($row_test_suffixe['id_suffixe_societe'] == 0 || $row_test_suffixe['id_suffixe_societe'] == ""){
+                                  $vocab_sfx_sql = "INSERT IGNORE INTO suffixe_societe VALUES ('','$id_suffixe','$id_societe')";
+                                  mysql_query($vocab_sfx_sql);
+                              }
+                          }
+
+                          //phrase source non vide
+                          if($index_phrase_source != null && $index_phrase_source != 0){
+                              $phrase_source = htmlspecialchars($tab[$index_phrase_source]);
+                              //verif phrase source
+                              $sql_phrase_source ="select * from phrase_source where libelle_phrase_source='$phrase_source' ";
+                              $query_phrase_source= mysql_query($sql_phrase_source) or die(mysql_error());
+                              $row_phrase_source = mysql_fetch_array($query_phrase_source);
+                              if($row_phrase_source['id_phrase_source'] != 0){
+                                  $id_phrase_source = $row_phrase_source['id_phrase_source'];
+                              }else{
+                                  $phrase_source_sql = "INSERT IGNORE INTO phrase_source VALUES ('', '$phrase_source')";
+                                  mysql_query($phrase_source_sql);
+                                  $id_phrase_source = mysql_insert_id() ;
+                              }
+                              $sql_test_phrase_source ="select * from vocabulaire_phrase_source where id_phrase_source='$id_phrase_source' AND id_vocabulaire='$id_vocabulaire' ";
+                              $query_test_phrase_source= mysql_query($sql_test_phrase_source) or die(mysql_error());
+                              $row_test_phrase_source = mysql_fetch_array($query_test_phrase_source);
+                              if($row_test_phrase_source['id_vocabulaire_phrase_source'] == 0 || $row_test_phrase_source['id_vocabulaire_phrase_source'] == ""){
+                                  $vocab_phrase_source_sql = "INSERT IGNORE INTO vocabulaire_phrase_source VALUES ('','$id_phrase_source','$id_vocabulaire')";
+                                  mysql_query($vocab_phrase_source_sql);
+                              }
+                          }*/
                     }
                 }
 
