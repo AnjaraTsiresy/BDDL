@@ -73,6 +73,7 @@ class ProducteurController extends Controller
 		 $list_id_suffixe = array();
         foreach ($vocabulaireSecteurs as $voc) {
 			//if($i > 1) break;
+          if($voc->getVocabulaire() != null){
             if ($voc->getVocabulaire()->getIsAffiche() == 1) {
                 $vocabulaireSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete')->findBy(array('vocabulaire' => $voc->getVocabulaire()));
                 foreach ($vocabulaireSocietes as $vocSoc) {
@@ -99,6 +100,7 @@ class ProducteurController extends Controller
             }
 			++$i;
         }
+     }
                 }
 
             }
