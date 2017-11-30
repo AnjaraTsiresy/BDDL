@@ -39,32 +39,34 @@ class ProducteurController extends Controller
 		 $list_id_suffixe = array();
         foreach ($vocabulaireSecteurs as $voc) {
             //if($i > 1) break;
-            if($voc->getVocabulaire() != null){
-            if ($voc->getVocabulaire()->getIsAffiche() == 1) {
-                $vocabulaireSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete')->findBy(array('vocabulaire' => $voc->getVocabulaire()));
-                foreach ($vocabulaireSocietes as $vocSoc) {
-                    $societes[] = $vocSoc->getSociete();
+            if ($voc->getVocabulaire() != null) {
+                if ($voc->getVocabulaire()->getIsAffiche() != null) {
+                if ($voc->getVocabulaire()->getIsAffiche() == 1) {
+                    $vocabulaireSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete')->findBy(array('vocabulaire' => $voc->getVocabulaire()));
+                    foreach ($vocabulaireSocietes as $vocSoc) {
+                        $societes[] = $vocSoc->getSociete();
 
-                    $suffixeSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:SuffixeSociete')->findBy(array('suffixe' => $suffixe));
-                    foreach ($suffixeSocietes as $suffixeSociete) {
-                        if (count($list_id_suffixe) > 0) {
-                            $j = 0;
-                            foreach ($list_id_suffixe as $id) {
-                                if ($id == $suffixeSociete->getSuffixe()->getId()) {
-                                    $j = 1;
-                                    break;
+                        $suffixeSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:SuffixeSociete')->findBy(array('suffixe' => $suffixe));
+                        foreach ($suffixeSocietes as $suffixeSociete) {
+                            if (count($list_id_suffixe) > 0) {
+                                $j = 0;
+                                foreach ($list_id_suffixe as $id) {
+                                    if ($id == $suffixeSociete->getSuffixe()->getId()) {
+                                        $j = 1;
+                                        break;
+                                    }
                                 }
+                                if ($j == 0) $suffixes[] = $suffixeSociete->getSuffixe();
+                            } else {
+                                $list_id_suffixe [] = $suffixeSociete->getSuffixe()->getId();
+                                $suffixes[] = $suffixeSociete->getSuffixe();
                             }
-                            if ($j == 0) $suffixes[] = $suffixeSociete->getSuffixe();
-                        } else {
-                            $list_id_suffixe [] = $suffixeSociete->getSuffixe()->getId();
-                            $suffixes[] = $suffixeSociete->getSuffixe();
                         }
-                    }
 
+                    }
                 }
             }
-            }
+        }
             ++$i;
 
             }
@@ -77,30 +79,32 @@ class ProducteurController extends Controller
         foreach ($vocabulaireSecteurs as $voc) {
 			//if($i > 1) break;
           if($voc->getVocabulaire() != null){
-            if ($voc->getVocabulaire()->getIsAffiche() == 1) {
-                $vocabulaireSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete')->findBy(array('vocabulaire' => $voc->getVocabulaire()));
-                foreach ($vocabulaireSocietes as $vocSoc) {
-						$societes[] = $vocSoc->getSociete();
-					
-                    $suffixeSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:SuffixeSociete')->findBy(array('societe' => $vocSoc->getSociete()));
-                     foreach ($suffixeSocietes as $suffixeSociete)
-                     {   
-					     if(count($list_id_suffixe) > 0 )
- 						 {  $j = 0;
-							foreach($list_id_suffixe as $id )
-							 {   
-							     if($id == $suffixeSociete->getSuffixe()->getId()) { $j = 1; break; }
-							 }
-							 if($j == 0)$suffixes[] = $suffixeSociete->getSuffixe();
-						 }
-						 else {
-							 $list_id_suffixe [] =  $suffixeSociete->getSuffixe()->getId();
-							 $suffixes[] = $suffixeSociete->getSuffixe();
-						 }
-					 }
+              if ($voc->getVocabulaire()->getIsAffiche() != null) {
+                  if ($voc->getVocabulaire()->getIsAffiche() == 1) {
+                      $vocabulaireSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete')->findBy(array('vocabulaire' => $voc->getVocabulaire()));
+                      foreach ($vocabulaireSocietes as $vocSoc) {
+                          $societes[] = $vocSoc->getSociete();
 
-                }
-            }
+                          $suffixeSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:SuffixeSociete')->findBy(array('societe' => $vocSoc->getSociete()));
+                          foreach ($suffixeSocietes as $suffixeSociete) {
+                              if (count($list_id_suffixe) > 0) {
+                                  $j = 0;
+                                  foreach ($list_id_suffixe as $id) {
+                                      if ($id == $suffixeSociete->getSuffixe()->getId()) {
+                                          $j = 1;
+                                          break;
+                                      }
+                                  }
+                                  if ($j == 0) $suffixes[] = $suffixeSociete->getSuffixe();
+                              } else {
+                                  $list_id_suffixe [] = $suffixeSociete->getSuffixe()->getId();
+                                  $suffixes[] = $suffixeSociete->getSuffixe();
+                              }
+                          }
+
+                      }
+                  }
+              }
 			++$i;
         }
      }
