@@ -6,16 +6,21 @@ use Formation\VocabulaireBundle\Entity\Departement;
 use Formation\VocabulaireBundle\Entity\EnvironnementUsage;
 use Formation\VocabulaireBundle\Entity\Fonction;
 use Formation\VocabulaireBundle\Entity\Lexique;
+use Formation\VocabulaireBundle\Entity\PhraseSource;
 use Formation\VocabulaireBundle\Entity\Prototype;
 use Formation\VocabulaireBundle\Entity\PrototypeAccess;
 use Formation\VocabulaireBundle\Entity\Secteur;
 use Formation\VocabulaireBundle\Entity\Source;
+use Formation\VocabulaireBundle\Entity\Suffixe;
+use Formation\VocabulaireBundle\Entity\SuffixeSociete;
 use Formation\VocabulaireBundle\Entity\Theme;
 use Formation\VocabulaireBundle\Entity\Vocabulaire;
 use Formation\VocabulaireBundle\Entity\VocabulaireDepartement;
 use Formation\VocabulaireBundle\Entity\VocabulaireEnvirUsage;
 use Formation\VocabulaireBundle\Entity\VocabulaireFonction;
+use Formation\VocabulaireBundle\Entity\VocabulairePhraseSource;
 use Formation\VocabulaireBundle\Entity\VocabulairePrototype;
+use Formation\VocabulaireBundle\Entity\VocabulairePrototypeAccess;
 use Formation\VocabulaireBundle\Entity\VocabulaireSecteur;
 use Formation\VocabulaireBundle\Entity\VocabulaireSociete;
 use Formation\VocabulaireBundle\Entity\VocabulaireTheme;
@@ -607,14 +612,14 @@ class DefaultController extends Controller
                             $societe = $repositorySociete->find($id_societe);
 
                             $repositoryFormatEdition = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:FormatEdition');
-                            $formatEdition  = $repositoryFormatEdition ->find(3);
+                            $formatEdition = $repositoryFormatEdition->find(3);
                             $repositoryTraducteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Traducteur');
                             $trad = $repositoryTraducteur->find($id_traducteur);
-                            $proto_access = $repositoryPrototypeAccess->findOneBy(array('type' => $prototype,'societe' => $societe));
+                            $proto_access = $repositoryPrototypeAccess->findOneBy(array('type' => $prototype, 'societe' => $societe));
                             $id_prot = 0;
-                            if ($proto_access!= null) {
-                                $id_prot  = $proto_access->getId();
-                            } else if($societe != null && $formatEdition != null && $trad != null) {
+                            if ($proto_access != null) {
+                                $id_prot = $proto_access->getId();
+                            } else if ($societe != null && $formatEdition != null && $trad != null) {
                                 $date_today = date("Y-m-d H:i:s");
                                 $proto_access = new PrototypeAccess();
                                 $proto_access->setNumero(0);
@@ -632,49 +637,57 @@ class DefaultController extends Controller
 
                                 $em->persist($proto_access);
                                 $em->flush();
-                                $id_prot  = $proto_access->getId();
+                                $id_prot = $proto_access->getId();
                             }
 
                             ////ajout dans la table lexique pour gerer les rangs des LE
-                           /* if ($id_societe != 653) {
-                                $rang_lexique = $this->recupRangLE($id_societe, $id_theme, $id_prot);
-                                $rangLE = $this->getMaxRangLE($id_prot);
-                                $rangLE = $rangLE + 1;
-                                if ($rang_lexique == 0 || $rang_lexique == "") {
+                           if ($id_societe != 653) {
+                                 $rang_lexique = $this->recupRangLE($id_societe, $id_theme, $id_prot);
+                                 $rangLE = $this->getMaxRangLE($id_prot);
+                                 $rangLE = $rangLE + 1;
+                                 if ($rang_lexique == 0 || $rang_lexique == "") {
 
-                                    $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
-                                    $prototypeAccess = $repositoryPrototypeAccess->find($id_prot);
+                                     $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
+                                     $prototypeAccess = $repositoryPrototypeAccess->find($id_prot);
 
-                                    $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
-                                    $theme = $repositoryTheme->find($id_theme);
+                                     $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
+                                     $theme = $repositoryTheme->find($id_theme);
 
-                                    $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
-                                    $societe = $repositorySociete->find($id_societe);
+                                     $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
+                                     $societe = $repositorySociete->find($id_societe);
 
-                                    if ($prototypeAccess != null && $theme != null && $societe != null) {
-                                        $lexique = new Lexique();
-                                        $lexique->setRang($rangLE);
-                                        $lexique->setSociete($societe);
-                                        $lexique->setPrototypeAccess($prototypeAccess);
-                                        $lexique->setTheme($theme);
-                                        $em->persist($lexique);
-                                        $em->flush();
-                                    }
+                                     if ($prototypeAccess != null && $theme != null && $societe != null) {
+                                         $lexique = new Lexique();
+                                         $lexique->setRang($rangLE);
+                                         $lexique->setSociete($societe);
+                                         $lexique->setPrototypeAccess($prototypeAccess);
+                                         $lexique->setTheme($theme);
+                                         $em->persist($lexique);
+                                         $em->flush();
+                                     }
+                                 }
+                             }
+
+                              $prototype_access =  $repositoryPrototypeAccess->find($id_prot);
+                            $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+                            $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
+                            if($prototype_access  != null && $vocabulaire != null)
+                            {
+                                $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');
+                                $vocabulairePrototypeAccess = $repositoryVocabulairePrototypeAccess->findOneBy(array('prototypeAccess' => $prototype_access,'vocabulaire' => $vocabulaire));
+                                if($vocabulairePrototypeAccess != null){
+                                    $vocabulairePrototypeAccess = new VocabulairePrototypeAccess();
+                                    $vocabulairePrototypeAccess->setVocabulaire($vocabulaire);
+                                    $vocabulairePrototypeAccess->setPrototypeAccess($prototype_access);
+                                    $em->persist($vocabulairePrototypeAccess);
+                                    $em->flush();
                                 }
                             }
-                                $sql_test_prototype_access = "select * from vocabulaire_prototype_access where id_vocabulaire='$id_vocabulaire' AND id_prototype_access='$id_prot' ";
-                               $query_test_prototype_access = mysql_query($sql_test_prototype_access) or die(mysql_error());
-                               $row_test_prototype_access = mysql_fetch_array($query_test_prototype_access);
-                               if ($row_test_prototype_access['id_vocabulaire_prototype_access'] == 0 || $row_test_prototype_access['id_vocabulaire_prototype_access'] == "") {
-                                   $sql_insert = "INSERT IGNORE INTO vocabulaire_prototype_access VALUES ('', '$id_vocabulaire', '$id_prot')";
-                                   mysql_query($sql_insert) or die(mysql_error());
-                               }
-                              */
-                           }
+                        }
 
                         $vocabulaireSociete = new VocabulaireSociete();
                         $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
-                        $societe = $repositorySociete ->find($id_societe);
+                        $societe = $repositorySociete->find($id_societe);
 
                         $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
                         $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
@@ -686,50 +699,69 @@ class DefaultController extends Controller
                             $em->flush();
                         }
 
-                        /*    if($suffixe != ""){
-                              //verif suffixe
-                              //$suffixe_verif = strtolower($suffixe);
-                              $sql_suffixe ="select * from suffixe where libelle_suffixe='$suffixe' and millesime='$millesime' ";
-                              $query_suffixe= mysql_query($sql_suffixe) or die(mysql_error());
-                              $row_suffixe = mysql_fetch_array($query_suffixe);
-                              if($row_suffixe['id_suffixe'] != 0){
-                                  $id_suffixe = $row_suffixe['id_suffixe'];
-                              }else{
-                                  $suffixe_sql = "INSERT IGNORE INTO suffixe VALUES ('', '$suffixe', '$millesime')";
-                                  mysql_query($suffixe_sql);
-                                  $id_suffixe = mysql_insert_id() ;
-                              }
-                              $sql_test_suffixe ="select * from suffixe_societe where id_suffixe='$id_suffixe' AND id_societe='$id_societe' ";
-                              $query_test_suffixe= mysql_query($sql_test_suffixe) or die(mysql_error());
-                              $row_test_suffixe = mysql_fetch_array($query_test_suffixe);
-                              if($row_test_suffixe['id_suffixe_societe'] == 0 || $row_test_suffixe['id_suffixe_societe'] == ""){
-                                  $vocab_sfx_sql = "INSERT IGNORE INTO suffixe_societe VALUES ('','$id_suffixe','$id_societe')";
-                                  mysql_query($vocab_sfx_sql);
-                              }
-                          }
+                        if ($suffixe != "") {
+                            //verif suffixe
+                            //$suffixe_verif = strtolower($suffixe);
+                            $repositorySuffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe');
+                            $suffixe_obj = $repositorySuffixe->findOneBy(array('type' => $prototype, 'societe' => $societe));
 
-                          //phrase source non vide
-                          if($index_phrase_source != null && $index_phrase_source != 0){
-                              $phrase_source = htmlspecialchars($tab[$index_phrase_source]);
-                              //verif phrase source
-                              $sql_phrase_source ="select * from phrase_source where libelle_phrase_source='$phrase_source' ";
-                              $query_phrase_source= mysql_query($sql_phrase_source) or die(mysql_error());
-                              $row_phrase_source = mysql_fetch_array($query_phrase_source);
-                              if($row_phrase_source['id_phrase_source'] != 0){
-                                  $id_phrase_source = $row_phrase_source['id_phrase_source'];
-                              }else{
-                                  $phrase_source_sql = "INSERT IGNORE INTO phrase_source VALUES ('', '$phrase_source')";
-                                  mysql_query($phrase_source_sql);
-                                  $id_phrase_source = mysql_insert_id() ;
-                              }
-                              $sql_test_phrase_source ="select * from vocabulaire_phrase_source where id_phrase_source='$id_phrase_source' AND id_vocabulaire='$id_vocabulaire' ";
-                              $query_test_phrase_source= mysql_query($sql_test_phrase_source) or die(mysql_error());
-                              $row_test_phrase_source = mysql_fetch_array($query_test_phrase_source);
-                              if($row_test_phrase_source['id_vocabulaire_phrase_source'] == 0 || $row_test_phrase_source['id_vocabulaire_phrase_source'] == ""){
-                                  $vocab_phrase_source_sql = "INSERT IGNORE INTO vocabulaire_phrase_source VALUES ('','$id_phrase_source','$id_vocabulaire')";
-                                  mysql_query($vocab_phrase_source_sql);
-                              }
-                          }*/
+                            if ($suffixe_obj != null) {
+                                $id_suffixe = $suffixe_obj->getId();
+                            } else {
+                                $suffixe_obj = new Suffixe();
+                                $suffixe_obj->setLibelleSuffixe($suffixe);
+                                $suffixe_obj->setMillesime($millesime);
+                                $em->persist($suffixe_obj);
+                                $em->flush();
+                            }
+                            $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
+                            $societe = $repositorySociete->find($id_societe);
+                            $suffixe_obj = $repositorySuffixe->find($id_suffixe);
+                            $repositorySuffixeSociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:SuffixeSociete');
+                            if ($suffixe_obj != null && $societe) {
+                                $suffixeSociete = $repositorySuffixeSociete->findOneBy(array('suffixe' => $suffixe_obj, 'societe' => $societe));
+                                if ($suffixeSociete != null) {
+                                    $suffixeSociete = new SuffixeSociete();
+                                    $suffixeSociete->setSociete($societe);
+                                    $suffixeSociete->setSuffixe($suffixe_obj);
+                                }
+                            }
+
+
+                        }
+
+                        //phrase source non vide
+                        if ($index_phrase_source != null && $index_phrase_source != 0) {
+                            $phrase_source = htmlspecialchars($tab[$index_phrase_source]);
+                            //verif phrase source
+                            $repositoryPhraseSource = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PhraseSource');
+                            $phrase_source_obj = $repositoryPhraseSource->findOneBy(array('libellePhraseSource' => $phrase_source));
+
+                            if ($phrase_source_obj != 0) {
+                                $id_phrase_source = $phrase_source_obj->getId();
+                            } else {
+                                $phrase_source_obj = new PhraseSource();
+                                $phrase_source_obj->setLibellePhraseSource($phrase_source);
+                                $em->persist($phrase_source_obj);
+                                $em->flush();
+                            }
+                            $phrase_source_obj = $repositoryPhraseSource->find($id_phrase_source);
+                            $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+                            $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
+                            if ($phrase_source_obj != null && $vocabulaire != null) {
+                                $repositoryVocabulairePhraseSource = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePhraseSource');
+                                $vocabulairePhraseSource = $repositoryVocabulairePhraseSource->findOneBy(array('phrase_source' => $phrase_source_obj, 'vocabulaire' => $vocabulaire));
+                                if ($vocabulairePhraseSource != null) {
+                                    $vocabulairePhraseSource = new VocabulairePhraseSource();
+                                    $vocabulairePhraseSource->setVocabulaire($vocabulaire);
+                                    $vocabulairePhraseSource->setPhraseSource($phrase_source_obj);
+                                    $em->persist($vocabulairePhraseSource);
+                                    $em->flush();
+                                }
+                            }
+
+
+                        }
                     }
                 }
 
@@ -775,30 +807,35 @@ class DefaultController extends Controller
         return preg_replace('/[^A-Za-z\-]/', '', $string); // Removes special chars.
     }
 
-    private function recupRangLE($id_societe, $id_theme, $id_prototype_access){
+    private function recupRangLE($id_societe, $id_theme, $id_prototype_access)
+    {
+        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
+        $prototypeAccess = $repositoryPrototypeAccess->find($id_prototype_access);
+        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
+        $societe = $repositorySociete->find($id_societe);
+        $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
+        $theme = $repositoryTheme->find($id_theme);
         $repositoryLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
-        $lexique = $repositoryLexique->findOneBy(array('theme' => $id_theme,'prototypeAccess' => $id_prototype_access,'societe' => $id_societe));
-        if($lexique != null) $lexique->getRang();
-	    return 0;
+        $lexique = $repositoryLexique->findOneBy(array('theme' => $theme, 'prototypeAccess' => $prototypeAccess, 'societe' => $societe));
+        if ($lexique != null) $lexique->getRang();
+        return 0;
     }
 
-    private function getMaxRangLE($id_prototype_access){
+    private function getMaxRangLE($id_prototype_access)
+    {
+        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
+        $prototypeAccess = $repositoryPrototypeAccess->find($id_prototype_access);
+        $lexiques = array();
+        $repositoryLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
+        if($prototypeAccess != null)$lexiques = $repositoryLexique->findBy(array('prototypeAccess'=> $prototypeAccess ));
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $query = $em->createQuery(
-            'SELECT p, max(p.rang)
-            FROM FormationVocabulaireBundle:Lexique p
-            WHERE p.prototypeAccess = :prototype_access'
-        )->setParameter('prototype_access', $id_prototype_access);
-        $lexiques = $query->getResult();
+        $max = 0;
+        foreach ($lexiques as $lexique) {
 
-       foreach($lexiques as $lexique)
-            {
+           if($max < $lexique->getRang() ) $max = $lexique->getRang();
+        }
 
-                return $lexique->getRang();
-            }
-
-        return 0;
+        return $max;
 
     }
 }
