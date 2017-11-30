@@ -23,13 +23,13 @@ class SuffixeSociete
     private $id;
 	
 	/**
-     * @ORM\ManyToOne(targetEntity="Societe", inversedBy="societeSecteurs")
+     * @ORM\ManyToOne(targetEntity="Societe", inversedBy="suffixeSocietes")
      * @ORM\JoinColumn(name="id_societe", referencedColumnName="id_societe")
      */
     private $societe;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Suffixe", inversedBy="societeSuffixes")
+     * @ORM\ManyToOne(targetEntity="Suffixe", inversedBy="suffixeSocietes")
      * @ORM\JoinColumn(name="id_suffixe", referencedColumnName="id_suffixe")
      */
     private $suffixe;

@@ -32,7 +32,7 @@ class Vocabulaire
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_modification", type="datetime")
+     * @ORM\Column(name="date_modification", type="datetime", nullable=true)
      */
     private $dateModification;
 
@@ -118,7 +118,7 @@ class Vocabulaire
     private $vocabulaireFonctions;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="VocabulairePhraseSource", mappedBy="phrase_source")
+     * @ORM\OneToMany(targetEntity="VocabulairePhraseSource", mappedBy="vocabulaire")
      */
     private $vocabulairePhraseSources;
 	/**
@@ -148,6 +148,7 @@ class Vocabulaire
 	
     public function __construct()
     {
+        $this->dateModification = new \DateTime();
 		$this->vocabulaireSocietes = new ArrayCollection();
 		$this->vocabulairePhraseSources = new ArrayCollection();
         $this->vocabulaireSecteurs = new ArrayCollection();
@@ -161,13 +162,13 @@ class Vocabulaire
     }
 	
 	
-	public function addVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAcces $vocabulairePrototypeAcces){
+	public function addVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAccess $vocabulairePrototypeAcces){
         $this->vocabulairePrototypeAccesss[] = $vocabulairePrototypeAcces;
         return $this;
     }
 
-    public function removeVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAcces $vocabulairePrototypeAcces){
-        $this->vocabulaireSocietes->removeElement($PrototypeAcces);
+    public function removeVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAccess $vocabulairePrototypeAcces){
+        $this->vocabulairePrototypeAccesss->removeElement($vocabulairePrototypeAcces);
     }
 
     public function getVocabulairePrototypeAcces()

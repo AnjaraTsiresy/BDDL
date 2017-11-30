@@ -46,7 +46,7 @@ class Societe
     /**
      * @var string
      *
-     * @ORM\Column(name="comptaTiers", type="string", length=255)
+     * @ORM\Column(name="comptaTiers", type="string", length=255, nullable=true)
      */
     private $comptaTiers;
 
@@ -60,28 +60,28 @@ class Societe
     /**
      * @var string
      *
-     * @ORM\Column(name="direction", type="string", length=255)
+     * @ORM\Column(name="direction", type="string", length=255, nullable=true)
      */
     private $direction;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="departement", type="string", length=255)
+     * @ORM\Column(name="departement", type="string", length=255, nullable=true)
      */
     private $departement;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="adress1", type="string", length=255)
+     * @ORM\Column(name="adress1", type="string", length=255, nullable=true)
      */
     private $address1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="adress2", type="string", length=255)
+     * @ORM\Column(name="adress2", type="string", length=255, nullable=true)
      */
     private $address2;
 
@@ -95,21 +95,21 @@ class Societe
     /**
      * @var string
      *
-     * @ORM\Column(name="ville", type="string", length=255)
+     * @ORM\Column(name="ville", type="string", length=255, nullable=true)
      */
     private $ville;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telStandard", type="string", length=255)
+     * @ORM\Column(name="telStandard", type="string", length=255, nullable=true)
      */
     private $telStandard;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="faxStandard", type="string", length=255)
+     * @ORM\Column(name="faxStandard", type="string", length=255, nullable=true)
      */
     private $faxStandard;
 
@@ -124,6 +124,11 @@ class Societe
     private $lexiques;
 	
 	/**
+     * @ORM\OneToMany(targetEntity="PrototypeAccess", mappedBy="societe")
+     */
+    private $prototypeAccesss;
+	
+	/**
      * @ORM\OneToMany(targetEntity="VocabulaireSociete", mappedBy="societe")
      */
     private $vocabulaireSocietes;
@@ -133,8 +138,21 @@ class Societe
 		$this->suffixeSocietes = new ArrayCollection();
         $this->vocabulaireSocietes = new ArrayCollection();
 		$this->lexiques = new ArrayCollection();
+        $this->prototypeAccesss = new ArrayCollection();
     }
-	
+    public function addPrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess){
+        $this->prototypeAccesss[] = $prototypeAccess;
+        return $this;
+    }
+
+    public function removePrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess){
+        $this->prototypeAccesss->removeElement($prototypeAccess);
+    }
+
+    public function getPrototypeAccess()
+    {
+        return $this->prototypeAccesss;
+    }
 	public function addLexique(\Formation\VocabulaireBundle\Entity\Lexique $lexique){
         $this->lexiques[] = $lexique;
         return $this;

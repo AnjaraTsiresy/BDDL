@@ -1,0 +1,49 @@
+
+{% block body %}
+<br/><br/>
+<table id="tableau">
+	<thead>
+	<tr>
+		<th scope="col">LE</th>
+		<th scope="col">Société</th>
+		<th scope="col"></th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for lexique in lexiques %}
+	<tr>
+		<td><!--input type="checkbox" name="listeLE[]" value="<?php echo $id_theme ; ?>"/-->{{ lexique.libelle_theme }} ( {{ lexique.nb_termes }} termes) </td>
+		<td><?php echo $nom_societe; ?></td>
+		<td>
+			<form method="post" action="{{ path('export_prototype') }}">
+				<input type="hidden" name="id_prototype_access" value="{{ lexique.id_prototype_access }}"/>
+				<input type="hidden" name="id_theme" value="{{ lexique.id_theme }}"/>
+				<input type="hidden" name="id_societe" value="{{ lexique.id_societe }}"/>
+				<input type="hidden" name="id_secteur" value="{{ id_secteur }}"/>
+				<input type="submit" value="Exporter le contenu vers excel" />
+			</form>
+		</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript">
+        $(document).ready(function(){
+            $("#boutonLE").click(function(){
+                var valeursLE = [];
+                $('input[type=checkbox]:checked').each(function(){
+                    valeursLE.push($(this).val());
+                });
+                /*var $id_prototype_access = $('#id_prototype_access').val();
+                alert($id_prototype_access);*/
+                $.ajax({
+                    url: "exportAllLE.php",
+                    data: 'valLE='+valeursLE,
+                    dataType: 'html',
+                });
+            });
+        });
+	</script>
+{% endblock %}

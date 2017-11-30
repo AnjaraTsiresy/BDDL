@@ -22,7 +22,7 @@ class VocabulaireTheme
     private $id;
 	
 		/**
-     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireSecteurs")
+     * @ORM\ManyToOne(targetEntity="Vocabulaire", inversedBy="vocabulaireThemes")
      * @ORM\JoinColumn(name="id_vocabulaire", referencedColumnName="id_vocabulaire")
      */
     private $vocabulaire;

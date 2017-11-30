@@ -105,13 +105,33 @@ class PrototypeAccess
     private $societe;
 	
 	/**
-     * @ORM\OneToMany(targetEntity="Lexique", mappedBy="theme")
+     * @ORM\OneToMany(targetEntity="Lexique", mappedBy="prototypeAccess")
      */
     private $lexiques;
+
+    /**
+     * @ORM\OneToMany(targetEntity="VocabulairePrototypeAccess", mappedBy="prototypeAccess")
+     */
+    private $vocabulairePrototypeAccesss;
 
     public function __construct()
     {
 		$this->lexiques = new ArrayCollection();
+        $this->vocabulairePrototypeAccesss = new ArrayCollection();
+    }
+
+    public function addVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAccess $vocabulairePrototypeAcces){
+        $this->vocabulairePrototypeAccesss[] = $vocabulairePrototypeAcces;
+        return $this;
+    }
+
+    public function removeVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAccess $vocabulairePrototypeAcces){
+        $this->vocabulairePrototypeAccesss->removeElement($vocabulairePrototypeAcces);
+    }
+
+    public function getVocabulairePrototypeAcces()
+    {
+        return $this->vocabulairePrototypeAccesss;
     }
 	
 	public function addLexique(\Formation\VocabulaireBundle\Entity\Lexique $lexique){

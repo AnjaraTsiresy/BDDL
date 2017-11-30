@@ -51,7 +51,7 @@ class Source
     private $lien;
 
     /**
-     * @ORM\OneToMany(targetEntity="Vocabulaire", mappedBy="Source")
+     * @ORM\OneToMany(targetEntity="Vocabulaire", mappedBy="source")
      */
     private $vocabulaires;
 

@@ -45,7 +45,7 @@ class Lexique
      */
     private $societe;
 
-    public function setPrototypeAccess(\Formation\PrototypeAccessBundle\Entity\PrototypeAccess $prototypeAccess)
+    public function setPrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess)
     {
         $this->prototypeAccess = $prototypeAccess;
     }
@@ -55,7 +55,7 @@ class Lexique
         return $this->prototypeAccess;
     }
 
-    public function setSociete(\Formation\PrototypeAccessBundle\Entity\Societe $societe)
+    public function setSociete(\Formation\VocabulaireBundle\Entity\Societe $societe)
     {
         $this->societe = $societe;
     }
@@ -64,7 +64,7 @@ class Lexique
     {
         return $this->societe;
     }
-    public function setTheme(\Formation\PrototypeAccessBundle\Entity\Theme $theme)
+    public function setTheme(\Formation\VocabulaireBundle\Entity\Theme $theme)
     {
         $this->theme = $theme;
     }

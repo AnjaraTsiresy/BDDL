@@ -56,7 +56,7 @@
             <select name="id_suffixe" id="id_suffixe" onChange="refresh(this.value, {{ id_secteur }})">
                 <option></option>
                 {% for suffixe in suffixes %}
-                    <option value="{{ suffixe.id }}" {% if id_suffixe == suffixe.id %} selected='selected' {% endif %}>{{ suffixe.libelleSiffixe }}</option>
+                    <option value="{{ suffixe.id }}" {% if id_suffixe == suffixe.id %} selected='selected' {% endif %}>{{ suffixe.libelleSuffixe }}</option>
                 {% endfor %}
             </select>
         </td>
@@ -86,7 +86,7 @@
     {% for societe in societes %}
     <tr>
         <td><input type="checkbox" name="listeSociete[]" id="listeSociete{{ societe.id }}" value="{{ societe.id }}"/>{{ societe.description }} prototypes</td>
-        <td><?php echo $libelle_secteur; ?></td>
+        <td>{{ libelle_secteur }}</td>
     </tr>
     {% endfor %}
     <tr>
@@ -166,9 +166,9 @@
         </script>
         <script>
             function refresh(idinput, id_secteur) {
-                 var url = "{{ path('recherche_thematique', {'id_secteur':" + id_secteur + ",'id_suffixe':" + idinput + "}) }}";
-                //alert(url);
-                location.href = url;
+                 var path = "{{ path('recherche_thematique') }}";
+                 var url = path+"?id_secteur="+id_secteur+"&id_suffixe="+idinput
+                 location.href = url;
             }
 
             function checkAll(name, checked) {
