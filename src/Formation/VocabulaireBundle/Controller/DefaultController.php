@@ -591,21 +591,24 @@ class DefaultController extends Controller
                                 $em->persist($proto);
                                 $em->flush();
                                 $id_prototype = $proto->getId();
+
                                 $date_today = date("Y-m-d");
                             }
 
-                            $vocabulairePrototype = new VocabulairePrototype();
+
                             $repositoryPrototype = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Prototype');
-                            $trad = $repositoryPrototype->find($id_prototype);
+                            $proto_obj = $repositoryPrototype->find($id_prototype);
 
                             $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
                             $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
 
-                            if ($vocabulaire != null && $trad != null) {
-                                $vocabulairePrototype->setPrototype($trad);
+                            if ($vocabulaire != null && $proto_obj != null) {
+                                $vocabulairePrototype = new VocabulairePrototype();
+                                $vocabulairePrototype->setPrototype($proto_obj);
                                 $vocabulairePrototype->setVocabulaire($vocabulaire);
                                 $em->persist($vocabulairePrototype);
                                 $em->flush();
+
                             }
                             $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
                             $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
@@ -620,6 +623,7 @@ class DefaultController extends Controller
                             if ($proto_access != null) {
                                 $id_prot = $proto_access->getId();
                             } else if ($societe != null && $formatEdition != null && $trad != null) {
+
                                 $date_today = date("Y-m-d H:i:s");
                                 $proto_access = new PrototypeAccess();
                                 $proto_access->setNumero(0);
@@ -638,6 +642,7 @@ class DefaultController extends Controller
                                 $em->persist($proto_access);
                                 $em->flush();
                                 $id_prot = $proto_access->getId();
+
                             }
 
                             ////ajout dans la table lexique pour gerer les rangs des LE
@@ -768,7 +773,7 @@ class DefaultController extends Controller
                 if ($id_societe == 653) {
                     return $this->redirect($this->generateUrl('consulter_prototype'));
                 } else {
-                    #return $this->redirect($this->generateUrl('/modif_prototype?id='.$id_prot));
+
                     return $this->redirectToRoute('modif_prototype', array('id' => $id_prot));
                 }
 
