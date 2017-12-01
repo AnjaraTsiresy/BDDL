@@ -3,8 +3,9 @@
 namespace Formation\VocabulaireBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -19,106 +20,36 @@ class ProducteurController extends Controller
         $id_suffixe = 0;
         $libelle_secteur = '';
         $repositorySecteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Secteur');
-        $vocabulaireSecteurs = array();
-        $suffixes = array();
-        $societes = array();
         $secteurs = $repositorySecteur->findAll();
+        $repositorySuffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe');
+        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+        $suffixes = array();
+        $vocabulaires = array();
         if ($request->get('id_secteur')) {
             $id_secteur = $request->get('id_secteur');
-            $secteur = $repositorySecteur->find($id_secteur);
-
-            if ($secteur != null) {
-                $libelle_secteur = $secteur->getLibelleSecteur();
-                 $vocabulaireSecteurs = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSecteur')->findBy(array('secteur' => $secteur));
-                if ($request->get('id_suffixe')) {
-
-                    $id_suffixe = $request->get('id_suffixe');
-                    $suffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe')->find($id_suffixe);
-                    if ($suffixe != null) {
-                        $i = 0;
-                        $list_id_suffixe = array();
-                        foreach ($vocabulaireSecteurs as $voc) {
-                            //if($i > 1) break;
-                            if ($voc->getVocabulaire() != null) {
-
-                                $vocabulaireSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete')->findBy(array('vocabulaire' => $voc->getVocabulaire()));
-                                foreach ($vocabulaireSocietes as $vocSoc) {
-                                    $societes[] = $vocSoc->getSociete();
-
-                                    $suffixeSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:SuffixeSociete')->findBy(array('suffixe' => $suffixe));
-                                    foreach ($suffixeSocietes as $suffixeSociete) {
-                                        if (count($list_id_suffixe) > 0) {
-                                            $j = 0;
-                                            foreach ($list_id_suffixe as $id) {
-                                                if ($id == $suffixeSociete->getSuffixe()->getId()) {
-                                                    $j = 1;
-                                                    break;
-                                                }
-                                            }
-                                            if ($j == 0) $suffixes[] = $suffixeSociete->getSuffixe();
-                                        } else {
-                                            $list_id_suffixe [] = $suffixeSociete->getSuffixe()->getId();
-                                            $suffixes[] = $suffixeSociete->getSuffixe();
-                                        }
-                                    }
-                                }
-
-
-                                ++$i;
-
-                            }
-                        }
-
-                    }
-                }
-                else {
-                    $i=0;
-		 $list_id_suffixe = array();
-        foreach ($vocabulaireSecteurs as $voc) {
-			//if($i > 1) break;
-          if($voc->getVocabulaire() != null){
-
-                      $vocabulaireSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete')->findBy(array('vocabulaire' => $voc->getVocabulaire()));
-                      foreach ($vocabulaireSocietes as $vocSoc) {
-                          $societes[] = $vocSoc->getSociete();
-
-                          $suffixeSocietes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:SuffixeSociete')->findBy(array('societe' => $vocSoc->getSociete()));
-                          foreach ($suffixeSocietes as $suffixeSociete) {
-                              if (count($list_id_suffixe) > 0) {
-                                  $j = 0;
-                                  foreach ($list_id_suffixe as $id) {
-                                      if ($id == $suffixeSociete->getSuffixe()->getId()) {
-                                          $j = 1;
-                                          break;
-                                      }
-                                  }
-                                  if ($j == 0) $suffixes[] = $suffixeSociete->getSuffixe();
-                              } else {
-                                  $list_id_suffixe [] = $suffixeSociete->getSuffixe()->getId();
-                                  $suffixes[] = $suffixeSociete->getSuffixe();
-                              }
-                          }
-
-
-
-              }
-			++$i;
-        }
-     }
-                }
-
+            if ($request->get('id_suffixe')) {
+                $id_suffixe = $request->get('id_suffixe');
+                $vocabulaires = $repositoryVocabulaire->findLEParThematiqueBySecteurAndSuffixe($id_secteur, $id_suffixe);
+            } else {
+                $vocabulaires = $repositoryVocabulaire->findLEParThematiqueBySecteur($id_secteur);
             }
         }
-		
+
+
+        foreach ($vocabulaires as $voc) {
+            $id_soc = $voc['id_societe'];
+            $suffixes = $repositorySuffixe->findSuffixeThematiqueBySociete($id_soc);
+        }
         return $this->render('FormationVocabulaireBundle:Default:recherche_thematique.html.twig', array(
             'secteurs' => $secteurs,
-            'societes' => $societes,
+            'societes' => $vocabulaires,
             'id_secteur' => $id_secteur,
-			'id_suffixe'=> $id_suffixe,
+            'id_suffixe' => $id_suffixe,
             'suffixes' => $suffixes,
             'libelle_secteur' => $libelle_secteur,
-            'nb_societe' => count($societes),
+            'nb_societe' => count($vocabulaires),
         ));
+
     }
 
     /**
@@ -221,31 +152,29 @@ class ProducteurController extends Controller
         $id_secteur = 0;
         $nb_societe = 0;
         $prototype_access_array = array();
-        if( $request->get('id_secteur') ) $id_secteur = $request->get('id_secteur');
+        if ($request->get('id_secteur')) $id_secteur = $request->get('id_secteur');
 
-        if( $request->get('val') ) 
-        {
+        if ($request->get('val')) {
             $valeurs = $request->get('val');
             $val = explode(',', $valeurs);
-	        $nb_societe = count($val);
+            $nb_societe = count($val);
         }
-        for($i = 0; $i < $nb_societe; $i++) {
-			$id_societe = intval($val[$i]);
-			if($id_societe != "" && $id_societe != 0){
+        for ($i = 0; $i < $nb_societe; $i++) {
+            $id_societe = intval($val[$i]);
+            if ($id_societe != "" && $id_societe != 0) {
                 $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
                 $societe = $repositorySociete->find($id_societe);
-				$prototype_access = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findBy(array('societe' => $societe));
-            	foreach($prototype_access as $p)
-                {
+                $prototype_access = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findBy(array('societe' => $societe));
+                foreach ($prototype_access as $p) {
                     $protoModel = new ProtoTypeModel;
                     $protoModel->setNb_LE($this->getLESocAssocies($p->getSociete()->getId(), $p->getId()));
                     $protoModel->setId_prototype_access($p->getId());
                     $protoModel->setPrototype_access($p->getType());
                     $prototype_access_array[] = $protoModel;
-                } 
-			}
-		}
-        
+                }
+            }
+        }
+
         return $this->render('FormationVocabulaireBundle:Default:lister_prototype.html.twig', array(
             'id_secteur' => $id_secteur,
             'nb_societe' => $nb_societe,
@@ -253,36 +182,47 @@ class ProducteurController extends Controller
         ));
     }
 
+    private function getLESocAssocies($id_societe, $id_prototype_access)
+    {
+
+        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
+        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
+        $societe = $repositorySociete->find($id_societe);
+        $prototype_access = $repositoryPrototypeAccess->find($id_prototype_access);
+        if ($societe != null && $prototype_access != null) {
+            $lexiques = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->findBy(array('prototypeAccess' => $prototype_access, 'societe' => $societe));
+            return count($lexiques);
+        }
+
+        return 0;
+    }
+
     /**
      * @Route("/list_le", name="list_le")
      */
     public function listeLEAction(Request $request)
     {
-        $nb_prototype = 0;
-        $valeursProt = '';
         $id_secteur = 0;
-        if( $request->get('id_secteur') ) $id_secteur = $request->get('id_secteur');
+        $lexiques_array = array();
+        if ($request->get('id_secteur')) $id_secteur = $request->get('id_secteur');
 
-        if( $request->get('valProt') )
-        {
+        if ($request->get('valProt')) {
             $valeursProt = $request->get('valProt');
             $val = explode(',', $valeursProt);
             $nb_prototype = count($val);
-            $lexiques_array = array();
-            for($i = 0; $i < $nb_prototype; $i++) {
+
+            for ($i = 0; $i < $nb_prototype; $i++) {
                 $id_prototype_access = intval($val[$i]);
-                if($id_prototype_access != "" && $id_prototype_access != 0)
-                {
-                    $prototype_access = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id_prototype_access);
-                    $lexiques = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->findBy(array('prototypeAccess' => $prototype_access));
-                    foreach($lexiques as $le)
-                    {
+                if ($id_prototype_access != "" && $id_prototype_access != 0) {
+                    $lexiques = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme')->findThemeThematiqueByPrototypeAccess($id_prototype_access);
+                    foreach ($lexiques as $le) {
                         $protoModel = new LexiqueModel();
-                        $protoModel->setId_theme($le->getTheme()->getId());
-                        $protoModel->setIdSociete($le->getSociete()->getId());
-                        $protoModel->setLibelle_theme($le->getTheme()->getLibelleTheme());
-                        $protoModel->setNom_societe($le->getSociete()->getDescription());
-                        $protoModel->setNb_termes($this->getLESocAssocies($le->getSociete()->getId(), $id_prototype_access));
+                        $protoModel->setId_theme($le['id_theme']);
+                        $protoModel->setIdSociete($le['id_societe']);
+                        $protoModel->setLibelle_theme($le['libelle_theme']);
+                        $protoModel->setNom_societe($le['societe']);
+                        $protoModel->setId_prototype_access($id_prototype_access);
+                        $protoModel->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->getNBTermesParLE($le['id_theme'], $id_prototype_access));
                         $lexiques_array[] = $protoModel;
                     }
                 }
@@ -293,22 +233,83 @@ class ProducteurController extends Controller
         return $this->render('FormationVocabulaireBundle:Default:liste_le.html.twig', array(
             'lexiques' => $lexiques_array,
             'id_secteur' => $id_secteur,
+            'nb_termes' => 0,
         ));
     }
 
-    private function getLESocAssocies($id_societe, $id_prototype_access)
+    /**
+     * @Route("/export_le", name="export_le")
+     */
+    public function export_leAction(Request $request)
     {
+        $vocabulaires = array();
+        if ($request->get('id_societe') && $request->get('id_secteur') && $request->get('id_theme') && $request->get('id_prototype_access')) {
+            $id_prototype_access = $request->get('id_prototype_access');
+            $id_societe = $request->get('id_societe');
+            $id_secteur = $request->get('id_secteur');
+            $id_theme = $request->get('id_theme');
+            $vocabulaires = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->exportLE($id_theme, $id_prototype_access, $id_societe, $id_secteur);
+        }
+        // ask the service for a Excel5
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
-        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
-        $societe = $repositorySociete->find($id_societe);
-        if($societe != null)
-        {
-            $prototype_access = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findBy(array('id' => $id_prototype_access, 'societe' => $societe));
-            return count($prototype_access);
+        $phpExcelObject->getProperties()->setCreator("liuggio")
+            ->setTitle('Vocabulaire')
+            ->setSubject('Vocabulaire');
+
+        $sheet = $phpExcelObject->setActiveSheetIndex(0);
+
+        $sheet->setCellValue('A1', 'Société');
+        $sheet->setCellValue('B1', 'Secteur');
+        $sheet->setCellValue('C1', 'Prototype');
+        $sheet->setCellValue('D1', 'Thème en français');
+        $sheet->setCellValue('E1', 'Thème en anglais');
+        $sheet->setCellValue('F1', 'Francais');
+        $sheet->setCellValue('G1', 'Anglais');
+        $sheet->setCellValue('H1', 'Source(Type)');
+        $sheet->setCellValue('I1', 'Source (Nom stagiaire)');
+        $sheet->setCellValue('J1', 'Titre du document/de l article');
+        $sheet->setCellValue('K1', 'Lien');
+
+        $counter = 2;
+        foreach ($vocabulaires as $v) {
+            $sheet->setCellValue('A' . $counter, $v['description']);
+            $sheet->setCellValue('B' . $counter, $v['libelle_secteur']);
+            $sheet->setCellValue('C' . $counter, $v['type']);
+            $sheet->setCellValue('D' . $counter, $v['libelle_theme']);
+            $sheet->setCellValue('E' . $counter, $v['theme_eng']);
+            $sheet->setCellValue('F' . $counter, $v['langue_origine']);
+            $sheet->setCellValue('G' . $counter, $v['langue_traduction']);
+            $sheet->setCellValue('H' . $counter, $v['source_type']);
+            $sheet->setCellValue('I' . $counter, $v['source_nom_stagiaire']);
+            $sheet->setCellValue('J' . $counter, $v['lien_nom_doc']);
+            $sheet->setCellValue('K' . $counter, $v['lien']);
+            $counter++;
         }
 
-        return 0;
+        $phpExcelObject->getActiveSheet()->setTitle('Vocabulaire');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // adding headers
+        $dispositionHeader = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'contenuLE.xls'
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+
     }
+
 }
 
 class ProtoTypeModel
@@ -321,6 +322,7 @@ class ProtoTypeModel
     private $nb_LE;
     private $id_prototype_access;
     private $prototype_access;
+
     public function id_societe()
     {
         return $this->id_societe;
@@ -370,6 +372,7 @@ class ProtoTypeModel
     {
         $this->nom_societe = $nom_societe;
     }
+
     public function id_prototype_access()
     {
         return $this->id_prototype_access;
@@ -389,6 +392,7 @@ class ProtoTypeModel
     {
         $this->nb_LE = $nb_LE;
     }
+
     public function prototype_access()
     {
         return $this->prototype_access;
@@ -400,7 +404,6 @@ class ProtoTypeModel
     }
 
 }
-
 
 
 class LexiqueModel

@@ -12,4 +12,76 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulaireRepository extends EntityRepository
 {
+    public function findLEParThematiqueBySecteur($id_secteur)
+    {
+        $query = $this
+            ->createQueryBuilder('v')
+            ->select('distinct s.id as id_societe, s.description as description, sect.libelleSecteur as libelle_secteur')
+            ->innerJoin('v.vocabulaireSocietes', 'vs')
+            ->innerJoin('vs.societe', 's')
+            ->innerJoin('v.vocabulaireSecteurs', 'vsect')
+            ->innerJoin('vsect.secteur', 'sect')
+            ->where('sect.id = :id_secteur AND v.dateModification =\'0000-00-00 00:00:00\' AND v.isAffiche = 1')
+            ->setParameter('id_secteur', $id_secteur)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findLEParThematiqueBySecteurAndSuffixe($id_secteur, $id_suffixe)
+    {
+        $query = $this
+            ->createQueryBuilder('v')
+            ->select('distinct s.id as id_societe, s.description as description, sect.libelleSecteur as libelle_secteur')
+            ->innerJoin('v.vocabulaireSocietes', 'vs')
+            ->innerJoin('vs.societe', 's')
+            ->innerJoin('v.vocabulaireSecteurs', 'vsect')
+            ->innerJoin('vsect.secteur', 'sect')
+            ->innerJoin('s.suffixeSocietes', 'sf')
+            ->where('sect.id = :id_secteur AND sf.id = :id_suffixe AND v.dateModification =\'0000-00-00 00:00:00\' AND v.isAffiche = 1')
+            ->setParameter('id_secteur', $id_secteur)
+            ->setParameter('id_suffixe', $id_suffixe)
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getNBTermesParLE($id_theme, $id_prototype_access)
+    {
+        $query = $this
+            ->createQueryBuilder('v')
+            ->select('v.id')
+            ->innerJoin('v.vocabulaireThemes', 'vt')
+            ->innerJoin('vt.theme', 't')
+            ->innerJoin('v.vocabulairePrototypeAccesss', 'vpa')
+            ->innerJoin('vpa.prototypeAccess', 'pa')
+            ->where('t.id = :id_theme AND pa.id = :id_prototype_access ')
+            ->setParameter('id_theme', $id_theme)
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->getQuery();
+        return count($query->getResult());
+    }
+
+    public function exportLE($id_theme, $id_prototype_access, $id_societe, $id_secteur)
+    {
+        $query = $this
+            ->createQueryBuilder('v')
+            ->select('s.description, sect.libelleSecteur as libelle_secteur, pa.type as type, t.libelleTheme as libelle_theme, t.themeEng as theme_eng,  v.langueTraduction as langue_traduction,
+		so.sourceType as source_type,v.langueOrigine as langue_origine, so.sourceNomStagiaire as source_nom_stagiaire, so.lienNomDoc as lien_nom_doc, so.lien as lien')
+            ->innerJoin('v.vocabulaireThemes', 'vt')
+            ->innerJoin('v.source', 'so')
+            ->innerJoin('vt.theme', 't')
+            ->innerJoin('v.vocabulaireSocietes','vs')
+            ->innerJoin('vs.societe', 's')
+            ->innerJoin('v.vocabulairePrototypeAccesss', 'vpa')
+            ->innerJoin('vpa.prototypeAccess', 'pa')
+            ->where('t.id = :id_theme AND pa.id = :id_prototype_access AND sect.id = :id_secteur AND s.id = :id_societe')
+            ->innerJoin('v.vocabulaireSecteurs', 'vsect')
+            ->innerJoin('vsect.secteur', 'sect')
+            ->setParameter('id_theme', $id_theme)
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->setParameter('id_secteur', $id_secteur)
+            ->setParameter('id_societe', $id_societe)
+            ->getQuery();
+        return $query->getResult();
+    }
 }

@@ -12,4 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class ThemeRepository extends EntityRepository
 {
+    public function findThemeThematiqueByPrototypeAccess($id_prototype_access)
+    {
+        $query = $this
+            ->createQueryBuilder('t')
+            ->select('distinct t.id as id_theme, t.libelleTheme as libelle_theme, s.id as id_societe, s.description as societe,p.id as id_prototype_access')
+            ->innerJoin('t.lexiques', 'l')
+            ->innerJoin('l.societe', 's')
+            ->innerJoin('l.prototypeAccess', 'p')
+            ->where('p.id = :id_prototype_access')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }
