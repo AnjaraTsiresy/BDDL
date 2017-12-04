@@ -148,8 +148,7 @@ class Vocabulaire
 	
     public function __construct()
     {
-        $this->dateModification = new \DateTime();
-		$this->vocabulaireSocietes = new ArrayCollection();
+        $this->vocabulaireSocietes = new ArrayCollection();
 		$this->vocabulairePhraseSources = new ArrayCollection();
         $this->vocabulaireSecteurs = new ArrayCollection();
         $this->vocabulaireDepartements = new ArrayCollection();

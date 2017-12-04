@@ -21,10 +21,9 @@ class VocabulaireRepository extends EntityRepository
             ->innerJoin('vs.societe', 's')
             ->innerJoin('v.vocabulaireSecteurs', 'vsect')
             ->innerJoin('vsect.secteur', 'sect')
-            ->where('sect.id = :id_secteur AND v.dateModification =\'0000-00-00 00:00:00\' AND v.isAffiche = 1')
+            ->where('sect.id = :id_secteur AND v.dateModification IS NULL AND v.isAffiche = 1')
             ->setParameter('id_secteur', $id_secteur)
             ->getQuery();
-
         return $query->getResult();
     }
 
@@ -84,4 +83,39 @@ class VocabulaireRepository extends EntityRepository
             ->getQuery();
         return $query->getResult();
     }
+
+    public function recupNbTermes($id_prototype_access, $id_societe, $id_theme){
+
+        $query  = $this
+            ->createQueryBuilder('v')
+            ->select('distinct v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+            ->innerJoin('v.vocabulaireSocietes','vs')
+            ->innerJoin('v.vocabulairePrototypeAccesss','vpa')
+            ->innerJoin('vs.societe','s')
+            ->innerJoin('v.vocabulaireThemes','vt')
+            ->innerJoin('vt.theme','t')
+            ->innerJoin('vpa.prototypeAccess','pa')
+            ->where('pa.id = :id_prototype_access AND s.id = :id_societe')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->setParameter('id_societe', $id_societe)
+            ->getQuery();
+        if($id_theme != ""){
+            $query  = $this
+                ->createQueryBuilder('v')
+                ->select('distinct v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                ->innerJoin('v.vocabulaireSocietes','vs')
+                ->innerJoin('v.vocabulairePrototypeAccesss','vpa')
+                ->innerJoin('vs.societe','s')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->innerJoin('vpa.prototypeAccess','pa')
+                ->where('t.id = :id_theme AND pa.id = :id_prototype_access AND s.id = :id_societe')
+                ->setParameter('id_theme', $id_theme)
+                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->setParameter('id_societe', $id_societe)
+                ->getQuery();
+        }
+        return count($query->getResult());
+    }
+
 }

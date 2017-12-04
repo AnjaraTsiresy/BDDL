@@ -169,94 +169,9 @@ class BasePrototypeController extends Controller
         return 0;
     }
 
-    private function getTermesAssocies($id_prototype_access)
-    {
-        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
-        $prototype_access = $repositoryPrototypeAccess->find($id_prototype_access);
-
-        if ($prototype_access != null) {
-            $vocabulaire_prototype_access = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->findBy(array('prototypeAccess' => $prototype_access));
-            return count($vocabulaire_prototype_access);
-        }
-        return 0;
-    }
-
-    /**
-     * @Route("/modif_prototype/{id}", name="modif_prototype")
-     */
-    public function mmodif_prototypeAction($id)
-    {
-        $nb_termes = 0;
-
-        $traducteur = '';
-        $nom_societe = '';
-        $prototypeAccess = array();
-        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
-        $societes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe')->findAll();
-        $traducteurs = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Traducteur')->findAll();
-        $formatEditions = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:FormatEdition')->findAll();
 
 
 
-            $prototypeAccess = $repositoryPrototypeAccess->find($id);
-            if($prototypeAccess != null){
-                $traducteur = $prototypeAccess->getTraducteur()->getNom();
-                $nom_societe = $prototypeAccess->getSociete()->getDescription();
-            }
-            $nb_termes = $this->getTermesAssocies($id);
-
-        return $this->render('FormationVocabulaireBundle:Default:modif_prototype.html.twig', array(
-            'id' => $id,
-            'nb_termes' => $nb_termes,
-            'traducteur' => $traducteur,
-            'nom_societe' => $nom_societe,
-            'prototypeAccess' => $prototypeAccess,
-            'societes' => $societes,
-            'traducteurs' => $traducteurs,
-            'formatEditions' => $formatEditions
-        ));
-
-    }
-
-    /**
-     * @Route("/update_prototype_action", name="update_prototype_action")
-     */
-    public function update_prototypeAction(Request $request)
-    {
-        $nb_termes = 0;
-        $id = 0;
-        $traducteur = '';
-        $nom_societe = '';
-        $prototypeAccess = array();
-        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
-        $societes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe')->findAll();
-        $traducteurs = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Traducteur')->findAll();
-        $formatEditions = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:FormatEdition')->findAll();
-
-
-        if($request->get('id'))
-        {
-            $id = $request->get('id');
-            $prototypeAccess = $repositoryPrototypeAccess->find($id);
-            if($prototypeAccess != null){
-                $traducteur = $prototypeAccess->getTraducteur()->getNom();
-                $nom_societe = $prototypeAccess->getSociete()->getDescription();
-            }
-            $nb_termes = $this->getTermesAssocies($id);
-        }
-
-        return $this->render('FormationVocabulaireBundle:Default:modif_prototype.html.twig', array(
-            'id' => $id,
-            'nb_termes' => $nb_termes,
-            'traducteur' => $traducteur,
-            'nom_societe' => $nom_societe,
-            'prototypeAccess' => $prototypeAccess,
-            'societes' => $societes,
-            'traducteurs' => $traducteurs,
-            'formatEditions' => $formatEditions
-        ));
-
-    }
 }
 
 class ProtoModel

@@ -12,4 +12,32 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulairePrototypeAccessRepository extends EntityRepository
 {
+    public function getTermesAssocies($id_prototype_access)
+    {
+        $query = $this
+            ->createQueryBuilder('vpa')
+            ->select('COUNT(vpa.id) AS nb_termes')
+            ->innerJoin('vpa.prototypeAccess', 'pa')
+            ->where('pa.id = :id_prototype_access')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->setMaxResults(1)
+            ->getQuery();
+
+        return $query->getSingleResult();
+    }
+
+    public function getVocabulairePrototypeAccessByPrototypeAndVocabulaire($id_prototype_access, $id_vocabulaire)
+    {
+        $query = $this
+            ->createQueryBuilder('vpa')
+            ->select('vpa')
+            ->innerJoin('vpa.prototypeAccess', 'pa')
+            ->innerJoin('vpa.vocabulaire', 'v')
+            ->where('pa.id = :id_prototype_access AND v.id = :id_vocabulaire')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->setParameter('id_vocabulaire', $id_vocabulaire)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

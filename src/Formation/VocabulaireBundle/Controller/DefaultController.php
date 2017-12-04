@@ -673,9 +673,10 @@ class DefaultController extends Controller
                                  }
                              }
 
-                              $prototype_access =  $repositoryPrototypeAccess->find($id_prot);
+                            $prototype_access =  $repositoryPrototypeAccess->find($id_prot);
                             $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
                             $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
+
                             if($prototype_access  != null && $vocabulaire != null)
                             {
                                 $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');

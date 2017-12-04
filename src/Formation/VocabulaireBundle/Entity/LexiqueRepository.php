@@ -12,4 +12,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class LexiqueRepository extends EntityRepository
 {
+    public function getAllLexiqueByPrototypeAccess($id_prototype_access){
+        $query = $this
+            ->createQueryBuilder('l')
+            ->select('l')
+            ->innerJoin('l.prototypeAccess', 'pa')
+            ->where('pa.id = :id_prototype_access')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->getQuery();
+        return $query->getResult();
+    }
+    public function getLexiqueBySocieteAndThemeAndPrototypeAccess($id_societe, $id_theme, $id_prototype_access){
+        $query = $this
+            ->createQueryBuilder('l')
+            ->select('l')
+            ->innerJoin('l.prototypeAccess', 'pa')
+            ->innerJoin('l.societe', 's')
+            ->innerJoin('l.theme', 't')
+            ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->setParameter('id_societe', $id_societe)
+            ->setParameter('id_theme', $id_theme)
+            ->setMaxResults(1)
+            ->getQuery();
+        return $query->getSingleResult();
+    }
 }

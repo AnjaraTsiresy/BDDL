@@ -1,0 +1,334 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    <style>
+        #prepage {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+        / / background: red;
+        }
+
+        #choixpage1 a {
+            background: #FFF none repeat scroll 0 0;
+            border: 1px solid #20538d;
+            border-radius: 4px;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 1px 1px rgba(0, 0, 0, 0.2);
+            color: #000000;
+            padding: 0px;
+            text-decoration: none;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        #choixpage, #choixpageOtherSoc {
+            border: solid 1px black;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            background-color: white;
+            z-index: 100;
+            height: 266px;
+            margin-top: -200px;
+            width: 600px;
+            margin-left: -300px;
+        }
+
+    </style>
+{% endblock %}
+{% block body %}
+    <DIV id="prepage" class="waiting" style="display:none; width: 160px; height:16px; position: relative; z-index:1;">
+        <img src="{{ asset('images/ajax_loader.gif') }}"/>
+    </DIV>
+    <div class="titreMenu">
+        <p>Modification de Prototype</p>
+    </div>
+
+    <form action="{{ path('update_prototype_action') }}" method="post" enctype="multipart/form-data" name="certform">
+        {% if  prototypeAccess != null %}
+            <table id='recherche'>
+                <input name="id" type="hidden" value="{{ id }}"/>
+                <input name="date_old" type="hidden" id="date_old" value="{{ prototypeAccess.date | date('Y-m-d') }}"/>
+                <tr>
+                    <td><b>Prototype :</b></td>
+                    <td><input type="text" name="type" value="{{ prototypeAccess.type }}" style="font-weight : bold;"/>
+                    </td>
+                    <td>Client :</td>
+                    <td>
+                        <input name="id_societe" type="hidden" value="{{ prototypeAccess.societe.id  }}"/>
+                        <select  id="id_societe" disabled>
+                            <option></option>
+                            {% for societe in societes %}
+                                <option value="{{ societe.id }}" {% if societe.id == prototypeAccess.societe.id %} selected="selected" {% endif %}>{{ societe.description }}
+                                    - {{ societe.codeTiers }} </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Créé le :</td>
+                    <td><input id="dateprototype" type="text" name="dateprototype"
+                               value="{{ prototypeAccess.date | date('Y-m-d') }}"/></td>
+                    <td>Créateur :</td>
+                    <td><select name="createur" id="createur">
+                            <option></option>
+                            {% for traducteur in traducteurs %}
+                                <option value="{{ traducteur.id }}" {% if traducteur.id == prototypeAccess.traducteur.id %} selected="selected" {% endif %} >{{ traducteur.nom }} </option>
+                            {% endfor %}
+                        </select></td>
+                </tr>
+                <tr>
+                    <td>Nombre de termes associés :</td>
+                    <td>{{ nb_termes }}</td>
+                    <td>Format d'impression :</td>
+                    <td>
+                        <select name="format_edition" id="format_edition">
+                            <option></option>
+                            {% for format_edition in formatEditions %}
+                                <option value="{{ format_edition.id }}" {% if format_edition.id == prototypeAccess.formatEdition.id %} selected="selected" {% endif %} >{{ format_edition.nom }} </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Enregistrer"/></td>
+                    <!--td><a href="consulterGlossaire.php?id={{ id }}&id_societe={{ id_societe }}">Consulter</a></td-->
+                    <td colspan="3">
+                        <input type="button" value="Préparer l'impression PDF" id="prepare"/>
+                        <a id="impression" target="_blank"
+                           href="impressiontable.php?id={{ id }}&id_societe={{ id_societe }}">Impression
+                            Table des matières</a>
+                        <a id="impression1" target="_blank"
+                           href="impressioncorps1.php?id={{ id }}&id_societe={{ id_societe }}">Impression
+                            corps du glossaire</a>
+                        <!--a id="impression2" target="_blank" href="impressionFlippingBook1.php?id={{ id }}&id_societe={{ id_societe }}">Flipping book</a-->
+                    </td>
+                </tr>
+            </table>
+        {% endif %}
+        <br/><br/><br/>
+        <div align="center">
+            <div style="height : 30px;">
+                <input type="button" value="Cliquer ici pour ajouter des LE propres à {{ nom_societe }}"
+                       id="addLEsociete"/>
+                <a href="importLEPrototype.php?id={{ id }}&id_societe={{ id_societe }}">Cliquer ici pour importer des LE
+                    propres à {{ nom_societe }}</a>
+            </div>
+            <br/>
+            <table>
+                {% for lexique in lexiques1 %}
+                    <tr>
+                        <td style="background: #e8edff none repeat scroll 0 0;color: #669;border-top: 1px solid #fff;">
+                            {{ lexique.libelle_theme }} ({{ lexique.nb_termes }} termes)
+                        </td>
+                        <td>
+                            <input type="text" name="rangLE{{ lexique.nb_lxq }}" value="{{ lexique.rang }}"
+                                   style="width : 10mm;"/>
+                            <input type="hidden" id="id_lexique{{ lexique.nb_lxq }}"
+                                   name="id_lexique{{ lexique.nb_lxq }}"
+                                   value="{{ lexique.id_lexique }}"/>
+                        </td>
+                        <td>
+                            <a href="voirLE.php?id_societe={{ lexique.id_societe }}&id_theme={{ lexique.id_theme }}&id_prototype_access={{ id }}"
+                               class="deleteCritere"><img src="{{ asset('images/oeil.jpeg') }}"
+                                                          style="width:20px;height:20px;"/></a>
+                        </td>
+                        <td>
+                            {#<a href="{{ path('supprimer_prototype_le', {'id_societe': lexique.id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': 1}) }}"
+                               class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+            <br/><br/>
+            <div style="height : 30px;">
+                <input type="button" value="Cliquer ici pour ajouter des LE d'autres sociétés" id="addLEOthersociete"/>
+                <!--a href="modifPrototypeLE2.php?id={{ id }}&id_societe={{ id_societe }}">Cliquer ici pour ajouter des lexiques élémentaires (autres sociétés)</a-->
+            </div>
+            <br/>
+            <table>
+                {% for lexique in lexiques3 %}
+                    <tr>
+                        <td style="background: #e8edff none repeat scroll 0 0;color: #669;border-top: 1px solid #fff;">
+                            {{ lexique.libelle_theme }} ({{ lexique.nb_termes }} termes)
+                        </td>
+                        <td>
+                            <input type="text" name="rangL{{ lexique.nb_lxq }}" value="{{ lexique.rang }}"
+                                   style="width : 10mm;"/>
+                            <input type="hidden" id="id_lexq{{ lexique.nb_lxq }}"
+                                   name="id_lexq{{ lexique.nb_lxq }}" value="{{ lexique.id_lexique }}"/>
+                        </td>
+                        <td>
+                            <a href="voirLE.php?id_societe={{ lexique.id_societe }}&id_theme={{ lexique.id_theme }}&id_prototype_access={{ id }}"
+                               class="deleteCritere"><img src="{{ asset('images/oeil.jpeg') }}"
+                                                          style="width:20px;height:20px;"/></a>
+                        </td>
+                        <td>
+                            {#<a href="{{ path('supprimer_prototype_le', {'id_societe': lexique.id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': 1}) }}"
+                                class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+            <br/><br/>
+            <div style="height : 30px;">
+                <a href="modifPrototypeLESoc1.php?id={{ id }}&id_societe={{ id_societe }}">Cliquer ici pour ajouter des
+                    LE génériques</a>
+            </div>
+            <br/>
+            <table>
+                {% for lexique in lexiques2 %}
+                    <tr>
+                        <td style="background: #e8edff none repeat scroll 0 0;color: #669;border-top: 1px solid #fff;">
+                            {{ lexique.libelle_theme }} ({{ lexique.nb_termes }} termes)
+                        </td>
+                        <td>
+                            <input type="text" name="rang{{ lexique.nb_lxq }}" value="{{ lexique.rang }}"
+                                   style="width : 10mm;"/>
+                            <input type="hidden" id="id_lxq{{ lexique.nb_lxq }}"
+                                   name="id_lxq{{ lexique.nb_lxq }}" value="{{ lexique.id_lexique }}"/>
+                        </td>
+                        <td>
+                            <a href="voirLE.php?id_societe={{ lexique.id_societe }}&id_theme={{ lexique.id_theme }}&id_prototype_access={{ id }}"
+                               class="deleteCritere"><img src="{{ asset('images/oeil.jpeg') }}"
+                                                          style="width:20px;height:20px;"/></a>
+                        </td>
+                        <td>
+                            {#<a href="{{ path('supprimer_prototype_le', {'id_societe': lexique.id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': 1}) }}"
+                               class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+        <!--a href="modifPrototypeLE1.php?id={{ id }}&id_societe=<?php echo $respLEsoc['id_societe']; ?>">Ajouter/modifier des lexiques élémentaires (autres sociétés)</a-->
+        <!--<a href="modifTerme.php?id={{ id }}">Ajouter/modifier des termes</a>-->
+        <input type="hidden" id="nb_lxq" name="nb_lxq" value="{{ nb_lxq1 }}"/>
+        <input type="hidden" id="nb_lxq1" name="nb_lxq1" value="{{ nb_lxq2 }}"/>
+        <input type="hidden" id="nb_lxq2" name="nb_lxq2" value="{{ nb_lxq3 }}"/>
+    </form>
+    <DIV id="choixpage" style="display:none">
+        <div  >
+            <br />
+            <br /><br /><br />
+            <table>
+                <tr>
+                    <td>
+                        <!--a  href="modifPrototypeLE.php?id={{ id }}&id_societe={{ id_societe }}">choisir des LE tout prototype confondu</a-->
+                        <a  href="modifPrototypeLESoc.php?id={{ id }}&id_societe={{ id_societe }}">choisir des LE tout prototype confondu</a>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <br /><br /><br />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><a  href="modifProtLE.php?id={{ id }}&id_societe={{ id_societe }}">choisir des LE à partir des prototypes existants pour la même société</a></td>
+                </tr>
+            </table>
+        </div>
+    </DIV>
+    <DIV id="choixpageOtherSoc" style="display:none">
+        <div  >
+            <br />
+            <br /><br /><br />
+            <table>
+                <tr>
+                    <td>
+                        <a href="modifPrototypeLEOtherSoc1.php?id={{ id }}&id_societe={{ id_societe }}">Groupés par prototype</a>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <br /><br /><br />
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <a href="modifPrototypeLEOtherSoc.php?id={{ id }}&id_societe={{ id_societe }}">Non groupés par prototype</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </DIV>
+{% endblock %}
+
+            {% block javascripts %}
+                <script>
+                    $(function () {
+                        $("#date_old").datepicker();
+                        $("#dateprototype").datepicker();
+                        $("#choixpage").hide();
+                        $("#choixpageOtherSoc").hide();
+                        $("#impression").hide();
+                        $("#impression1").hide();
+                        $("#impression2").hide();
+                        $("#addLEsociete").click(function () {
+                            $("#choixpage").show();
+                        });
+                        $("#addLEOthersociete").click(function () {
+                            $("#choixpageOtherSoc").show();
+                        });
+                        $("#prepare").click(function () {
+                            $.ajax({
+                                url: 'checkimpression.php?id=<?php echo $id;?>',
+                                dataType: 'html',
+                                beforeSend: function (jqXHR, settings) {
+                                    $("#prepage").show();
+                                },
+                                complete: function (jqXHR, textStatus) {
+                                    $("#prepage").hide();
+                                    $("#prepare").hide();
+                                },
+                                success: function (html) {
+                                    $("#impression").show();
+                                    $("#impression1").show();
+                                    $("#impression2").show();
+                                }
+                            });
+                        });
+                    });
+                </script>
+                <script type="text/javascript">
+                    function closeSelf(f) {
+                        //alert("ato");
+                        f.submit();
+                        setTimeout(function () {
+                            window.close();
+                        }, 1000);
+
+                    }
+
+                    $i = 1;
+                    $j = 1;
+
+                    function imprimer() {
+                        window.print();
+                    }
+
+                    function addTermes(id, id_societe, id_theme) {
+                        width = 1000;
+                        height = 1000;
+                        if (window.innerWidth) {
+                            var left = (window.innerWidth - width) / 2;
+                            var top = (window.innerHeight - height) / 2;
+                        }
+                        else {
+                            var left = (document.body.clientWidth - width) / 2;
+                            var top = (document.body.clientHeight - height) / 2;
+                        }
+                        window.open('modifContenuLE.php?id=' + id + '&id_societe=' + id_societe + '&id_theme=' + id_theme, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+                    }
+                </script>
+            {% endblock %}
+
