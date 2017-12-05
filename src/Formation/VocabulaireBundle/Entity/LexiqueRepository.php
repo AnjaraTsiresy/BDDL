@@ -37,4 +37,20 @@ class LexiqueRepository extends EntityRepository
             ->getQuery();
         return $query->getSingleResult();
     }
+
+    public function getAllLexiqueBySocieteAndThemeAndPrototypeAccess($id_societe, $id_theme, $id_prototype_access){
+        $query = $this
+            ->createQueryBuilder('l')
+            ->select('l')
+            ->innerJoin('l.prototypeAccess', 'pa')
+            ->innerJoin('l.societe', 's')
+            ->innerJoin('l.theme', 't')
+            ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->setParameter('id_societe', $id_societe)
+            ->setParameter('id_theme', $id_theme)
+            ->getQuery();
+        return $query->getResult();
+    }
+
 }

@@ -118,4 +118,36 @@ class VocabulaireRepository extends EntityRepository
         return count($query->getResult());
     }
 
+    public function getVocabulaireByPrototypeAccessAndSocieteAndTheme($id_prototype_access, $id_societe, $id_theme){
+
+        $query  = $this
+            ->createQueryBuilder('v')
+            ->select('v.id as id_vocabulaire')
+            ->innerJoin('v.vocabulaireSocietes','vs')
+            ->innerJoin('v.vocabulairePrototypeAccesss','vpa')
+            ->innerJoin('vs.societe','s')
+            ->innerJoin('vpa.prototypeAccess','pa')
+            ->where('pa.id = :id_prototype_access AND s.id = :id_societe')
+            ->setParameter('id_prototype_access', $id_prototype_access)
+            ->setParameter('id_societe', $id_societe)
+            ->getQuery();
+        if($id_theme != ""){
+            $query  = $this
+                ->createQueryBuilder('v')
+                ->select('v.id as id_vocabulaire')
+                ->innerJoin('v.vocabulaireSocietes','vs')
+                ->innerJoin('v.vocabulairePrototypeAccesss','vpa')
+                ->innerJoin('vs.societe','s')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->innerJoin('vpa.prototypeAccess','pa')
+                ->where('t.id = :id_theme AND pa.id = :id_prototype_access AND s.id = :id_societe')
+                ->setParameter('id_theme', $id_theme)
+                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->setParameter('id_societe', $id_societe)
+                ->getQuery();
+        }
+        return $query->getResult();
+    }
+
 }

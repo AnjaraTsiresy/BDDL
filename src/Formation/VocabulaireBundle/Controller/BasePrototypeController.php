@@ -57,9 +57,10 @@ class BasePrototypeController extends Controller
             $protoModel->setNbSoloc($this->getLESocAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
             $protoModel->setNbLeGen($this->getLEGenAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
             //$protoModel->setNbPage($this->getNbPagesAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
-
-            $protoModel->setNbTermes($this->getTermesAssocies($prototype_access->getId()));
-
+            $nb_termes_array = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getTermesAssocies($prototype_access->getId());
+            $nb_termes = $nb_termes_array['nb_termes'];
+            $protoModel->setNbTermes($nb_termes);
+            $protoModel->setId($prototype_access->getId());
             $protoModel->setSociete($prototype_access->getSociete()->getDescription());
             $protoModel->setTraducteur($prototype_access->getTraducteur()->getNom());
             $protoModel->setType($prototype_access->getType());
@@ -176,6 +177,7 @@ class BasePrototypeController extends Controller
 
 class ProtoModel
 {
+    private $id;
     private $nb_soloc;
     private $nb_le_gen;
     private $nb_page;
@@ -185,6 +187,15 @@ class ProtoModel
     private $type;
     private $date;
 
+    public function id()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
     public function type()
     {
         return $this->type;

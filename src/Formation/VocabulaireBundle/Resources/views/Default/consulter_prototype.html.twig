@@ -95,7 +95,7 @@
                 <td>{{ proto.nb_soloc }}</td>
                 <td>{{ proto.nb_le_gen }}</td>
                 <td>{{ proto.nb_termes }}</td>
-                <td><a href="modifPrototype.php?id=#" target="blank">Modifier</a></td>
+                <td><a href="{{ path('modif_prototype', {'id': proto.id}) }}" target="blank">Modifier</a></td>
                 <!--<td><a href="consulterGlossaire.php?id=<?php echo $resp['id_prototype_access']; ?>&id_societe=<?php echo $resp['id_societe']; ?>">Consulter</a></td>-->
                 <td><a href="deletePrototype.php?id=#" class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a></td>
             </tr>

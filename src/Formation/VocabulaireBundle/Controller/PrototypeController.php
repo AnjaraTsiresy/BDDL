@@ -12,7 +12,7 @@ class PrototypeController extends Controller
     /**
      * @Route("/modif_prototype/{id}", name="modif_prototype")
      */
-    public function mmodif_prototypeAction($id)
+    public function modif_prototypeAction($id)
     {
         $nb_termes = 0;
         $id_societe = 0;
@@ -50,6 +50,7 @@ class PrototypeController extends Controller
                 $lexique->setLibelle_theme($lexique_obj->getTheme()->getLibelleTheme());
                 $lexique->setIdLexique($lexique_obj->getId());
                 $lexique->setNb_lxq($nb_lxq1);
+                $lexique->setId_theme($lexique_obj->getTheme()->getId());
                 $lexiques1_array[] = $lexique;
             }elseif ($lx->getSociete()->getId() == 653){
                 $nb_lxq2++;
@@ -61,21 +62,22 @@ class PrototypeController extends Controller
                 $lexique->setLibelle_theme($lexique_obj->getTheme()->getLibelleTheme());
                 $lexique->setIdLexique($lexique_obj->getId());
                 $lexique->setNb_lxq($nb_lxq2);
+                $lexique->setId_theme($lexique_obj->getTheme()->getId());
                 $lexiques2_array[] = $lexique;
             }else{
                 $nb_lxq3++;
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
-                $lexique = new LexiquePrototypeModel();
-                $lexique->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
-                $lexique->setNom_societe($lexique_obj->getSociete()->getDescription());
-                $lexique->setRang($lexique_obj->getRang());
-                $lexique->setLibelle_theme($lexique_obj->getTheme()->getLibelleTheme());
-                $lexique->setIdLexique($lexique_obj->getId());
-                $lexique->setNb_lxq($nb_lxq3);
-                $lexiques3_array[] = $lexique;
+                $lexique_3 = new LexiquePrototypeModel();
+                $lexique_3->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
+                $lexique_3->setNom_societe($lexique_obj->getSociete()->getDescription());
+                $lexique_3->setRang($lexique_obj->getRang());
+                $lexique_3->setLibelle_theme($lexique_obj->getTheme()->getLibelleTheme());
+                $lexique_3->setIdLexique($lexique_obj->getId());
+                $lexique_3->setId_theme($lexique_obj->getTheme()->getId());
+                $lexique_3->setNb_lxq($nb_lxq3);
+                $lexiques3_array[] = $lexique_3;
             }
         }
-
         return $this->render('FormationVocabulaireBundle:Prototype:modifPrototype.html.twig', array(
             'id' => $id,
             'nb_termes' => $nb_termes,
@@ -177,28 +179,135 @@ class PrototypeController extends Controller
     }
 
     /**
-     * @Route("/supprimer_prototype_le/{id}", name="supprimer_prototype_le")
+     * @Route("/supprimer_prototype_le/{id_lexique}/{id_societe}/{id_theme}/{id_prototype_access}", name="supprimer_prototype_le")
      */
-    public function supprimer_prototype_leAction($id_societe, $id_theme, $id_prototype_access)
+    public function supprimePrototypeLEAction($id_lexique,$id_societe, $id_theme, $id_prototype_access)
     {
-        $vocabulaires = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($id_societe, $id_theme, $id_prototype_access);
+        $vocabulaires = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->getVocabulaireByPrototypeAccessAndSocieteAndTheme($id_prototype_access, $id_societe, $id_theme);
         $em = $this->getDoctrine()->getManager();
         foreach ($vocabulaires as $voc)
         {
-            $vocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getVocabulairePrototypeAccessByPrototypeAndVocabulaire($id_societe, $id_theme, $id_prototype_access);
+            $id_vocabulaire = $voc['id_vocabulaire'];
+
+            $vocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getVocabulairePrototypeAccessByPrototypeAndVocabulaire($id_prototype_access, $id_vocabulaire);
             foreach ($vocabulairePrototypeAccess as $vpa)
             {
+
                 $em->remove($vpa);
                 $em->flush();
             }
+         }
 
-            $em->remove($voc);
+        $lexique = $em->getRepository('FormationVocabulaireBundle:Lexique')->find($id_lexique);
+
+        if($lexique != null)
+        {
+            $em->remove($lexique);
             $em->flush();
         }
+
         return $this->redirectToRoute('modif_prototype', array('id' => $id_prototype_access));
+
+     }
+
+
+    /**
+     * @Route("/voir_le/{id_societe}/{id_theme}/{id}/{dic}", name="voir_le")
+     */
+    public function voirLeAction($id_societe, $id_theme, $id, $dic)
+    {
+        $vocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getVocabulairePrototypeAccessByPrototypeAndSocieteAndTheme($id, $id_societe, $id_theme, $dic);
+        $theme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme')->find($id_theme);
+        $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id);
+        $libelle_theme = "";
+        $nom_prototype = "";
+
+        if($theme != null && $prototypeAccess != "")
+        {
+            $libelle_theme = $theme->getLibelleTheme();
+            $nom_prototype = $prototypeAccess->getType();
+        }
+
+        foreach ($vocabulairePrototypeAccess  as $vpa)
+        {
+
+        }
+
+
+        return $this->render('FormationVocabulaireBundle:Prototype:voirLE.html.twig', array(
+            'id' => $id,
+            'id_theme' => $id_theme,
+            'id_societe' => $id_societe,
+            'libelle_theme' => $libelle_theme,
+            'nom_prototype' => $nom_prototype,
+            'vocabulairePrototypeAccess' => $vocabulairePrototypeAccess
+        ));
 
     }
 
+    /**
+     * @Route("/modif_le/{id_societe}/{id_theme}/{id}", name="modif_le")
+     */
+    public function modifLeAction($id_societe, $id_theme, $id)
+    {
+        $vocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getVocabulairePrototypeAccessByPrototypeAndSocieteAndTheme($id, $id_societe, $id_theme,'dic');
+        $theme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme')->find($id_theme);
+        $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id);
+        $libelle_theme = "";
+        $nom_prototype = "";
+
+        if($theme != null && $prototypeAccess != "")
+        {
+            $libelle_theme = $theme->getLibelleTheme();
+            $nom_prototype = $prototypeAccess->getType();
+        }
+
+        foreach ($vocabulairePrototypeAccess  as $vpa)
+        {
+
+        }
+
+        return $this->render('FormationVocabulaireBundle:Prototype:modifLe.html.twig', array(
+            'id' => $id,
+            'id_theme' => $id_theme,
+            'id_societe' => $id_societe,
+            'libelle_theme' => $libelle_theme,
+            'nom_prototype' => $nom_prototype
+        ));
+
+    }
+
+    /**
+     * @Route("/suppr_vocab_le/{id_vocabulaire}/{id}/{id_societe}/{id_theme}", name="suppr_vocab_le")
+     */
+    public function supprVocabLEAction($id_vocabulaire, $id,$id_societe, $id_theme)
+    {
+        $vocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getVocabulairePrototypeAccessByPrototypeAndSocieteAndTheme($id, $id_societe, $id_theme,'dic');
+        $theme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme')->find($id_theme);
+        $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id);
+        $libelle_theme = "";
+        $nom_prototype = "";
+
+        if($theme != null && $prototypeAccess != "")
+        {
+            $libelle_theme = $theme->getLibelleTheme();
+            $nom_prototype = $prototypeAccess->getType();
+        }
+
+        foreach ($vocabulairePrototypeAccess  as $vpa)
+        {
+
+        }
+
+        return $this->render('FormationVocabulaireBundle:Prototype:modifLe.html.twig', array(
+            'id' => $id,
+            'id_theme' => $id_theme,
+            'id_societe' => $id_societe,
+            'libelle_theme' => $libelle_theme,
+            'nom_prototype' => $nom_prototype
+        ));
+
+    }
 }
 
 class LexiquePrototypeModel

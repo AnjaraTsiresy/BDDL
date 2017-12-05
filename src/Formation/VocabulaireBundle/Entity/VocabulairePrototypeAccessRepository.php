@@ -40,4 +40,94 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function getVocabulairePrototypeAccessByPrototypeAndSocieteAndTheme($id_prototype_access, $id_societe, $id_theme, $dic)
+    {
+
+        if ($dic == "fr1"){
+            $query = $this
+                ->createQueryBuilder('vpa')
+                ->select('v.langueOrigine as langue_origine, v.langueTraduction as langue_traduction, v.id as id_vocabulaire')
+                ->innerJoin('vpa.prototypeAccess', 'pa')
+                ->innerJoin('vpa.vocabulaire', 'v')
+                ->innerJoin('v.vocabulaireSocietes','vs')
+                ->innerJoin('vs.societe','s')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
+                ->orderBy('v.langueOrigine','asc')
+                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->setParameter('id_societe', $id_societe)
+                ->setParameter('id_theme', $id_theme)
+                ->getQuery();
+        }
+        else if ($dic == "en1"){
+            $query = $this
+                ->createQueryBuilder('vpa')
+                ->select('v.langueOrigine as langue_origine, v.langueTraduction as langue_traduction, v.id as id_vocabulaire')
+                ->innerJoin('vpa.prototypeAccess', 'pa')
+                ->innerJoin('vpa.vocabulaire', 'v')
+                ->innerJoin('v.vocabulaireSocietes','vs')
+                ->innerJoin('vs.societe','s')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
+                ->orderBy('v.langueTraduction','asc')
+                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->setParameter('id_societe', $id_societe)
+                ->setParameter('id_theme', $id_theme)
+                ->getQuery();
+        }
+        else if ($dic == "en2"){
+            $query = $this
+                ->createQueryBuilder('vpa')
+                ->select('v.langueOrigine as langue_origine, v.langueTraduction as langue_traduction, v.id as id_vocabulaire')
+                ->innerJoin('vpa.prototypeAccess', 'pa')
+                ->innerJoin('vpa.vocabulaire', 'v')
+                ->innerJoin('v.vocabulaireSocietes','vs')
+                ->innerJoin('vs.societe','s')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
+                ->orderBy('v.langueTraduction','desc')
+                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->setParameter('id_societe', $id_societe)
+                ->setParameter('id_theme', $id_theme)
+                ->getQuery();
+        }
+        else if ($dic == "fr2"){
+            $query = $this
+                ->createQueryBuilder('vpa')
+                ->select('v.langueOrigine as langue_origine, v.langueTraduction as langue_traduction, v.id as id_vocabulaire')
+                ->innerJoin('vpa.prototypeAccess', 'pa')
+                ->innerJoin('vpa.vocabulaire', 'v')
+                ->innerJoin('v.vocabulaireSocietes','vs')
+                ->innerJoin('vs.societe','s')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
+                ->orderBy('v.langueOrigine','desc')
+                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->setParameter('id_societe', $id_societe)
+                ->setParameter('id_theme', $id_theme)
+                ->getQuery();
+        }
+        else {
+            $query = $this
+                ->createQueryBuilder('vpa')
+                ->select('v.langueOrigine as langue_origine, v.langueTraduction as langue_traduction, v.id as id_vocabulaire')
+                ->innerJoin('vpa.prototypeAccess', 'pa')
+                ->innerJoin('vpa.vocabulaire', 'v')
+                ->innerJoin('v.vocabulaireSocietes','vs')
+                ->innerJoin('vs.societe','s')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
+                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->setParameter('id_societe', $id_societe)
+                ->setParameter('id_theme', $id_theme)
+                ->getQuery();
+        }
+        return $query->getResult();
+    }
 }

@@ -160,6 +160,8 @@ class DefaultController extends Controller
         for ($index = 1; $index < count($colonneDroiteValue); $index++) {
             if ($colonneDroiteValue[$index] == 4) {
                 $index_theme = $colonneGaucheValue[$index];
+                echo $index_theme;
+                die();
             } else if ($colonneDroiteValue[$index] == 5) {
                 $index_contexte_usage = $colonneGaucheValue[$index];
             } else if ($colonneDroiteValue[$index] == 6) {
@@ -362,7 +364,7 @@ class DefaultController extends Controller
                             $repositorySource = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Source');
                             $source = $repositorySource->find($id_source);
 
-                            if ($source != null && $language) {
+                            if ($source != null && $language != null) {
 
                                 $vocab = new Vocabulaire();
                                 $vocab->setDateCreation(new \DateTime($date));
@@ -455,6 +457,8 @@ class DefaultController extends Controller
                         }
 
                         $id_theme = 0;
+                        echo $theme;
+                        die();
                         if ($theme != "") {
                             //verif theme
                             $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
@@ -681,7 +685,7 @@ class DefaultController extends Controller
                             {
                                 $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');
                                 $vocabulairePrototypeAccess = $repositoryVocabulairePrototypeAccess->findOneBy(array('prototypeAccess' => $prototype_access,'vocabulaire' => $vocabulaire));
-                                if($vocabulairePrototypeAccess != null){
+                                if($vocabulairePrototypeAccess == null && $vocabulaire != null && $prototype_access != null){
                                     $vocabulairePrototypeAccess = new VocabulairePrototypeAccess();
                                     $vocabulairePrototypeAccess->setVocabulaire($vocabulaire);
                                     $vocabulairePrototypeAccess->setPrototypeAccess($prototype_access);

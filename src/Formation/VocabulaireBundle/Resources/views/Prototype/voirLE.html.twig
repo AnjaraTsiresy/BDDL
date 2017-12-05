@@ -1,0 +1,56 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div class="titreMenu">
+        <p>LE: {{ libelle_theme}}/prototype: {{ nom_prototype }}</p>
+    </div>
+    <br/><br/>
+    <table id="tableau">
+        <tr>
+            <td>
+                <a href="{{ path('modif_le', {'id_societe': id_societe, 'id_theme': id_theme, 'id': id}) }}">Ajouter de nouveaux termes</a>
+            </td>
+            <td>
+                <a href="{{ path('modif_prototype', {'id': id}) }}">Retour</a>
+            </td>
+        <tr>
+    </table>
+    <br/><br/>
+    <table id="tableau">
+        <thead>
+        <tr>
+            <th scope="col">
+                <table style="background: #FFF;">
+                    <tr>
+                        <td>&nbsp;français&nbsp;</td>
+                        <td><a class="styleFiltre" href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': id_theme, 'id': id, 'dic': 'fr1'}) }}"><img src="{{ asset('images/haut.jpeg') }}" width="15"></a></td>
+                        <td><a class="styleFiltre" href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': id_theme, 'id': id, 'dic': 'fr2'}) }}"><img src="{{ asset('images/bas.jpeg') }}" width="15"></a></td>
+                    </tr>
+                </table>
+            </th>
+            <th scope="col">
+                <table style="background: #FFF;">
+                    <tr>
+                        <td>anglais</td>
+                        <td><a class="styleFiltre" href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': id_theme, 'id': id, 'dic': 'en1'}) }}"><img src="{{ asset('images/haut.jpeg') }}" width="15"></a></td
+                        ><td><a class="styleFiltre" href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': id_theme, 'id': id, 'dic': 'en2'}) }}"><img src="{{ asset('images/bas.jpeg') }}" width="15"></a></td>
+                    </tr>
+                </table>
+            </th>
+            <th scope="col">Action1</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for vpa in vocabulairePrototypeAccess %}
+        <tr>
+            <td><p class="terme_fr sous_titre_fr" >{{ vpa['langue_origine'] }}</p></td>
+            <td><p class="terme_en">{{ vpa['langue_traduction'] }}</p></td>
+            <td>
+                <a href="{{ path('suppr_vocab_le', {'id_vocabulaire': vpa['id_vocabulaire'], 'id': id, 'id_societe': id_societe, 'id_theme': id_theme}) }}" class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
