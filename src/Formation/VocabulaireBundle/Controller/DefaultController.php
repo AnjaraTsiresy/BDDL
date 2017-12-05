@@ -160,8 +160,8 @@ class DefaultController extends Controller
         for ($index = 1; $index < count($colonneDroiteValue); $index++) {
             if ($colonneDroiteValue[$index] == 4) {
                 $index_theme = $colonneGaucheValue[$index];
-                echo $index_theme;
-                die();
+
+
             } else if ($colonneDroiteValue[$index] == 5) {
                 $index_contexte_usage = $colonneGaucheValue[$index];
             } else if ($colonneDroiteValue[$index] == 6) {
@@ -457,8 +457,7 @@ class DefaultController extends Controller
                         }
 
                         $id_theme = 0;
-                        echo $theme;
-                        die();
+
                         if ($theme != "") {
                             //verif theme
                             $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
