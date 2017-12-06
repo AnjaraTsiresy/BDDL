@@ -133,13 +133,54 @@ class Societe
      */
     private $vocabulaireSocietes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="TempPdfLoaddatatheme", mappedBy="societe")
+     */
+    private $tempPdfLoaddatathemes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TableDesMatieresProto", mappedBy="societe")
+     */
+    private $tableDesMatieresProtos;
+
     public function __construct()
     {
 		$this->suffixeSocietes = new ArrayCollection();
         $this->vocabulaireSocietes = new ArrayCollection();
 		$this->lexiques = new ArrayCollection();
         $this->prototypeAccesss = new ArrayCollection();
+        $this->tempPdfLoaddatathemes = new ArrayCollection();
+        $this->tableDesMatieresProtos = new ArrayCollection();
     }
+
+    public function addTableDesMatieresProtos(\Formation\VocabulaireBundle\Entity\TableDesMatieresProto $tableDesMatieresProto){
+        $this->tableDesMatieresProtos[] = $tableDesMatieresProto;
+        return $this;
+    }
+
+    public function removeTableDesMatieresProtos(\Formation\VocabulaireBundle\Entity\TableDesMatieresProto $tableDesMatieresProto){
+        $this->tableDesMatieresProtos->removeElement($tableDesMatieresProto);
+    }
+
+    public function getTableDesMatieresProtos()
+    {
+        return $this->tableDesMatieresProtos;
+    }
+
+    public function addTempPdfLoaddatathemes(\Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme $tempPdfLoaddatatheme){
+        $this->tempPdfLoaddatathemes[] = $tempPdfLoaddatatheme;
+        return $this;
+    }
+
+    public function removeTempPdfLoaddatathemes(\Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme $tempPdfLoaddatatheme){
+        $this->tempPdfLoaddatathemes->removeElement($tempPdfLoaddatatheme);
+    }
+
+    public function getTempPdfLoaddatathemes()
+    {
+        return $this->tempPdfLoaddatathemes;
+    }
+
     public function addPrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess){
         $this->prototypeAccesss[] = $prototypeAccess;
         return $this;

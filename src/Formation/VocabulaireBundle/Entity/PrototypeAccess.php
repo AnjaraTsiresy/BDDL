@@ -114,10 +114,68 @@ class PrototypeAccess
      */
     private $vocabulairePrototypeAccesss;
 
+    /**
+     * @ORM\OneToMany(targetEntity="TempPdfLoaddatatheme", mappedBy="prototypeAccess")
+     */
+    private $tempPdfLoaddatathemes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TableDesMatieresProto", mappedBy="noPrototype")
+     */
+    private $tableDesMatieresProtos;
+
+    /**
+     * @ORM\OneToMany(targetEntity="NbPage", mappedBy="prototypeAccess")
+     */
+    private $nbPages;
+
     public function __construct()
     {
 		$this->lexiques = new ArrayCollection();
         $this->vocabulairePrototypeAccesss = new ArrayCollection();
+        $this->tempPdfLoaddatathemes = new ArrayCollection();
+        $this->tableDesMatieresProtos = new ArrayCollection();
+        $this->nbPages = new ArrayCollection();
+    }
+    public function addNbPages(\Formation\VocabulaireBundle\Entity\NbPage $nbPage){
+        $this->nbPages[] = $nbPage;
+        return $this;
+    }
+
+    public function removeNbPages(\Formation\VocabulaireBundle\Entity\NbPage $nbPage){
+        $this->nbPages->removeElement($nbPage);
+    }
+
+    public function getNbPages()
+    {
+        return $this->nbPages;
+    }
+    public function addTableDesMatieresProtos(\Formation\VocabulaireBundle\Entity\TableDesMatieresProto $tableDesMatieresProto){
+        $this->tableDesMatieresProtos[] = $tableDesMatieresProto;
+        return $this;
+    }
+
+    public function removeTableDesMatieresProtos(\Formation\VocabulaireBundle\Entity\TableDesMatieresProto $tableDesMatieresProto){
+        $this->tableDesMatieresProtos->removeElement($tableDesMatieresProto);
+    }
+
+    public function getTableDesMatieresProtos()
+    {
+        return $this->tableDesMatieresProtos;
+    }
+
+    public function addTempPdfLoaddatathemes(\Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme $tempPdfLoaddatatheme){
+        $this->tempPdfLoaddatathemes[] = $tempPdfLoaddatatheme;
+        return $this;
+    }
+
+    public function removeTempPdfLoaddatathemes(\Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme $tempPdfLoaddatatheme){
+        $this->tempPdfLoaddatathemes->removeElement($tempPdfLoaddatatheme);
+    }
+
+    public function getTempPdfLoaddatathemes()
+    {
+        return $this->tempPdfLoaddatathemes;
     }
 
     public function addVocabulairePrototypeAcces(\Formation\VocabulaireBundle\Entity\VocabulairePrototypeAccess $vocabulairePrototypeAcces){

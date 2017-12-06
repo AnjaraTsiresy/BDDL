@@ -130,4 +130,26 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
         }
         return $query->getResult();
     }
+
+    public function LoadDtaWithTheme ($id, $id_theme)
+    {
+
+            $query = $this
+                ->createQueryBuilder('vpa')
+                ->select('distinct v.langueOrigine as langue_origine,
+                 v.langueTraduction as langue_traduction,
+                 v.id as id_vocabulaire, 
+                 v.langueOrigineSansModif as langue_origine_sans_modif')
+                ->innerJoin('vpa.prototypeAccess', 'pa')
+                ->innerJoin('vpa.vocabulaire', 'v')
+                ->innerJoin('v.vocabulaireThemes','vt')
+                ->innerJoin('vt.theme','t')
+                ->where('pa.id = :id_prototype_access AND t.id = :id_theme')
+                ->orderBy('v.langueOrigine','asc')
+                ->setParameter('id_prototype_access', $id)
+                ->setParameter('id_theme', $id_theme)
+                ->getQuery();
+
+        return $query->getResult();
+    }
 }

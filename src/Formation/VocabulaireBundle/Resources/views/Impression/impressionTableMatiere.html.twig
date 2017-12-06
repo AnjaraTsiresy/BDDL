@@ -1,0 +1,84 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="{{ asset('css/pdf1.css') }}" type="text/css">
+<style>
+    page[size="A4"] {
+        background: white;
+        height: 21cm;
+        width: 29.7cm;
+        display: block;
+        margin: 0 auto;
+        margin-top: 0.5cm;
+    }
+
+    @media print {
+        body, page[size="A4"] {
+            margin: 0;
+            box-shadow: 0;
+        }
+    }
+</style>
+{% for i, dataTable in tablenbreParTable %}
+    <page size="A4">
+        <div class='conteneur'>
+            <div class='colonne1 tableMatiere'>
+                <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
+
+                {% if i==0 %}
+                    <b>{{ nom_societe }}</b>
+                    <br/><br/>
+                {% endif %}
+                {% for table in table_matiere %}
+                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                    <br/>
+                {% endfor %}
+                <div class='nomprototype1'>{{ prototypeTitle }}</div>
+            </div>
+            <div class='colonne2 tableMatiere'>
+                <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
+
+                {% if i==0 %}
+                    <b>{{ nom_societe }}</b>
+                    <br/><br/>
+                {% endif %}
+                {% for table in table_matiere %}
+                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                    <br/>
+                {% endfor %}
+                <div class='nomprototype2'>{{ prototypeTitle }}</div>
+            </div>
+        </div>
+    </page>
+{% endfor %}
+
+{% for j, k in tablenbreParTable1 %}
+    <page size="A4">
+        <div class='conteneur'>
+            <div class='colonne1 tableMatiere'>
+                <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
+
+                {% if j==0 %}
+
+                    <br/><br/>
+                {% endif %}
+                {% for table in table_matiere1 %}
+                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                    <br/>
+                {% endfor %}
+                <div class='nomprototype1'>{{ prototypeTitle }}</div>
+            </div>
+            <div class='colonne2 tableMatiere'>
+                <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
+
+                {% if j==0 %}
+
+                    <br/><br/>
+                {% endif %}
+                {% for table in table_matiere1 %}
+                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                    <br/>
+                {% endfor %}
+                <div class='nomprototype2'>{{ prototypeTitle }}</div>
+            </div>
+        </div>
+    </page>
+{% endfor %}

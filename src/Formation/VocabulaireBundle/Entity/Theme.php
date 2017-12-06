@@ -47,10 +47,30 @@ class Theme
      */
     private $lexiques;
 
+    /**
+     * @ORM\OneToMany(targetEntity="TempPdfLoaddatatheme", mappedBy="theme")
+     */
+    private $tempPdfLoaddatathemes;
+
     public function __construct()
     {
         $this->vocabulaireThemes = new ArrayCollection();
 		$this->lexiques = new ArrayCollection();
+        $this->tempPdfLoaddatathemes = new ArrayCollection();
+    }
+
+    public function addTempPdfLoaddatathemes(\Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme $tempPdfLoaddatatheme){
+        $this->tempPdfLoaddatathemes[] = $tempPdfLoaddatatheme;
+        return $this;
+    }
+
+    public function removeTempPdfLoaddatathemes(\Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme $tempPdfLoaddatatheme){
+        $this->tempPdfLoaddatathemes->removeElement($tempPdfLoaddatatheme);
+    }
+
+    public function getTempPdfLoaddatathemes()
+    {
+        return $this->tempPdfLoaddatathemes;
     }
 	
 	public function addLexique(\Formation\VocabulaireBundle\Entity\Lexique $lexique){

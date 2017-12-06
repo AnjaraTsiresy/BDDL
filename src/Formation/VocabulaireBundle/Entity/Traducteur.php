@@ -47,11 +47,16 @@ class Traducteur
      */
     private $vocabulaireTraducteurs;
 
+
+
     public function __construct()
     {
         $this->vocabulaireTraducteurs = new ArrayCollection();
         $this->prototypeAccesss = new ArrayCollection();
     }
+
+
+
     public function addPrototypeAccess(\Formation\VocabulaireBundle\Entity\PrototypeAccess $prototypeAccess){
         $this->prototypeAccesss[] = $prototypeAccess;
         return $this;
