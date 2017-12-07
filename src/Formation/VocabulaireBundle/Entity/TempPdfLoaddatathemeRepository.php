@@ -26,4 +26,17 @@ class TempPdfLoaddatathemeRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function getAllTempPdfLoaddatathemeByPrototypeAccess($id)
+    {
+        $query = $this
+            ->createQueryBuilder('temp')
+            ->select('temp')
+            ->innerJoin('temp.prototypeAccess', 'pa')
+            ->where('pa.id = :id_prototype_access')
+            ->setParameter('id_prototype_access', $id)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

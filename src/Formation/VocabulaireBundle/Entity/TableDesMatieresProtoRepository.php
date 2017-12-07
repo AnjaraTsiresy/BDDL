@@ -31,21 +31,21 @@ class TableDesMatieresProtoRepository extends EntityRepository
     {
         $query = $this
             ->createQueryBuilder('tm')
-            ->select('MIN(tm.ordreSousTheme) as numpge')
+            ->select(' tm.ordreSousTheme as min_ordre')
             ->innerJoin('tm.noPrototype', 'pa')
             ->innerJoin('tm.societe', 's')
             ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND tm.theme = :theme')
             ->setParameter('id_societe', $id_societe)
             ->setParameter('id_prototype_access', $id)
             ->setParameter('theme', $theme)
-            ->setMaxResults(1)
             ->getQuery();
 
         $result = $query->getResult();
         $numpge = 0;
         foreach ($result as $res)
         {
-            $numpge = $res['numpge'];
+
+            $numpge = $res['min_ordre'];
         }
         return $numpge;
     }

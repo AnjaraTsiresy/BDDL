@@ -286,8 +286,9 @@
                             $("#choixpageOtherSoc").show();
                         });
                         $("#prepare").click(function () {
+
                             $.ajax({
-                                url: 'checkimpression.php?id=<?php echo $id;?>',
+                                url: '{{ path('check_impression',{'id' : id}) }}',
                                 dataType: 'html',
                                 beforeSend: function (jqXHR, settings) {
                                     $("#prepage").show();

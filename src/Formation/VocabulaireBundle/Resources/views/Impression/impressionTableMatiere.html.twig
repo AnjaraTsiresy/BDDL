@@ -1,7 +1,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <link rel="stylesheet" href="{{ asset('css/pdf1.css') }}" type="text/css">
 <style>
-    page[size="A4"] {
+    .A4{
         background: white;
         height: 21cm;
         width: 29.7cm;
@@ -11,14 +11,15 @@
     }
 
     @media print {
-        body, page[size="A4"] {
+        body, .A4 {
             margin: 0;
             box-shadow: 0;
         }
     }
 </style>
+
 {% for i, dataTable in tablenbreParTable %}
-    <page size="A4">
+    <div class="A4">
         <div class='conteneur'>
             <div class='colonne1 tableMatiere'>
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
@@ -28,8 +29,13 @@
                     <br/><br/>
                 {% endif %}
                 {% for table in table_matiere %}
+                    {% if loop.index <= 8 and i  == 0 %}
                     <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                     <br/>
+                    {% elseif loop.index >= (9 + (i-1)) and loop.index <= (8 * (i+1)) %}
+                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <br/>
+                    {% endif %}
                 {% endfor %}
                 <div class='nomprototype1'>{{ prototypeTitle }}</div>
             </div>
@@ -41,17 +47,22 @@
                     <br/><br/>
                 {% endif %}
                 {% for table in table_matiere %}
-                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
-                    <br/>
+                    {% if loop.index <= 8 and i  == 0 %}
+                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <br/>
+                    {% elseif loop.index >= (9 + (i-1)) and loop.index <= (8 * (i+1)) %}
+                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <br/>
+                    {% endif %}
                 {% endfor %}
                 <div class='nomprototype2'>{{ prototypeTitle }}</div>
             </div>
         </div>
-    </page>
+    </div>
 {% endfor %}
 
 {% for j, k in tablenbreParTable1 %}
-    <page size="A4">
+    <div class= "A4">
         <div class='conteneur'>
             <div class='colonne1 tableMatiere'>
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
@@ -61,8 +72,13 @@
                     <br/><br/>
                 {% endif %}
                 {% for table in table_matiere1 %}
-                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
-                    <br/>
+                    {% if loop.index <= 8 and j  == 0 %}
+                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <br/>
+                    {% elseif loop.index >= (9 + (j-1)) and loop.index <= (8 * (j+1)) %}
+                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <br/>
+                    {% endif %}
                 {% endfor %}
                 <div class='nomprototype1'>{{ prototypeTitle }}</div>
             </div>
@@ -74,11 +90,16 @@
                     <br/><br/>
                 {% endif %}
                 {% for table in table_matiere1 %}
-                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
-                    <br/>
+                    {% if loop.index <= 8 and j  == 0 %}
+                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <br/>
+                    {% elseif loop.index >= (9 + (j-1)) and loop.index <= (8 * (j+1)) %}
+                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <br/>
+                    {% endif %}
                 {% endfor %}
                 <div class='nomprototype2'>{{ prototypeTitle }}</div>
             </div>
         </div>
-    </page>
+    </div>
 {% endfor %}

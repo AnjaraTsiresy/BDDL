@@ -4,12 +4,47 @@ namespace Formation\VocabulaireBundle\Controller;
 
 use Formation\VocabulaireBundle\Entity\NbPage;
 use Formation\VocabulaireBundle\Entity\TableDesMatieresProto;
+use Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class ImpressionController extends Controller
 {
+    /**
+     * @Route("/check_impression/{id}", name="check_impression")
+     */
+    public function checkimpressionAction($id)
+    {
+        set_time_limit (0);
+        $em = $this->getDoctrine()->getManager();
+        $dataTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TempPdfLoaddatatheme')->getAllTempPdfLoaddatathemeByPrototypeAccess($id);
+
+        foreach ($dataTheme as $row)
+        {
+            $em->remove($row);
+            $em->flush();
+        }
+
+        $dataTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getDataTheme($id);
+        foreach ($dataTheme as $row)
+        {
+            $tempPdfLoadDataTheme = new TempPdfLoaddatatheme();
+            $societe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe')->find($row['id_societe']);
+            $theme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme')->find($row['idT']);
+            $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($row['idProt']);
+            $tempPdfLoadDataTheme->setPrototypeAccess($prototypeAccess);
+            $tempPdfLoadDataTheme->setSociete($societe);
+            $tempPdfLoadDataTheme->setTheme($theme);
+            $tempPdfLoadDataTheme->setLib($row['lib']);
+            $tempPdfLoadDataTheme->setDescription($row['description']);
+            $em->persist($tempPdfLoadDataTheme);
+            $em->flush();
+        }
+
+        return $this->render('FormationVocabulaireBundle:Default:uploadExcel.html.twig', array());
+
+    }
     /**
      * @Route("/impressionTableMatiere/{id}/{id_societe}", name="impressionTableMatiere")
      */
@@ -63,6 +98,7 @@ class ImpressionController extends Controller
                  $pdfNumpage = new PDFPage();
                  $j = 1;
                  $dataAll = array();
+
              foreach($dataTheme as $rowpips)
               {
                  // $dataNum = $pdf->LoadDtaWithTheme ($id, $rowpips['idT']);
@@ -96,7 +132,7 @@ class ImpressionController extends Controller
                       $em->persist($tableDesMatieresProto);
                       $em->flush();
                   }
-
+                  $pdfNumpage->PrintChapter($dataNum,$rowpips[0], $id_societe, $id);
                   $nb_page = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:NbPage')->getNbPage($id);
 
                   $nbPage_obj = new NbPage();
@@ -136,7 +172,7 @@ class ImpressionController extends Controller
             }
 
             if($id_societe != $id_soc){
-                if ($htme!=$row[3]){
+                if ($htme!=$row[0]){
                     $numpge = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getMinOrdreSousTheme($row[0], $id_societe, $id);
                     $tableMatiereModel1 = new TableMatiereModel();
                     $tableMatiereModel1->seTheme($row[0]);
@@ -164,10 +200,11 @@ class ImpressionController extends Controller
         $tablenbreParTable = array_chunk($tabletotal1, $nbreParTable);
         $nbreTableparTable = count ($tablenbreParTable);
 
-        $tablenbreParTable1 = array_chunk($tabletotal2, $nbreParTable);
+        $nbreParTable1 = 8;
+        $tablenbreParTable1 = array_chunk($tabletotal2, $nbreParTable1);
         $nbreTableparTable1 = count ($tablenbreParTable1);
 
-      /*  return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
+     /*  return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
             'table_matiere'=>$table_matiere,
             'table_matiere1'=>$table_matiere1,
             'tablenbreParTable' => $tablenbreParTable,
@@ -176,8 +213,8 @@ class ImpressionController extends Controller
             'nbreTableparTable1' => $nbreTableparTable1,
             'prototypeTitle' => $prototypeTitle,
             'nom_societe' => $nom_societe
-        ));*/
-
+        ));
+*/
         $html = $this->renderView('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
             'table_matiere'=>$table_matiere,
             'table_matiere1'=>$table_matiere1,
@@ -205,8 +242,7 @@ class ImpressionController extends Controller
             )
 
         );
-
-    }
+ }
 
     /**
      * @Route("/impressionCorpsGlossaire/{id}/{id_societe}", name="impressionCorpsGlossaire")
@@ -1275,7 +1311,8 @@ class PDFPage
     }
     // tstoto
     function BasicTable($data,$theme, $id_societe, $id){
-
+        ini_set('max_execution_time', -1); //0=NOLIMIT
+        ini_set('memory_limit', '2048M');
         $numero = $this->numpage +1;
         $theme = htmlspecialchars($theme);
         $nb_page = 0;
@@ -1302,24 +1339,31 @@ class PDFPage
                 $k = ($i-1)*$nbreParPage;
                 $tabNbrePartieALaliggne = array();
                 $this->numpage = $this->numpage+1;
+
                 $totalNbrecaractData = 0;
-                for ($j = $k; $j < $isanyInterne; $j ++){
+                for ($j = $k; $j < $isanyInterne; $j ++) {
+
                     $kj = 1;
                     $string = "";
 
-                    foreach ($data[$j] as $coco){
-                        $string = $string."".$coco;
-                        $kj ++;
-                    }
-                    $nbreCaractere = strlen($string);
-                    $totalNbrecaractData = $totalNbrecaractData + $nbreCaractere;
-                    //$fixeNbreCaractreLigne = 98;
-                    $fixeNbreCaractreLigne = 70;
-                    $partieEntiere = (int)($nbreCaractere/$fixeNbreCaractreLigne);
-                    $tabNbrePartieALaliggne[] = $partieEntiere;
+                        if($j < count($data)){
+                       foreach ($data[$j] as $coco) {
+                            $string = $string . "" . $coco;
+                            $kj++;
+                        }
 
-                    $tab1[] = $data[$j];
-                }
+                        $nbreCaractere = strlen($string);
+                        $totalNbrecaractData = $totalNbrecaractData + $nbreCaractere;
+                        //$fixeNbreCaractreLigne = 98;
+                        $fixeNbreCaractreLigne = 70;
+                        $partieEntiere = (int)($nbreCaractere/$fixeNbreCaractreLigne);
+                        $tabNbrePartieALaliggne[] = $partieEntiere;
+
+                     $tab1[] = $data[$j];
+                        }
+
+                 }
+
                 //print_r($tabNbrePartieALaliggne);
                 if ($i==1){
                     //$this->numpage = $this->numpage +1;
