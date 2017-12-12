@@ -53,13 +53,13 @@ class BasePrototypeController extends Controller
             $societes[] = $prototype_access->getSociete();
         }
         foreach ($prototype_accesss as $prototype_access) {
-            $protoModel = new ProtoModel();
+            $protoModel = new \Formation\VocabulaireBundle\Model\ProtoType();
             $protoModel->setNbSoloc($this->getLESocAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
             $protoModel->setNbLeGen($this->getLEGenAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
             //$protoModel->setNbPage($this->getNbPagesAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
             $nb_termes_array = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getTermesAssocies($prototype_access->getId());
             $nb_termes = $nb_termes_array['nb_termes'];
-            $protoModel->setNbTermes($nb_termes);
+            $protoModel->setNb_termes($nb_termes);
             $protoModel->setId($prototype_access->getId());
             $protoModel->setSociete($prototype_access->getSociete()->getDescription());
             $protoModel->setTraducteur($prototype_access->getTraducteur()->getNom());
@@ -170,110 +170,5 @@ class BasePrototypeController extends Controller
         return 0;
     }
 
-
-
-
 }
 
-class ProtoModel
-{
-    private $id;
-    private $nb_soloc;
-    private $nb_le_gen;
-    private $nb_page;
-    private $nb_termes;
-    private $societe;
-    private $traducteur;
-    private $type;
-    private $date;
-
-    public function id()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    public function type()
-    {
-        return $this->type;
-    }
-
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    public function date()
-    {
-        return $this->date;
-    }
-
-    public function setDate(\Datetime $date)
-    {
-        $this->date = $date;
-    }
-
-    public function nb_soloc()
-    {
-        return $this->nb_soloc;
-    }
-
-    public function setNbSoloc($nb_soloc)
-    {
-        $this->nb_soloc = $nb_soloc;
-    }
-
-    public function nb_le_gen()
-    {
-        return $this->nb_le_gen;
-    }
-
-    public function setNbLeGen($nb_le_gen)
-    {
-        $this->nb_le_gen = $nb_le_gen;
-    }
-
-    public function nb_page()
-    {
-        return $this->nb_page;
-    }
-
-    public function setNbPage($nb_page)
-    {
-        $this->nb_page = $nb_page;
-    }
-
-    public function nb_termes()
-    {
-        return $this->nb_termes;
-    }
-
-    public function setNbTermes($nb_termes)
-    {
-        $this->nb_termes = $nb_termes;
-    }
-
-    public function societe()
-    {
-        return $this->societe;
-    }
-
-    public function setSociete($societe)
-    {
-        $this->societe = $societe;
-    }
-
-    public function traducteur()
-    {
-        return $this->traducteur;
-    }
-
-    public function setTraducteur($traducteur)
-    {
-        $this->traducteur = $traducteur;
-    }
-
-}

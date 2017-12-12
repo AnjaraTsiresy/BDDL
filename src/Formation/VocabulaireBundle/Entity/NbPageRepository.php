@@ -23,12 +23,12 @@ class NbPageRepository extends EntityRepository
             ->setMaxResults(1)
             ->getQuery();
         $result = $query->getResult();
-
+ 
         foreach ($result as $resp)
         {
             if($resp['nbDepage'] != '') $nbDepage = $resp['nbDepage'];
         }
-
+         
         return $nbDepage;
     }
 
