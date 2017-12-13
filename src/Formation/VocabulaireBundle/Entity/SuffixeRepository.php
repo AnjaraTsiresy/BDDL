@@ -14,7 +14,6 @@ class SuffixeRepository extends EntityRepository
 {
     public function findSuffixeThematiqueBySociete($id_soc)
     {
-        echo $id_soc."<br/>";
         $query = $this
             ->createQueryBuilder('sf')
             ->select('distinct sf.id as id_suffixe, sf.libelleSuffixe as libelle_suffixe ')
@@ -24,6 +23,7 @@ class SuffixeRepository extends EntityRepository
             ->setParameter('id_soc', $id_soc)
             ->groupBy('sf.libelleSuffixe')
             ->getQuery();
+      
         return $query->getResult();
     }
 }

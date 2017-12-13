@@ -9,185 +9,187 @@
             top: 50%;
             left: 50%;
             margin: -100px 0 0 -150px;
-        
+
         }
     </style>
 {% endblock %}
 {% block body %}
-<div class="titreMenu">
-    <p style="font-size : 15px;">Veuillez sélectionner un secteur d'activité</p>
-</div>
-<div>
-    <form action="{{ path('recherche_thematique') }}">
-        <table id="recherche">
-            <tbody>
+    <div class="titreMenu">
+        <p style="font-size : 15px;">Veuillez sélectionner un secteur d'activité</p>
+    </div>
+    <div>
+        <form action="{{ path('recherche_thematique') }}">
+            <table id="recherche">
+                <tbody>
+                    <tr>
+                        <td>Secteur d'activité</td>
+                        <td>
+                            <select name="id_secteur" id="id_secteur">
+                                <option value=""></option>
+                                {% for secteur in secteurs %}
+                                    <option value="{{ secteur.id }}" {% if id_secteur == secteur.id %} selected='selected' {% endif %}>{{ secteur.libelleSecteur }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Chercher"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    {% if has_voc > 0 %}
+        <div class="titreMenus">
+            <p>{{ nb_societe }} société(s) trouvée(s)</p>
+        </div>
+        <div class="titreMenus">
+            <p style="font-size : 10px;">Veuillez sélectionner un thématique pour affiner le(s) résultat(s) de recherche</p>
+        </div>
+        <DIV id="prepage" class="waiting" style="display:none;">
+            <img src="{{ asset('images/ajax_loader.gif') }}"/>
+        </DIV>
+        <table id="tableau">
             <tr>
-                <td>Secteur d'activité</td>
                 <td>
-                    <select name="id_secteur" id="id_secteur">
-                        <option value=""></option>
-                        {% for secteur in secteurs %}
-                            <option value="{{ secteur.id }}" {% if id_secteur == secteur.id %} selected='selected' {% endif %}>{{ secteur.libelleSecteur }}</option>
+                    Thématique(suffixe)
+                    <select name="id_suffixe" id="id_suffixe" onChange="refresh(this.value, {{ id_secteur }})">
+                        <option></option>
+                        {% for suffixe in suffixes %}
+                            <option value="{{ suffixe['id_suffixe'] }}" {% if id_suffixe == suffixe['id_suffixe'] %} selected='selected' {% endif %}>{{ suffixe['libelle_suffixe'] }}</option>
                         {% endfor %}
                     </select>
                 </td>
             </tr>
+        </table>
+
+        <div class="titreMenus">
+            <p style="font-size : 10px;">Veuillez sélectionner une ou plusieurs sociétés et cliquer sur "Afficher les
+                prototypes"</p>
+        </div>
+        <table id="tableau">
             <tr>
+                <td><input type="button" id="bouton" value="Afficher les prototypes"></td>
                 <td></td>
-                <td><input type="submit" value="Chercher"></td>
             </tr>
+        </table>
+        <table id="tableau">
+            <thead>
+                <tr>
+                    <th scope="col">Société<input type="checkbox" onClick="checkAll('listeSociete[]', this.checked);"/> Tout
+                        cocher/décocher
+                    </th>
+                    <th scope="col">Secteur d'activité</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for societe in societes %}
+                    <tr>
+                        <td><input type="checkbox" name="listeSociete[]" id="listeSociete{{ societe.id_societe }}" value="{{ societe.id_societe }}"/>{{ societe.description }} ({{ societe.prototypes }} prototypes)</td>
+                        <td>{{ societe.libelle_secteur }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td><input type="button" id="bouton1" value="Afficher les prototypes"></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
-    </form>
-</div>
-<div class="titreMenus">
-    <p>{{ nb_societe }} société(s) trouvée(s)</p>
-</div>
-<div class="titreMenus">
-    <p style="font-size : 10px;">Veuillez sélectionner un thématique pour affiner le(s) résultat(s) de recherche</p>
-</div>
-<DIV id="prepage" class="waiting" style="display:none;">
-    <img src="{{ asset('images/ajax_loader.gif') }}"/>
-</DIV>
-<table id="tableau">
-    <tr>
-        <td>
-            Thématique(suffixe)
-            <select name="id_suffixe" id="id_suffixe" onChange="refresh(this.value, {{ id_secteur }})">
-                <option></option>
-                {% for suffixe in suffixes %}
-                    <option value="{{ suffixe['id_suffixe'] }}" {% if id_suffixe == suffixe['id_suffixe'] %} selected='selected' {% endif %}>{{ suffixe['libelle_suffixe'] }}</option>
-                {% endfor %}
-            </select>
-        </td>
-    </tr>
-</table>
+        <input type="hidden" id="id_secteur" value="{{ id_secteur }}"/>
+        <div id="resultDiv"></div>
+    {% endif %}
+{% endblock %}
 
-<div class="titreMenus">
-    <p style="font-size : 10px;">Veuillez sélectionner une ou plusieurs sociétés et cliquer sur "Afficher les
-        prototypes"</p>
-</div>
-<table id="tableau">
-    <tr>
-        <td><input type="button" id="bouton" value="Afficher les prototypes"></td>
-        <td></td>
-    </tr>
-</table>
-<table id="tableau">
-    <thead>
-    <tr>
-        <th scope="col">Société<input type="checkbox" onClick="checkAll('listeSociete[]', this.checked);"/> Tout
-            cocher/décocher
-        </th>
-        <th scope="col">Secteur d'activité</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for societe in societes %}
-    <tr>
-        <td><input type="checkbox" name="listeSociete[]" id="listeSociete{{ societe.id_societe }}" value="{{ societe.id_societe }}"/>{{ societe.description }} prototypes</td>
-        <td>{{ societe.libelle_secteur }}</td>
-    </tr>
-    {% endfor %}
-    <tr>
-        <td><input type="button" id="bouton1" value="Afficher les prototypes"></td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
-    <input type="hidden" id="id_secteur" value="{{ id_secteur }}"/>
-    <div id="resultDiv"></div>
-    {% endblock %}
-
-    {% block javascripts %}
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#resultDiv").hide();
-                $("#prepage").hide();
-                $("#bouton").click(function () {
-                    var valeurs = [];
-                    $('input[type=checkbox]:checked').each(function () {
-                        valeurs.push($(this).val());
-                    });
-                    //alert(valeurs);
-                    var $id_secteur = $("#id_secteur").val();
-                    if (valeurs == "") {
-                        alert("Veuillez sélectionner une ou plusieurs sociétés");
-                    } else {
-                        $.ajax({
-                            url: "{{ path('liste_prototype') }}",
-                            //data: 'val='+valeurs.join(','),
-                            data: 'val=' + valeurs + '&id_secteur=' + $id_secteur,
-                            dataType: 'html',
-                            beforeSend: function (jqXHR, settings) {
-                                $("#prepage").show();
-                            },
-                            complete: function (jqXHR, textStatus) {
-                                $("#prepage").hide();
-                            },
-                            success: function (html) {
-                                $("#resultDiv").html(html);
-                                $("#resultDiv").show();
-                            }
-                        });
-                    }
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#resultDiv").hide();
+            $("#prepage").hide();
+            $("#bouton").click(function () {
+                var valeurs = [];
+                $('input[type=checkbox]:checked').each(function () {
+                    valeurs.push($(this).val());
                 });
-                $("#bouton1").click(function () {
-                    var valeurs = [];
-                    $('input[type=checkbox]:checked').each(function () {
-                        valeurs.push($(this).val());
-                    });
-                    //alert(valeurs);
-                    var $id_secteur = $("#id_secteur").val();
-                    if (valeurs == "") {
-                        alert("Veuillez sélectionner une ou plusieurs sociétés");
-                    } else {
-                        $.ajax({
-                            url: "{{ path('liste_prototype') }}",
-                            //data: 'val='+valeurs.join(','),
-                            data: 'val=' + valeurs + '&id_secteur=' + {{ id_secteur  }},
-                            dataType: 'html',
-                            beforeSend: function (jqXHR, settings) {
-                                $("#prepage").show();
-                            },
-                            complete: function (jqXHR, textStatus) {
-                                $("#prepage").hide();
-                            },
-                            success: function (html) {
-                                $("#resultDiv").html(html);
-                                $("#resultDiv").show();
-                            }
-                        });
-                    }
-                });
-            });
-            $("#resultDiv").empty();
-
-        </script>
-        <script>
-            function refresh(idinput, id_secteur) {
-                 var path = "{{ path('recherche_thematique') }}";
-                 var url = path+"?id_secteur="+id_secteur+"&id_suffixe="+idinput
-                 location.href = url;
-            }
-
-            function checkAll(name, checked) {
-                var inputs = document.getElementsByTagName('input');
-                var ischecked = 0;
-                var allids = "0";
-                var j = 0;
-                for (var i = 0; i < inputs.length; i++) {
-                    if (inputs[i].type == 'checkbox' && inputs[i].name == name) {
-                        inputs[i].checked = checked;
-                        if (inputs[i].checked == true) {
-                            ischecked = 1;
+                //alert(valeurs);
+                var $id_secteur = $("#id_secteur").val();
+                if (valeurs == "") {
+                    alert("Veuillez sélectionner une ou plusieurs sociétés");
+                } else {
+                    $.ajax({
+                        url: "{{ path('liste_prototype') }}",
+                        //data: 'val='+valeurs.join(','),
+                        data: 'val=' + valeurs + '&id_secteur=' + $id_secteur,
+                        dataType: 'html',
+                        beforeSend: function (jqXHR, settings) {
+                            $("#prepage").show();
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            $("#prepage").hide();
+                        },
+                        success: function (html) {
+                            $("#resultDiv").html(html);
+                            $("#resultDiv").show();
                         }
-                        var id_societe = inputs[i].value;
-                        allids = allids + "," + id_societe;
-                        j++;
-                    }
+                    });
                 }
-                //alert(allids);
+            });
+            $("#bouton1").click(function () {
+                var valeurs = [];
+                $('input[type=checkbox]:checked').each(function () {
+                    valeurs.push($(this).val());
+                });
+                //alert(valeurs);
+                var $id_secteur = $("#id_secteur").val();
+                if (valeurs == "") {
+                    alert("Veuillez sélectionner une ou plusieurs sociétés");
+                } else {
+                    $.ajax({
+                        url: "{{ path('liste_prototype') }}",
+                        //data: 'val='+valeurs.join(','),
+                        data: 'val=' + valeurs + '&id_secteur=' + {{ id_secteur  }},
+                        dataType: 'html',
+                        beforeSend: function (jqXHR, settings) {
+                            $("#prepage").show();
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            $("#prepage").hide();
+                        },
+                        success: function (html) {
+                            $("#resultDiv").html(html);
+                            $("#resultDiv").show();
+                        }
+                    });
+                }
+            });
+        });
+        $("#resultDiv").empty();
+
+    </script>
+    <script>
+        function refresh(idinput, id_secteur) {
+            var path = "{{ path('recherche_thematique') }}";
+            var url = path + "?id_secteur=" + id_secteur + "&id_suffixe=" + idinput
+            location.href = url;
+        }
+
+        function checkAll(name, checked) {
+            var inputs = document.getElementsByTagName('input');
+            var ischecked = 0;
+            var allids = "0";
+            var j = 0;
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type == 'checkbox' && inputs[i].name == name) {
+                    inputs[i].checked = checked;
+                    if (inputs[i].checked == true) {
+                        ischecked = 1;
+                    }
+                    var id_societe = inputs[i].value;
+                    allids = allids + "," + id_societe;
+                    j++;
+                }
             }
-        </script>
-    {% endblock %}
+            //alert(allids);
+        }
+    </script>
+{% endblock %}

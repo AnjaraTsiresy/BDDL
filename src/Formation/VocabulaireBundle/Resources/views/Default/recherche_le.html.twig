@@ -9,7 +9,7 @@
             top: 50%;
             left: 50%;
             margin: -100px 0 0 -150px;
-        
+
         }
     </style>
 {% endblock %}
@@ -25,90 +25,128 @@
         <form action="{{ path('recherche_le') }}">
             <table id="recherche">
                 <tbody>
-                <tr>
-                    <td>LE</td>
-                    <td>
-                        <select name="id_theme" id="id_theme">
-                            <option value="">choix indifférent</option>
-                            {% for t in themes %}
-                                <option value="{{ t.id }}" {% if theme == t.id %} selected='selected' {% endif %}>{{ t.libelleTheme }}</option>
-                            {% endfor %}
-                        </select>
-                        <input type="text" value="{{ theme }}" name="theme" id="theme">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Nom du prototype</td>
-                    <td>
-                        <input type="text" value="{{ nom_prototype }}" name="nom_prototype" id="nom_prototype">
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Chercher"></td>
-                </tr>
+                    <tr>
+                        <td>LE</td>
+                        <td>
+                            <select name="id_theme" id="id_theme">
+                                <option value="">choix indifférent</option>
+                                {% for t in themes %}
+                                    <option value="{{ t.id_theme }}" {% if id_theme == t.id_theme %} selected='selected' {% endif %}>{{ t.libelle_theme }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="text" value="{{ theme }}" name="theme" id="theme">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nom du prototype</td>
+                        <td>
+                            <input type="text" value="{{ nom_prototype }}" name="nom_prototype" id="nom_prototype">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Chercher"></td>
+                    </tr>
                 </tbody>
             </table>
         </form>
     </div>
     <br/><br/>
+    {% if has_data == 1 %}
+        <div class="titreMenu">
+            <p>{{ nb_LE }} lexique(s) élémentaire(s) trouvé(s)</p>
+        </div>
+        <br/><br/>
+    {% endif %}
+    {% if nb_LE > 0 %}
+        <table id="tableau">
+	  <thead>
+		<tr>
+		  <th scope="col">Lexiques élémentaires associés</th>
+		  <th scope="col">Action1</th>
+		  <th scope="col">Action2</th>
+		</tr>
+	  </thead>
+	<tbody>
+            {% for theme in themes_array %}
+                <tr>
+			<td>
+				{{ theme.description }} {{ theme.libelle_theme }}
+			</td>
+			<td>
+				<div id="id{{ theme.id_theme }}">
+				<input id="idinput{{ theme.id_theme }}" type="button" style="background: none; border: none;text-decoration: none; color: #3333cc;font: bold 12px; box-shadow:none;" value="Afficher le contenu" onclick="refresh1({{ theme.id_societe }}, {{ theme.id_theme }}, this.id)"><br/>	
+					<div id="resultDiv{{ theme.id_theme }}"></div>
+				</div>
+			</td>
+			<td>
+				<form method="post" action="exportExcel1.php">
+					<input type="hidden" name="id_societe" value="{{ theme.id_societe }}"/>
+					<input type="hidden" name="id_theme" value="{{ theme.id_theme }}"/>
+					<input type="submit" value="Exporter le contenu vers excel" />
+				</form>
+			</td>
+		</tr>
+            {% endfor %}
+            </table>
+    {% endif %}
+    <input id="valuesIdtheme" type="hidden" value="{{ valuesIdtheme }}" />
 {% endblock %}
 
-    {% block javascripts %}
-        <script type="text/javascript">
-            function refresh1(id_societe, id_theme, idinput){
-                $("#resultDiv").empty();
-                $.ajax({
-                    url: "consulterContenuLE.php",
-                    data: 'id_societe='+ id_societe+'&id_theme='+id_theme,
-                    dataType: 'html',
-                    success:function(html){
-                        $("#resultDiv"+id_theme).html(html);
+{% block javascripts %}
+    <script type="text/javascript">
+        function refresh1(id_societe, id_theme, idinput) {
+            $("#resultDiv").empty();
+            $.ajax({
+                url: "consulterContenuLE.php",
+                data: 'id_societe=' + id_societe + '&id_theme=' + id_theme,
+                dataType: 'html',
+                success: function (html) {
+                    $("#resultDiv" + id_theme).html(html);
 
-                        var valuesIdtheme = $("#valuesIdtheme").val();
-                        var res = valuesIdtheme.split(",");
-                        for (var i=0; i <res.length; i++){
-                            if (res[i]==id_theme){
-                                $("#resultDiv"+id_theme).show();
-                            }
-                            else {
-                                $("#resultDiv"+res[i]).hide();
-                            }
+                    var valuesIdtheme = $("#valuesIdtheme").val();
+                    var res = valuesIdtheme.split(",");
+                    for (var i = 0; i < res.length; i++) {
+                        if (res[i] == id_theme) {
+                            $("#resultDiv" + id_theme).show();
+                        } else {
+                            $("#resultDiv" + res[i]).hide();
                         }
                     }
-                });
-
-            }
-        </script>
-        <script>
-            $(document).ready(function() {
-                $("#prepage").hide();
-                var $societe = $('#id_societe');
-                var $theme = $('#id_theme');
-                // à la sélection d'une societe
-                $societe.on('change', function() {
-                    var val = $(this).val();
-                    if(val != '') {
-                        $theme.empty(); // on vide la liste theme
-                        $.ajax({
-                            url: 'ajaxsociete1.php',
-                            data: 'id_societe='+ val,
-                            dataType: 'json',
-                            beforeSend : function(jqXHR, settings){
-                                $("#prepage").show();
-                            },
-                            complete : function(jqXHR, textStatus){
-                                $("#prepage").hide();
-                            },
-                            success: function(json) {
-                                $theme.append('<option value=""></option>');
-                                $.each(json, function(index, value) {
-                                    $theme.append('<option value="'+ index +'">'+  value +'</option>');
-                                });
-                            }
-                        });
-                    }
-                });
+                }
             });
-        </script>
-    {% endblock %}
+
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#prepage").hide();
+            var $societe = $('#id_societe');
+            var $theme = $('#id_theme');
+            // à la sélection d'une societe
+            $societe.on('change', function () {
+                var val = $(this).val();
+                if (val != '') {
+                    $theme.empty(); // on vide la liste theme
+                    $.ajax({
+                        url: 'ajaxsociete1.php',
+                        data: 'id_societe=' + val,
+                        dataType: 'json',
+                        beforeSend: function (jqXHR, settings) {
+                            $("#prepage").show();
+                        },
+                        complete: function (jqXHR, textStatus) {
+                            $("#prepage").hide();
+                        },
+                        success: function (json) {
+                            $theme.append('<option value=""></option>');
+                            $.each(json, function (index, value) {
+                                $theme.append('<option value="' + index + '">' + value + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

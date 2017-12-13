@@ -21,10 +21,15 @@ class VocabulaireRepository extends EntityRepository
             ->innerJoin('vs.societe', 's')
             ->innerJoin('v.vocabulaireSecteurs', 'vsect')
             ->innerJoin('vsect.secteur', 'sect')
-            ->where('sect.id = :id_secteur AND v.dateModification IS NULL AND v.isAffiche = 1')
+            ->where('sect.id = :id_secteur AND v.dateModification = \'0000-00-00 00:00:00\' AND v.isAffiche = 1')
             ->setParameter('id_secteur', $id_secteur)
             ->getQuery();
         return $query->getResult();
+    }
+    
+    public function rechercheTerme($id_societe, $id_theme)
+    {
+        
     }
 
     public function findLEParThematiqueBySecteurAndSuffixe($id_secteur, $id_suffixe)
@@ -36,12 +41,15 @@ class VocabulaireRepository extends EntityRepository
             ->innerJoin('vs.societe', 's')
             ->innerJoin('v.vocabulaireSecteurs', 'vsect')
             ->innerJoin('vsect.secteur', 'sect')
-            ->innerJoin('s.suffixeSocietes', 'sf')
+            ->innerJoin('s.suffixeSocietes', 'sfs')
+            ->innerJoin('sfs.suffixe', 'sf')
             ->where('sect.id = :id_secteur AND sf.id = :id_suffixe AND v.dateModification =\'0000-00-00 00:00:00\' AND v.isAffiche = 1')
             ->setParameter('id_secteur', $id_secteur)
             ->setParameter('id_suffixe', $id_suffixe)
             ->getQuery();
+        
         return $query->getResult();
+        
     }
 
     public function getNBTermesParLE($id_theme, $id_prototype_access)

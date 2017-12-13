@@ -4,7 +4,6 @@ namespace Formation\VocabulaireBundle\Controller;
 
 use Formation\VocabulaireBundle\Entity\NbPage;
 use Formation\VocabulaireBundle\Entity\TableDesMatieresProto;
-use Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -12,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImportationCorpsController extends Controller {
 
+    
     /**
      * @Route("/generateCorpsGlossaire/{id}/{id_societe}", name="generateCorpsGlossaire")
      */
@@ -102,7 +102,7 @@ class ImportationCorpsController extends Controller {
             $em->flush();
             $j++;
         }
-        /* fin */
+        
 
         $nb_page = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:NbPage')->getNbPage($id);
 
@@ -126,14 +126,15 @@ class ImportationCorpsController extends Controller {
             $x++;
         }
 
-
+        $totaltableau = array();
         return $this->render('FormationVocabulaireBundle:Impression:impressionCorpsGlossaire.html.twig', array(
                     'id' => $id,
-                    'totaltableau' => [],
+                    'totaltableau' => $totaltableau,
                     'id_societe' => $id_societe
         ));
     }
 
+    
     /**
      * @Route("/impressionCorpsGlossaire/{id}/{id_societe}", name="impressionCorpsGlossaire")
      */
@@ -141,7 +142,7 @@ class ImportationCorpsController extends Controller {
         ini_set('max_execution_time', -1); //0=NOLIMIT
         ini_set('memory_limit', '2048M');
         $snappy = $this->get('knp_snappy.pdf');
-        $snappy->getInternalGenerator()->setTimeout(500);
+        $snappy->getInternalGenerator()->setTimeout(1500);
         $societe_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe')->find($id_societe);
         $pdf = new \Formation\VocabulaireBundle\Model\PDF();
         $nom_societe = $pdf->getClient($societe_obj);
@@ -151,16 +152,17 @@ class ImportationCorpsController extends Controller {
         $prototypeTitle = mb_strtoupper($prototypeTitle, 'UTF-8');
         $filename = 'CorpsGlossaire' . $nom_societe . '' . $prototypeTitle;
         $link = $this->generateUrl(
-                'impressionCorpsGlossaire', [
-            'id' => $id,
-            'id_societe' => $id_societe,
-                ], UrlGeneratorInterface::ABSOLUTE_URL
+                'generateCorpsGlossaire', 
+                    [
+                        'id' => $id,
+                        'id_societe' => $id_societe,
+                    ], UrlGeneratorInterface::ABSOLUTE_URL
         );
 
         return new Response($snappy->getOutput($link), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
-                )
+           )
         );
     }
 

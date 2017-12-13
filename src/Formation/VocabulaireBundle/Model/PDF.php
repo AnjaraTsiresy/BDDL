@@ -372,7 +372,6 @@ class PDF
 				
 		}
 		
-		//echo "nbre_k :: $nbre_k  Fin -------------- nbreLigneInterne :: $nbreLigneInterne <br />";
 		
 	}	
 
