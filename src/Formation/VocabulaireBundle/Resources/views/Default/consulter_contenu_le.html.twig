@@ -1,2 +1,21 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+
+<table id="tableau">
+    <thead>
+        <tr>
+            <th scope="col">{{ nb_termes }} termes associés</th>
+            <th scope="col">Terme en anglais</th>
+            <th scope="col">Terme en anglais</th>
+        </tr>
+    </thead>
+    {% for vocab in vocabulaires %}
+    <tr>
+        <td></td>
+        <td><p class="terme_fr sous_titre_fr" >{{ vocab.langue_origine }} </p></td>
+        <td><p class="terme_en">{{ vocab.langue_traduction }}</p></td>
+    </tr>
+    {% endfor %}
+    <tbody>
+    </tbody>
+</table>

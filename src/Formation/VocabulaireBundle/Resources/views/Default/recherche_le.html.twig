@@ -16,7 +16,7 @@
 {% block body %}
     <br/><br/>
     <DIV id="prepage" class="waiting" style="display:none;">
-        <img src="images/ajax_loader.gif"/>
+        <img src="{{ asset('images/ajax_loader.gif') }}"/>
     </DIV>
     <div class="titreMenu">
         <p>Ecran d'exportation des contenus des lexiques élémentaires</p>
@@ -80,7 +80,7 @@
 				</div>
 			</td>
 			<td>
-				<form method="post" action="exportExcel1.php">
+				<form method="post" action="{{ path('export_le_recherche_terme') }}">
 					<input type="hidden" name="id_societe" value="{{ theme.id_societe }}"/>
 					<input type="hidden" name="id_theme" value="{{ theme.id_theme }}"/>
 					<input type="submit" value="Exporter le contenu vers excel" />
@@ -98,8 +98,7 @@
         function refresh1(id_societe, id_theme, idinput) {
             $("#resultDiv").empty();
             $.ajax({
-                url: "consulterContenuLE.php",
-                data: 'id_societe=' + id_societe + '&id_theme=' + id_theme,
+                url: "{{ path('consulter_contenu_le',{'id_societe' : id_societe, 'id_theme' : id_theme  }) }}",
                 dataType: 'html',
                 success: function (html) {
                     $("#resultDiv" + id_theme).html(html);

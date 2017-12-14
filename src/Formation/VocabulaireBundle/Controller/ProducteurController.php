@@ -106,7 +106,7 @@ class ProducteurController extends Controller
             $id_theme = $request->get('id_theme');
         }
         if ($request->get('theme')) {
-            $id_theme = $request->get('theme');
+            $theme = $request->get('theme');
         }
         if ($request->get('nom_prototype')) {
             $nom_prototype = $request->get('nom_prototype');
@@ -115,6 +115,7 @@ class ProducteurController extends Controller
         }
         $themes = array();
         $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
+        $repositoryLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
         if ($request->get('id_societe')) {
             $id_societe = $request->get('id_societe');
             $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
@@ -128,18 +129,25 @@ class ProducteurController extends Controller
         } else $themes = $repositoryTheme->findAllTheme();
         $has_data = 0;
         $valuesIdtheme = "";
-        if ($nom_prototype == "" && $id_theme == "" && $id_societe == "") {
+        if ($nom_prototype == "" && $id_theme == "" && $theme == "") {
             $themes_array = [];
         }
         else{
-            $themes_array = $repositoryTheme->findAllLE($nom_prototype, $id_theme, $id_societe);
+            $themes_array = $repositoryLexique->findAllLE1($nom_prototype, $id_theme, $theme);
+          
             $nb_LE = count($themes_array);
             foreach ($themes_array as $the)
+            {
+               // $id_theme = $the['id_theme'];
+                $id_societe = $the['id_societe'];
                 $valuesIdtheme = $valuesIdtheme.",".$the['id_theme'];
+            }
             $has_data = 1;
         }
+        
         return $this->render('FormationVocabulaireBundle:Default:recherche_le.html.twig', array(
             'themes' => $themes,
+            'id_societe'=> $id_societe,
             'id_theme' => $id_theme,
             'theme' => $theme,
             'nom_prototype' => $nom_prototype,
@@ -151,17 +159,29 @@ class ProducteurController extends Controller
     }
     
      /**
-     * @Route("/consulter_contenu_le", name="consulter_contenu_le")
+     * @Route("/consulter_contenu_le/{id_societe}/{id_theme}", name="consulter_contenu_le")
      */
     public function consulterContenuLeAction($id_societe, $id_theme)
     {
         $id_societe = intval($id_societe);
         $id_theme = intval($id_theme);
-
+        $vocabulaires = array();
+        $nb_termes = 0;
+        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+       
+        if($id_societe == "" && $id_theme == ""){
+		$vocabulaires = [];
+	}else{
+            $vocabulaires = $repositoryVocabulaire->rechercheTerme($id_societe, $id_theme);
+            $nb_termes = count($vocabulaires);
+            
+        }
+        
         return $this->render('FormationVocabulaireBundle:Default:consulter_contenu_le.html.twig', array(
-            'id_secteur' => $id_secteur,
-            'nb_societe' => $nb_societe,
-            'prototype_access_array' => $prototype_access_array
+            'id_societe' => $id_societe,
+            'id_theme' => $id_theme,
+            'nb_termes' => $nb_termes,
+            'vocabulaires' => $vocabulaires
         ));
     }
     
@@ -351,6 +371,81 @@ class ProducteurController extends Controller
             $sheet->setCellValue('I' . $counter, $v['source_nom_stagiaire']);
             $sheet->setCellValue('J' . $counter, $v['lien_nom_doc']);
             $sheet->setCellValue('K' . $counter, $v['lien']);
+            $counter++;
+        }
+
+        $phpExcelObject->getActiveSheet()->setTitle('Vocabulaire');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // adding headers
+        $dispositionHeader = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'contenuLE.xls'
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+
+    }
+    
+    
+    /**
+     * @Route("/export_le_recherche_terme", name="export_le_recherche_terme")
+     */
+    public function exportLeRechercheTermeAction(Request $request)
+    {
+        $id_societe = intval($request->get('id_societe'));
+        $id_theme = intval($request->get('id_theme'));
+        $vocabulaires = array();
+        $nb_termes = 0;
+        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+       
+        if($id_societe == "" && $id_theme == ""){
+		$vocabulaires = [];
+	}else{
+            $vocabulaires = $repositoryVocabulaire->exportRechercheTerme($id_societe, $id_theme);
+            $nb_termes = count($vocabulaires);
+            
+        }
+        // ask the service for a Excel5
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+
+        $phpExcelObject->getProperties()->setCreator("liuggio")
+            ->setTitle('Vocabulaire')
+            ->setSubject('Vocabulaire');
+
+        $sheet = $phpExcelObject->setActiveSheetIndex(0);
+
+        $sheet->setCellValue('A1', 'Société');
+        $sheet->setCellValue('B1', 'Francais');
+        $sheet->setCellValue('C1', 'Anglais');
+        $sheet->setCellValue('D1', 'Thème en français');
+        $sheet->setCellValue('E1', 'Thème en anglais');
+        $sheet->setCellValue('F1', 'Source(Type)');
+        $sheet->setCellValue('G1', 'Source (Nom stagiaire)');
+        $sheet->setCellValue('H1', 'Titre du document/de l article');
+        $sheet->setCellValue('I1', 'Lien');
+
+        $counter = 2;
+        foreach ($vocabulaires as $v) {
+            $sheet->setCellValue('A' . $counter, $v['description']);
+            $sheet->setCellValue('B' . $counter, $v['libelle_theme']);
+            $sheet->setCellValue('C' . $counter, $v['theme_eng']);
+            $sheet->setCellValue('D' . $counter, $v['langue_origine']);
+            $sheet->setCellValue('E' . $counter, $v['langue_traduction']);
+            $sheet->setCellValue('F' . $counter, $v['source_type']);
+            $sheet->setCellValue('G' . $counter, $v['source_nom_stagiaire']);
+            $sheet->setCellValue('H' . $counter, $v['lien_nom_doc']);
+            $sheet->setCellValue('I' . $counter, $v['lien']);
             $counter++;
         }
 

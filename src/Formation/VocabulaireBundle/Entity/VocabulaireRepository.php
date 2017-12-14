@@ -29,9 +29,38 @@ class VocabulaireRepository extends EntityRepository
     
     public function rechercheTerme($id_societe, $id_theme)
     {
-        
+        $query = $this
+            ->createQueryBuilder('v')
+            ->select('distinct v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+            ->innerJoin('v.vocabulaireThemes', 'vt')
+            ->innerJoin('vt.theme', 't')
+            ->innerJoin('v.vocabulaireSocietes', 'vs')
+            ->innerJoin('vs.societe', 's')  
+            ->where('t.id = :id_theme AND s.id = :id_societe')
+            ->setParameter('id_theme', $id_theme)
+            ->setParameter('id_societe', $id_societe)
+            ->getQuery();
+        return $query->getResult();
     }
-
+    
+    public function exportRechercheTerme($id_societe, $id_theme)
+    {
+        $query = $this
+            ->createQueryBuilder('v')
+            ->select('distinct v.id as id_vocabulaire,s.description as description, t.libelleTheme as libelle_theme, t.themeEng as theme_eng,  v.langueTraduction as langue_traduction,
+		so.sourceType as source_type,v.langueOrigine as langue_origine, so.sourceNomStagiaire as source_nom_stagiaire, so.lienNomDoc as lien_nom_doc, so.lien as lien')
+            ->innerJoin('v.vocabulaireThemes', 'vt')
+            ->innerJoin('vt.theme', 't')
+            ->innerJoin('v.vocabulaireSocietes', 'vs')
+            ->innerJoin('vs.societe', 's') 
+            ->innerJoin('v.source', 'so')
+            ->where('t.id = :id_theme AND s.id = :id_societe')
+            ->setParameter('id_theme', $id_theme)
+            ->setParameter('id_societe', $id_societe)
+            ->getQuery();
+        return $query->getResult();
+    }
+    
     public function findLEParThematiqueBySecteurAndSuffixe($id_secteur, $id_suffixe)
     {
         $query = $this

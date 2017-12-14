@@ -50,6 +50,21 @@ class ThemeRepository extends EntityRepository {
                     ->setParameter('id_societe', $id_societe)
                     ->groupBy('t.id')
                     ->getQuery();
+
+            if ($nom_prototype != "") {
+                $query = $this
+                        ->createQueryBuilder('t')
+                        ->select('t.libelleTheme as libelle_theme, t.id as id_theme, s.id as id_societe, s.description as description')
+                        ->innerJoin('t.lexiques', 'l')
+                        ->innerJoin('l.prototypeAccess', 'pa')
+                        ->innerJoin('l.societe', 's')
+                        ->where('s.id = :id_societe AND s.id != 653')
+                        ->andWhere('lower(pa.type) LIKE :nom_prototype ')
+                        ->setParameter('nom_prototype','%'.$nom_prototype.'%')
+                        ->setParameter('id_societe', $id_societe)
+                        ->groupBy('t.id')
+                        ->getQuery();
+            }
         }
 
 
@@ -63,6 +78,73 @@ class ThemeRepository extends EntityRepository {
                     ->setParameter('id_theme', $id_theme)
                     ->groupBy('t.id')
                     ->getQuery();
+
+            if ($nom_prototype != "") {
+                $query = $this
+                        ->createQueryBuilder('t')
+                        ->select('t.libelleTheme as libelle_theme, t.id as id_theme, s.id as id_societe, s.description as description')
+                        ->innerJoin('t.lexiques', 'l')
+                        ->innerJoin('l.societe', 's')
+                        ->innerJoin('l.prototypeAccess', 'pa')
+                        ->where('t.id = :id_theme AND s.id != 653')
+                        ->andWhere('lower(pa.type) LIKE :nom_prototype ')
+                        ->setParameter('nom_prototype','%'.$nom_prototype.'%')
+                        ->setParameter('id_theme', $id_theme)
+                        ->groupBy('t.id')
+                        ->getQuery();
+            }
+        }
+
+        if ($id_theme != "" && $id_societe != "") {
+            $query = $this
+                    ->createQueryBuilder('t')
+                    ->select('t.libelleTheme as libelle_theme, t.id as id_theme, s.id as id_societe, s.description as description')
+                    ->innerJoin('t.lexiques', 'l')
+                    ->innerJoin('l.societe', 's')
+                    ->where('t.id = :id_theme AND s.id = :id_societe AND s.id != 653')
+                    ->setParameter('id_theme', $id_theme)
+                    ->setParameter('id_societe', $id_societe)
+                    ->groupBy('t.id')
+                    ->getQuery();
+            if ($nom_prototype != "") {
+                $query = $this
+                        ->createQueryBuilder('t')
+                        ->select('t.libelleTheme as libelle_theme, t.id as id_theme, s.id as id_societe, s.description as description')
+                        ->innerJoin('t.lexiques', 'l')
+                        ->innerJoin('l.societe', 's')
+                        ->innerJoin('l.prototypeAccess', 'pa')
+                        ->where('t.id = :id_theme AND s.id = :id_societe AND s.id != 653')
+                        ->andWhere('lower(pa.type) LIKE :nom_prototype ')
+                        ->setParameter('nom_prototype','%'.$nom_prototype.'%')
+                        ->setParameter('id_theme', $id_theme)
+                        ->setParameter('id_societe', $id_societe)
+                        ->groupBy('t.id')
+                        ->getQuery();
+            }
+        }
+
+        if ($id_theme == "" && $id_societe == "") {
+            $query = $this
+                    ->createQueryBuilder('t')
+                    ->select('t.libelleTheme as libelle_theme, t.id as id_theme, s.id as id_societe, s.description as description')
+                    ->innerJoin('t.lexiques', 'l')
+                    ->innerJoin('l.societe', 's')
+                    ->where('s.id != 653')
+                    ->groupBy('t.id')
+                    ->getQuery();
+            if ($nom_prototype != "") {
+                $query = $this
+                        ->createQueryBuilder('t')
+                        ->select('t.libelleTheme as libelle_theme, t.id as id_theme, s.id as id_societe, s.description as description')
+                        ->innerJoin('t.lexiques', 'l')
+                        ->innerJoin('l.societe', 's')
+                        ->innerJoin('l.prototypeAccess', 'pa')
+                        ->where('s.id != 653')
+                        ->andWhere('lower(pa.type) LIKE :nom_prototype ')
+                        ->setParameter('nom_prototype','%'.$nom_prototype.'%')
+                        ->groupBy('t.id')
+                        ->getQuery();
+            }
         }
 
 
