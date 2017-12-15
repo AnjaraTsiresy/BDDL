@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
  * VocabulaireTraducteur
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\VocabulaireTraducteurRepository")
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireTraducteurRepository")
  */
 class VocabulaireTraducteur
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id_vocabulaire_traducteur", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */

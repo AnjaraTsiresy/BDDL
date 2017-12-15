@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        #prepage {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <br/><br/>
+    <div class="titreMenu">
+        <p>Ecran de recherche par termes</p>
+    </div>
+    <div>
+        <form action="{{ path('consulter_vocabulaire_par_theme') }}">
+            <table id="recherche">
+                <tbody>
+                    <tr>
+                        <td>Terme</td>
+                        <td>
+                            <input type="text" value="{{ terme }}" name="terme" id="terme">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Effectuer la recherche sur :</td>
+                        <td>
+                            <p><input type="radio" value="toutes" id="anglais_francais" name="langues_recherche">l'anglais et le français</p>
+                            <p class="terme_en"><input type="radio" value="anglais" id="anglais"  name="langues_recherche">l'anglais seulement</p>
+                            <p class="terme_fr"><input type="radio" value="francais" id="francais"  name="langues_recherche">le français seulement</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Chercher"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <br/><br/><br/><br/>
+    {% if nb_vocab > 0 %}
+        <div class="titreMenu">
+            <p>
+                {{ nb_vocab }} terme(s) trouvé(s)
+            </p>
+        </div>
+        <form method="post" action="exportTermeExcel.php">
+            <table id="recherche">
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="hidden" name="terme" value="{{ terme }}"/>
+                            <input type="hidden" name="langues_recherche" value="{{ langues_recherche }}"/>
+                            <input type="submit" value="Exporter vers excel" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <br/><br/>
+        <table id="tableau">
+            <thead>
+                <tr>
+                    <th scope="col"><table style="background: #FFF;">
+                            <tr>
+                                <td>&nbsp;français&nbsp;</td>
+                                <td>
+                                    <a class="styleFiltre" href="{{ path('consulter_vocabulaire_par_theme', {'terme': terme, 'dic': 'fr1'}) }}">
+                                        <img src="{{ asset('images/haut.jpeg') }}" width="15">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="styleFiltre" href="{{ path('consulter_vocabulaire_par_theme', {'terme': terme, 'dic': 'fr2'}) }}">
+                                        <img src="{{ asset('images/bas.jpeg') }}" width="15">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </th>
+                    <th scope="col">
+                        <table style="background: #FFF;">
+                            <tr>
+                                <td>
+                                    anglais
+                                </td>
+                                <td>
+                                    <a class="styleFiltre" href="{{ path('consulter_vocabulaire_par_theme', {'terme': terme, 'dic': 'en1'}) }}">
+                                        <img src="{{ asset('images/haut.jpeg') }}" width="15">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="styleFiltre" href="{{ path('consulter_vocabulaire_par_theme', {'terme': terme, 'dic': 'en2'}) }}">
+                                        <img src="{{ asset('images/bas.jpeg') }}" width="15">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </th>
+                    <th scope="col">LE</th>
+                    <th scope="col">Action1</th>
+                    <th scope="col">Action2</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in vocabulaires %}
+                    <tr>
+                        <td><p class="terme_fr sous_titre_fr" >{{ v.langue_origine }} </p></td>
+                        <td><p class="terme_en">{{ v.langue_traduction }}</p></td>
+                        <td><p>{{ v.libelle_theme }}</p></td>
+                        <td><input type="button" value="Modifier" onclick="modifier({{ v.id_vocabulaire }})"></td>
+                        <td>
+                            {% if langues_recherche == '' %}
+                            <a href="{{ path('delete_vocab', {'id': v.id_vocabulaire  , 'langues_recherche' : 'empty','terme': terme,  'id_theme' : 1 }) }}" class="deleteCritere">
+                                <img src="{{ asset('images/delete.png') }}"/>          
+                            </a>
+                            {% else %}
+                            <a href="{{ path('delete_vocab', {'id': v.id_vocabulaire  , 'langues_recherche' : langues_recherche,'terme': terme,  'id_theme' : 1 }) }}" class="deleteCritere">
+                                <img src="{{ asset('images/delete.png') }}"/>          
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>                    
+                {%endfor%}
+            </tbody>
+        </table>
+    {% endif %}
+
+{% endblock %}  
+{% block javascripts %}
+    <script>
+        function modifier(i) {
+            width = 1000;
+            height = 1000;
+            if (window.innerWidth)
+            {
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+            } else
+            {
+                var left = (document.body.clientWidth - width) / 2;
+                var top = (document.body.clientHeight - height) / 2;
+            }
+            window.open('modifierVocabulaire.php?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+        }
+    </script>
+{% endblock %}
