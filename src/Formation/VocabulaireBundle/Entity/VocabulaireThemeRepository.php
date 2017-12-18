@@ -12,4 +12,30 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulaireThemeRepository extends EntityRepository
 {
+    public function getVocabulaireThemeByVocabulaire($id_vocabulaire) {
+        $query = $this
+                ->createQueryBuilder('vt')
+                ->select('v.id as id_vocabulaire, t.libelleTheme as libelle_theme')
+                ->innerJoin('vt.vocabulaire', 'v')
+                ->innerJoin('vt.theme', 't')
+                ->where('v.id = :id_vocabulaire')
+                ->setParameter('id_vocabulaire', $id_vocabulaire)
+                ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function modifyOneCritere($id_vocabulaire) {
+        $query = $this
+                ->createQueryBuilder('vt')
+                ->select('distinct t.libelleTheme as libelle_theme')
+                ->innerJoin('vt.vocabulaire', 'v')
+                ->innerJoin('vt.theme', 't')
+                ->where('v.id = :id_vocabulaire')
+                ->setParameter('id_vocabulaire', $id_vocabulaire)
+                ->groupBy("v.id")
+                ->getQuery();
+
+        return $query->getResult();
+    }
 }

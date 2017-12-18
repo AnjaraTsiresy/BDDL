@@ -12,5 +12,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulaireEnvirUsageRepository extends EntityRepository
 {
+    public function getVocabulaireEnvirUsageByVocabulaire($id_vocabulaire) {
+        $query = $this
+                ->createQueryBuilder('veu')
+                ->select('v.id as id_vocabulaire, e.libelleEnvironnementUsage as libelle_env_usage')
+                ->innerJoin('veu.vocabulaire', 'v')
+                ->innerJoin('veu.environnement_usage', 'e')
+                ->where('v.id = :id_vocabulaire')
+                ->setParameter('id_vocabulaire', $id_vocabulaire)
+                ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function modifyOneCritere($id_vocabulaire) {
+        $query = $this
+                ->createQueryBuilder('veu')
+                ->select('distinct e.libelleEnvironnementUsage as libelle_env_usage')
+                ->innerJoin('veu.vocabulaire', 'v')
+                ->innerJoin('veu.environnement_usage', 'e')
+                ->where('v.id = :id_vocabulaire')
+                ->setParameter('id_vocabulaire', $id_vocabulaire)
+                ->groupBy("v.id")
+                ->getQuery();
+
+        return $query->getResult();
+    }
 }
 

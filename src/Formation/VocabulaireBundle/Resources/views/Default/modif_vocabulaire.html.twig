@@ -1,0 +1,129 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+<script src="{{ asset('js/jquery-1.10.2.js') }}"></script>
+<script src="{{ asset('js/jquery-ui.js') }}"></script>
+<style>
+    input[type=text]{
+        width:350px;
+    }
+</style>
+<h2>Modification du vocabulaire et des critères associés</h2>
+<form action="modifierVocabulaireaction.php" method="post" enctype="multipart/form-data"  name="certform">
+    <table id='recherche'>
+        <input name="id" type="hidden" value="{{ id }}" />
+        <input name="id_source" type="hidden" value="{{ id_source }} ?>" />
+        <tr>
+            <td>Terme en français</td>
+            <td><input type="text" name="langue_origine" value="{{ langue_origine }}"/></td>
+        </tr>
+        <tr>
+            <td>Terme en anglais</td>
+            <td><input type="text" name="langue_traduction" value="{{ langue_traduction }}"/></td>
+        </tr>
+
+    </table>
+    <table id='recherche'>
+        <tr>
+            <td>Critères associés</td>
+            <td></td>
+        </tr>
+        <tr>
+            {% if nb_societe == 0 %}
+                <td>{{ critereSociete }}</td>
+                <td>
+                    <p>
+                        Aucune société associée
+                    </p>
+                </td>
+            {% elseif nb_societe == 1 %}
+                <td>{{ critereSociete }}</td>
+                <td>
+                    <p>
+                        {{ description_societe }}
+                    </p>
+                </td>
+            {% else %}
+                <td>{{ critereSociete }}</td>
+                <td>
+                    <p>
+                        {% for v in vocabulaireSocietes %}
+                            {{ v.description }},
+                        {% endfor %}
+                    </p>
+                </td>
+            {% endif %}
+        </tr>
+        <tr>
+            {% if nb_theme == 0 %}
+                <td>{{ critereTheme }}</td>
+                <td>
+                    <p>
+                        Aucune société associée
+                    </p>
+                </td>
+            {% elseif nb_theme == 1 %}
+                <td>{{ critereTheme }}</td>
+                <td>
+                    <p>
+                        {{ libelle_theme }}
+                    </p>
+                </td>
+            {% else %}
+                <td>{{ critereTheme }}</td>
+                <td>
+                    <p>
+                        {% for v in vocabulaireThemes %}
+                            {{ v.libelle_theme }},
+                        {% endfor %}
+                    </p>
+                </td>
+            {% endif %}
+        </tr>
+        <tr>
+            {% if nb_env_usg == 0 %}
+                <td>{{ critereEnvirUsage }}</td>
+                <td>
+                    <p>
+                        Aucune société associée
+                    </p>
+                </td>
+            {% elseif nb_env_usg == 1 %}
+                <td>{{ critereEnvirUsage }}</td>
+                <td>
+                    <p>
+                        {{ libelle_env_usage }}
+                    </p>
+                </td>
+            {% else %}
+                <td>{{ critereEnvirUsage }}</td>
+                <td>
+                    <p>
+                        {% for v in vocabulaireEnvirUsages %}
+                            {{ v.libelle_env_usage }},
+                        {% endfor %}
+                    </p>
+                </td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Rang</td>
+            <td><input type="text" name="rang" value="{{ rang }} "/></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Enregistrer" /></td>
+            <td><input type="button" name="Annuler" value="Annuler" onclick="window.close();" /></td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        function closeSelf(f) {
+            //alert("ato");
+            f.submit();
+            setTimeout(function () {
+                window.close();
+            }, 1000);
+
+        }
+        $i = 1;
+        $j = 1;
+    </script>

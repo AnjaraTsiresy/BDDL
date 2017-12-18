@@ -3,21 +3,20 @@
 namespace Formation\VocabulaireBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class ProducteurController extends Controller
-{
+class ProducteurController extends Controller {
+
     /**
      * @Route("/recherche_thematique", name="recherche_thematique")
      */
-    public function recherche_thematiqueAction(Request $request)
-    {
+    public function recherche_thematiqueAction(Request $request) {
         ini_set('max_execution_time', -1); //0=NOLIMIT
         ini_set('memory_limit', '2048M');
-        
+
         $id_secteur = 0;
         $id_suffixe = 0;
         $libelle_secteur = '';
@@ -34,38 +33,30 @@ class ProducteurController extends Controller
             if ($request->get('id_suffixe')) {
                 $id_suffixe = $request->get('id_suffixe');
                 $vocabulaires = $repositoryVocabulaire->findLEParThematiqueBySecteurAndSuffixe($id_secteur, $id_suffixe);
-               
-                
             } else {
                 $vocabulaires = $repositoryVocabulaire->findLEParThematiqueBySecteur($id_secteur);
             }
         }
-        
-        $has_voc = 0;     
+
+        $has_voc = 0;
         $vocabulaires_sect = $repositoryVocabulaire->findLEParThematiqueBySecteur($id_secteur);
         foreach ($vocabulaires_sect as $voc) {
             $has_voc = 1;
             $has_list = 0;
             $id_soc = $voc['id_societe'];
             $suffixes_array = $repositorySuffixe->findSuffixeThematiqueBySociete($id_soc);
-            foreach ($suffixes_array as $suf)
-            {
-               foreach($suffixes as $suffi)
-               {
-                    if($suffi == $suf)
-                    {
+            foreach ($suffixes_array as $suf) {
+                foreach ($suffixes as $suffi) {
+                    if ($suffi == $suf) {
                         $has_list = 1;
                     }
-               }
-               if($has_list == 0)
-               {
-                   $suffixes[] = $suf;
-               }
+                }
+                if ($has_list == 0) {
+                    $suffixes[] = $suf;
+                }
             }
-                
         }
-        foreach($vocabulaires as $voc)
-        {
+        foreach ($vocabulaires as $voc) {
             $vocab = new \Formation\VocabulaireBundle\Model\Vocabulaire();
             $vocab->set_id_societe($voc['id_societe']);
             $vocab->set_libelle_secteur($voc['libelle_secteur']);
@@ -73,25 +64,23 @@ class ProducteurController extends Controller
             $vocab->set_prototypes($repositoryPrototypeAccess->getNbProtoParSociete($voc['id_societe']));
             $vocabulaires_array[] = $vocab;
         }
-        
-        return $this->render('FormationVocabulaireBundle:Default:recherche_thematique.html.twig', array(
-            'secteurs' => $secteurs,
-            'societes' => $vocabulaires_array,
-            'id_secteur' => $id_secteur,
-            'id_suffixe' => $id_suffixe,
-            'suffixes' => $suffixes,
-            'libelle_secteur' => $libelle_secteur,
-            'nb_societe' => count($vocabulaires),
-            'has_voc' => $has_voc,
-        ));
 
+        return $this->render('FormationVocabulaireBundle:Default:recherche_thematique.html.twig', array(
+                    'secteurs' => $secteurs,
+                    'societes' => $vocabulaires_array,
+                    'id_secteur' => $id_secteur,
+                    'id_suffixe' => $id_suffixe,
+                    'suffixes' => $suffixes,
+                    'libelle_secteur' => $libelle_secteur,
+                    'nb_societe' => count($vocabulaires),
+                    'has_voc' => $has_voc,
+        ));
     }
 
     /**
      * @Route("/recherche_le", name="recherche_le")
      */
-    public function recherche_leAction(Request $request)
-    {
+    public function recherche_leAction(Request $request) {
         ini_set('max_execution_time', -1); //0=NOLIMIT
         ini_set('memory_limit', '2048M');
 
@@ -126,70 +115,178 @@ class ProducteurController extends Controller
                     $themes[] = $lexique->getTheme();
                 }
             }
-        } else $themes = $repositoryTheme->findAllTheme();
+        } else
+            $themes = $repositoryTheme->findAllTheme();
         $has_data = 0;
         $valuesIdtheme = "";
         if ($nom_prototype == "" && $id_theme == "" && $theme == "") {
             $themes_array = [];
-        }
-        else{
+        } else {
             $themes_array = $repositoryLexique->findAllLE1($nom_prototype, $id_theme, $theme);
-          
+
             $nb_LE = count($themes_array);
-            foreach ($themes_array as $the)
-            {
-               // $id_theme = $the['id_theme'];
+            foreach ($themes_array as $the) {
+                // $id_theme = $the['id_theme'];
                 $id_societe = $the['id_societe'];
-                $valuesIdtheme = $valuesIdtheme.",".$the['id_theme'];
+                $valuesIdtheme = $valuesIdtheme . "," . $the['id_theme'];
             }
             $has_data = 1;
         }
-        
+
         return $this->render('FormationVocabulaireBundle:Default:recherche_le.html.twig', array(
-            'themes' => $themes,
-            'id_societe'=> $id_societe,
-            'id_theme' => $id_theme,
-            'theme' => $theme,
-            'nom_prototype' => $nom_prototype,
-            'themes_array' => $themes_array,
-            'nb_LE' => $nb_LE,
-            'has_data' => $has_data,
-            'valuesIdtheme' => $valuesIdtheme
+                    'themes' => $themes,
+                    'id_societe' => $id_societe,
+                    'id_theme' => $id_theme,
+                    'theme' => $theme,
+                    'nom_prototype' => $nom_prototype,
+                    'themes_array' => $themes_array,
+                    'nb_LE' => $nb_LE,
+                    'has_data' => $has_data,
+                    'valuesIdtheme' => $valuesIdtheme
         ));
     }
-    
-     /**
+
+    /**
      * @Route("/consulter_contenu_le/{id_societe}/{id_theme}", name="consulter_contenu_le")
      */
-    public function consulterContenuLeAction($id_societe, $id_theme)
-    {
+    public function consulterContenuLeAction($id_societe, $id_theme) {
         $id_societe = intval($id_societe);
         $id_theme = intval($id_theme);
         $vocabulaires = array();
         $nb_termes = 0;
         $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
-       
-        if($id_societe == "" && $id_theme == ""){
-		$vocabulaires = [];
-	}else{
+
+        if ($id_societe == "" && $id_theme == "") {
+            $vocabulaires = [];
+        } else {
             $vocabulaires = $repositoryVocabulaire->rechercheTerme($id_societe, $id_theme);
             $nb_termes = count($vocabulaires);
-            
         }
-        
+
         return $this->render('FormationVocabulaireBundle:Default:consulter_contenu_le.html.twig', array(
-            'id_societe' => $id_societe,
-            'id_theme' => $id_theme,
-            'nb_termes' => $nb_termes,
-            'vocabulaires' => $vocabulaires
+                    'id_societe' => $id_societe,
+                    'id_theme' => $id_theme,
+                    'nb_termes' => $nb_termes,
+                    'vocabulaires' => $vocabulaires
         ));
     }
-    
+
+    /**
+     * @Route("/modif_vocabulaire", name="modif_vocabulaire")
+     */
+    public function modifVocabulaireAction(Request $request) {
+        ini_set('memory_limit', '2048M');
+        $id = 0;
+        $id_source = 0;
+        $nb_societe = 0;
+        $nb_env_usg = 0;
+        $nb_theme = 0;
+        $langue_origine = "";
+        $critereSociete = "";
+        $critereEnvirUsage = "";
+        $critereTheme = "";
+        $langue_traduction = "";
+        $description_societe = "";
+        $libelle_env_usage = "";
+        $libelle_theme = "";
+        $rang = "";
+        if ($request->get('id')) {
+            $id = $request->get('id');
+        }
+
+        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+        $repositoryVocabulaireSociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete');
+        $repositoryVocabulaireTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireTheme');
+        $repositoryVocabulaireEnvirUsage = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireEnvirUsage');
+
+        $vocabulaire = $repositoryVocabulaire->find($id);
+        if ($vocabulaire != null) {
+            $id_source = $vocabulaire->getSource()->getId();
+            $langue_origine = $vocabulaire->getLangueOrigine();
+            $langue_traduction = $vocabulaire->getLangueTraduction();
+            $rang = $vocabulaire->getRang();
+            //societe
+            $vocabulaireSocietes = $repositoryVocabulaireSociete->getVocabulaireSocieteByVocabulaire($id);
+            $nb_societe = count($vocabulaireSocietes);
+            $critereSociete = "Société";
+            if ($nb_societe == 1) {
+                $vSmodifyOneCritere = $repositoryVocabulaireSociete->modifyOneCritere($id);
+                foreach ($vSmodifyOneCritere as $vs) {
+                    $description_societe = $vs['description'];
+                }
+            }
+
+            //theme
+            $vocabulaireThemes = $repositoryVocabulaireTheme->getVocabulaireThemeByVocabulaire($id);
+            $nb_theme = count($vocabulaireThemes);
+            $critereTheme = "Thème";
+            if ($nb_theme == 1) {
+                $vTmodifyOneCritere = $repositoryVocabulaireTheme->modifyOneCritere($id);
+                foreach ($vTmodifyOneCritere as $vt) {
+                    $libelle_theme = $vt['libelle_theme'];
+                }
+            }
+
+            //Environnement usage
+            $vocabulaireEnvirUsages = $repositoryVocabulaireEnvirUsage->getVocabulaireEnvirUsageByVocabulaire($id);
+            $nb_env_usg = count($vocabulaireEnvirUsages);
+            $critereEnvirUsage = "Environnement d'usage";
+            if ($nb_env_usg == 1) {
+                $vEnvmodifyOneCritere = $repositoryVocabulaireEnvirUsage->modifyOneCritere($id);
+                foreach ($vEnvmodifyOneCritere as $vt) {
+                    $libelle_env_usage = $vt['libelle_env_usage'];
+                }
+            }
+        }
+
+        return $this->render('FormationVocabulaireBundle:Default:modif_vocabulaire.html.twig', array(
+                    'id' => $id,
+                    'rang' => $rang,
+                    'critereSociete' => $critereSociete,
+                    'description_societe' => $description_societe,
+                    'critereTheme' => $critereTheme,
+                    'libelle_theme' => $libelle_theme,
+                    'critereEnvirUsage' => $critereEnvirUsage,
+                    'libelle_env_usage' => $libelle_env_usage,
+                    'langue_origine' => $langue_origine,
+                    'langue_traduction' => $langue_traduction,
+                    'nb_societe' => $nb_societe,
+                    'vocabulaireSocietes' => $vocabulaireSocietes,
+                    'nb_theme' => $nb_theme,
+                    'vocabulaireEnvirUsages' => $vocabulaireEnvirUsages,
+                    'nb_env_usg' => $nb_env_usg,
+                    'vocabulaireThemes' => $vocabulaireThemes,
+                    'id_source' => $id_source
+        ));
+    }
+
+    private function getduplicaterows($a) {
+        $array_ = array();
+        foreach ($a as $c) {
+            $array[] = $c['id_vocabulaire'];
+            $array_ = array_unique(array_diff_assoc($array, array_unique($array)));
+        }
+        return $array_;
+    }
+
+    private function curPageURL() {
+        $url = "";
+        if (isset($_SERVER["HTTPS"]) && !empty($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] != 'on' )) {
+            $url = 'https://' . $_SERVER["SERVER_NAME"]; //https url
+        } else {
+            $url = 'http://' . $_SERVER["SERVER_NAME"]; //http url
+        }
+        if (( $_SERVER["SERVER_PORT"] != 80)) {
+            $url .= $_SERVER["SERVER_PORT"];
+        }
+        $url .= $_SERVER["REQUEST_URI"];
+        return $url;
+    }
+
     /**
      * @Route("/consulter_vocabulaire_par_theme", name="consulter_vocabulaire_par_theme")
      */
-    public function consulter_vocabulaire_par_themeAction(Request $request)
-    {
+    public function consulter_vocabulaire_par_themeAction(Request $request) {
         ini_set('memory_limit', '2048M');
         $terme = "";
         $sql = "";
@@ -197,9 +294,14 @@ class ProducteurController extends Controller
         $nb_vocab = 0;
         $vocabulaires = array();
         $langues_recherche = "";
-        
+
+        $url = $this->generateUrl(
+                'modif_vocabulaire', [
+                ], UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
         $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
-         
+
         if ($request->get('terme')) {
             $terme = $request->get('terme');
         }
@@ -209,119 +311,110 @@ class ProducteurController extends Controller
         if ($request->get('dic')) {
             $dic = $request->get('dic');
         }
-        
+
         $vocabulaires = $repositoryVocabulaire->findTermes($terme, $langues_recherche, $dic);
         $nb_vocab = count($vocabulaires);
 
         return $this->render('FormationVocabulaireBundle:Default:consulter_vocabulaire_par_theme.html.twig', array(
-            'terme' => $terme,
-            'sql' => $sql,
-            'nb_vocab'  => $nb_vocab,
-            'vocabulaires'  => $vocabulaires,
-            'langues_recherche' => $langues_recherche
+                    'terme' => $terme,
+                    'url' => $url,
+                    'sql' => $sql,
+                    'nb_vocab' => $nb_vocab,
+                    'vocabulaires' => $vocabulaires,
+                    'langues_recherche' => $langues_recherche
         ));
     }
-    
+
     /**
      * @Route("/delete_vocab/{id}/{langues_recherche}/{terme}/{id_theme}", name="delete_vocab")
      */
-    public function deleteVocabAction($id, $langues_recherche, $terme, $id_theme)
-    {
-        
+    public function deleteVocabAction($id, $langues_recherche, $terme, $id_theme) {
+
         $em = $this->getDoctrine()->getManager();
         $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
         $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
         $theme = $repositoryTheme->find($id_theme);
-        $vocabulaire = $repositoryVocabulaire->find($id_theme);
-      
-        if($theme != null && $vocabulaire != null)
-        {
+        $vocabulaire = $repositoryVocabulaire->find($id);
+
+        if ($theme != null && $vocabulaire != null) {
+
             $repositoryVocabulaireTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireTheme');
-            $vocabulaireTheme = $repositoryVocabulaireTheme->findBy(array('vocabulaire'=> $vocabulaire, 'theme'=> $theme));
-            foreach($vocabulaireTheme as $vt){
+            $vocabulaireTheme = $repositoryVocabulaireTheme->findBy(array('vocabulaire' => $vocabulaire, 'theme' => $theme));
+            foreach ($vocabulaireTheme as $vt) {
                 $em->remove($vt);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
+        if ($vocabulaire != null) {
+
             $repositoryVocabulaireSecteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSecteur');
-            $vocabulaireSecteur = $repositoryVocabulaireSecteur->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulaireSecteur as $vs){
+            $vocabulaireSecteur = $repositoryVocabulaireSecteur->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulaireSecteur as $vs) {
                 $em->remove($vs);
                 $em->flush();
             }
         }
-        
-        if($vocabulaire != null)
-        {
+
+        if ($vocabulaire != null) {
             $repositoryVocabulaireDepartement = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireDepartement');
-            $vocabulaireDepartement = $repositoryVocabulaireDepartement->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulaireDepartement as $vd){
+            $vocabulaireDepartement = $repositoryVocabulaireDepartement->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulaireDepartement as $vd) {
                 $em->remove($vd);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
+        if ($vocabulaire != null) {
             $repositoryVocabulaireFonction = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireFonction');
-            $vocabulaireFonction = $repositoryVocabulaireFonction->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulaireFonction as $vf){
+            $vocabulaireFonction = $repositoryVocabulaireFonction->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulaireFonction as $vf) {
                 $em->remove($vf);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
+        if ($vocabulaire != null) {
             $repositoryVocabulaireEnvirUsage = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireEnvirUsage');
-            $vocabulaireEnvirUsage = $repositoryVocabulaireEnvirUsage->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulaireEnvirUsage as $ve){
+            $vocabulaireEnvirUsage = $repositoryVocabulaireEnvirUsage->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulaireEnvirUsage as $ve) {
                 $em->remove($ve);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
+        if ($vocabulaire != null) {
             $repositoryVocabulaireTraducteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireTraducteur');
-            $vocabulaireTraducteur = $repositoryVocabulaireTraducteur->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulaireTraducteur as $vtra){
+            $vocabulaireTraducteur = $repositoryVocabulaireTraducteur->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulaireTraducteur as $vtra) {
                 $em->remove($vtra);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
+        if ($vocabulaire != null) {
             $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');
-            $vocabulairePrototypeAccess = $repositoryVocabulairePrototypeAccess->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulairePrototypeAccess as $vps){
+            $vocabulairePrototypeAccess = $repositoryVocabulairePrototypeAccess->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulairePrototypeAccess as $vps) {
                 $em->remove($vps);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
+        if ($vocabulaire != null) {
             $repositoryVocabulaireSociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete');
-            $vocabulaireSociete = $repositoryVocabulaireSociete->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulaireSociete as $vs){
+            $vocabulaireSociete = $repositoryVocabulaireSociete->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulaireSociete as $vs) {
                 $em->remove($vs);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
+        if ($vocabulaire != null) {
             $repositoryVocabulairePhraseSource = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePhraseSource');
-            $vocabulairePhraseSource = $repositoryVocabulairePhraseSource->findBy(array('vocabulaire'=> $vocabulaire));
-            foreach($vocabulairePhraseSource as $vps){
+            $vocabulairePhraseSource = $repositoryVocabulairePhraseSource->findBy(array('vocabulaire' => $vocabulaire));
+            foreach ($vocabulairePhraseSource as $vps) {
                 $em->remove($vps);
                 $em->flush();
             }
         }
-        if($vocabulaire != null)
-        {
-            
-                $em->remove($vocabulaire);
-                $em->flush();
-          
+        if ($vocabulaire != null) {
+
+            $em->remove($vocabulaire);
+            $em->flush();
         }
         return $this->redirectToRoute('consulter_vocabulaire_par_theme', array('terme' => $terme, 'langues_recherche' => $langues_recherche));
     }
@@ -329,12 +422,12 @@ class ProducteurController extends Controller
     /**
      * @Route("/liste_prototype", name="liste_prototype")
      */
-    public function listePrototypeAction(Request $request)
-    {
+    public function listePrototypeAction(Request $request) {
         $id_secteur = 0;
         $nb_societe = 0;
         $prototype_access_array = array();
-        if ($request->get('id_secteur')) $id_secteur = $request->get('id_secteur');
+        if ($request->get('id_secteur'))
+            $id_secteur = $request->get('id_secteur');
 
         if ($request->get('val')) {
             $valeurs = $request->get('val');
@@ -358,14 +451,13 @@ class ProducteurController extends Controller
         }
 
         return $this->render('FormationVocabulaireBundle:Default:lister_prototype.html.twig', array(
-            'id_secteur' => $id_secteur,
-            'nb_societe' => $nb_societe,
-            'prototype_access_array' => $prototype_access_array
+                    'id_secteur' => $id_secteur,
+                    'nb_societe' => $nb_societe,
+                    'prototype_access_array' => $prototype_access_array
         ));
     }
 
-    private function getLESocAssocies($id_societe, $id_prototype_access)
-    {
+    private function getLESocAssocies($id_societe, $id_prototype_access) {
 
         $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
         $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
@@ -382,11 +474,11 @@ class ProducteurController extends Controller
     /**
      * @Route("/list_le", name="list_le")
      */
-    public function listeLEAction(Request $request)
-    {
+    public function listeLEAction(Request $request) {
         $id_secteur = 0;
         $lexiques_array = array();
-        if ($request->get('id_secteur')) $id_secteur = $request->get('id_secteur');
+        if ($request->get('id_secteur'))
+            $id_secteur = $request->get('id_secteur');
 
         if ($request->get('valProt')) {
             $valeursProt = $request->get('valProt');
@@ -413,17 +505,16 @@ class ProducteurController extends Controller
 
 
         return $this->render('FormationVocabulaireBundle:Default:liste_le.html.twig', array(
-            'lexiques' => $lexiques_array,
-            'id_secteur' => $id_secteur,
-            'nb_termes' => 0,
+                    'lexiques' => $lexiques_array,
+                    'id_secteur' => $id_secteur,
+                    'nb_termes' => 0,
         ));
     }
 
     /**
      * @Route("/export_le", name="export_le")
      */
-    public function export_leAction(Request $request)
-    {
+    public function export_leAction(Request $request) {
         $vocabulaires = array();
         if ($request->get('id_societe') && $request->get('id_secteur') && $request->get('id_theme') && $request->get('id_prototype_access')) {
             $id_prototype_access = $request->get('id_prototype_access');
@@ -436,8 +527,8 @@ class ProducteurController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("liuggio")
-            ->setTitle('Vocabulaire')
-            ->setSubject('Vocabulaire');
+                ->setTitle('Vocabulaire')
+                ->setSubject('Vocabulaire');
 
         $sheet = $phpExcelObject->setActiveSheetIndex(0);
 
@@ -480,8 +571,7 @@ class ProducteurController extends Controller
         $response = $this->get('phpexcel')->createStreamedResponse($writer);
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'contenuLE.xls'
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'contenuLE.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -489,34 +579,30 @@ class ProducteurController extends Controller
         $response->headers->set('Content-Disposition', $dispositionHeader);
 
         return $response;
-
     }
-    
-    
+
     /**
      * @Route("/export_le_recherche_terme", name="export_le_recherche_terme")
      */
-    public function exportLeRechercheTermeAction(Request $request)
-    {
+    public function exportLeRechercheTermeAction(Request $request) {
         $id_societe = intval($request->get('id_societe'));
         $id_theme = intval($request->get('id_theme'));
         $vocabulaires = array();
         $nb_termes = 0;
         $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
-       
-        if($id_societe == "" && $id_theme == ""){
-		$vocabulaires = [];
-	}else{
+
+        if ($id_societe == "" && $id_theme == "") {
+            $vocabulaires = [];
+        } else {
             $vocabulaires = $repositoryVocabulaire->exportRechercheTerme($id_societe, $id_theme);
             $nb_termes = count($vocabulaires);
-            
         }
         // ask the service for a Excel5
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
 
         $phpExcelObject->getProperties()->setCreator("liuggio")
-            ->setTitle('Vocabulaire')
-            ->setSubject('Vocabulaire');
+                ->setTitle('Vocabulaire')
+                ->setSubject('Vocabulaire');
 
         $sheet = $phpExcelObject->setActiveSheetIndex(0);
 
@@ -555,8 +641,7 @@ class ProducteurController extends Controller
         $response = $this->get('phpexcel')->createStreamedResponse($writer);
         // adding headers
         $dispositionHeader = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'contenuLE.xls'
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'contenuLE.xls'
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Pragma', 'public');
@@ -564,7 +649,6 @@ class ProducteurController extends Controller
         $response->headers->set('Content-Disposition', $dispositionHeader);
 
         return $response;
-
     }
 
 }

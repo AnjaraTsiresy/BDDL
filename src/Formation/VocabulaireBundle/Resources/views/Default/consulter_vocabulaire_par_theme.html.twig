@@ -136,6 +136,7 @@
 {% block javascripts %}
     <script>
         function modifier(i) {
+           
             width = 1000;
             height = 1000;
             if (window.innerWidth)
@@ -147,7 +148,7 @@
                 var left = (document.body.clientWidth - width) / 2;
                 var top = (document.body.clientHeight - height) / 2;
             }
-            window.open('modifierVocabulaire.php?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+            window.open("{{ url }}?id="+i , 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
         }
     </script>
 {% endblock %}
