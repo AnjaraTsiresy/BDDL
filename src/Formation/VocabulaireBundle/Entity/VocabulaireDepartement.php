@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * VocabulaireDepartement
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\VocabulaireDepartementRepository")
  */
 class VocabulaireDepartement
 {

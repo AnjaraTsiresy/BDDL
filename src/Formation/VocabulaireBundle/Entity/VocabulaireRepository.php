@@ -192,7 +192,7 @@ class VocabulaireRepository extends EntityRepository {
                         if ($dic == "fr1") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueOrigine) LIKE :terme')
@@ -202,7 +202,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "en1") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueOrigine) LIKE :terme')
@@ -212,7 +212,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "en2") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueOrigine) LIKE :terme')
@@ -222,7 +222,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "fr2") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueOrigine) LIKE :terme')
@@ -233,7 +233,7 @@ class VocabulaireRepository extends EntityRepository {
                     } else {
                         $query = $this
                                 ->createQueryBuilder('v')
-                                ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                 ->innerJoin('v.vocabulaireThemes', 'vt')
                                 ->innerJoin('vt.theme', 't')
                                 ->andWhere('lower(v.langueOrigine) LIKE :terme')
@@ -245,7 +245,7 @@ class VocabulaireRepository extends EntityRepository {
                         if ($dic == "fr1") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueTraduction) LIKE :terme')
@@ -255,7 +255,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "en1") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueTraduction) LIKE :terme')
@@ -265,7 +265,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "en2") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueTraduction) LIKE :terme')
@@ -275,7 +275,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "fr2") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->andWhere('lower(v.langueTraduction) LIKE :terme')
@@ -286,19 +286,20 @@ class VocabulaireRepository extends EntityRepository {
                     } else {
                         $query = $this
                                 ->createQueryBuilder('v')
-                                ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                 ->innerJoin('v.vocabulaireThemes', 'vt')
                                 ->innerJoin('vt.theme', 't')
                                 ->andWhere('lower(v.langueTraduction) LIKE :terme')
                                 ->setParameter('terme', '%' . trim($terme) . '%')
                                 ->getQuery();
+                     
                     }
                 } else {
                     if ($dic != "") {
                         if ($dic == "fr1") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->orWhere('lower(v.langueOrigine) LIKE :terme')
@@ -309,7 +310,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "en1") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->orWhere('lower(v.langueOrigine) LIKE :terme')
@@ -320,7 +321,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "en2") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->orWhere('lower(v.langueOrigine) LIKE :terme')
@@ -331,7 +332,7 @@ class VocabulaireRepository extends EntityRepository {
                         } else if ($dic == "fr2") {
                             $query = $this
                                     ->createQueryBuilder('v')
-                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                    ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                     ->innerJoin('v.vocabulaireThemes', 'vt')
                                     ->innerJoin('vt.theme', 't')
                                     ->orWhere('lower(v.langueOrigine) LIKE :terme')
@@ -343,7 +344,7 @@ class VocabulaireRepository extends EntityRepository {
                     } else {
                         $query = $this
                                 ->createQueryBuilder('v')
-                                ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme')
+                                ->select('v.id as id_vocabulaire, v.langueTraduction as langue_traduction, v.langueOrigine as langue_origine, t.libelleTheme as libelle_theme, t.themeEng as theme_eng')
                                 ->innerJoin('v.vocabulaireThemes', 'vt')
                                 ->innerJoin('vt.theme', 't')
                                 ->orWhere('lower(v.langueOrigine) LIKE :terme')

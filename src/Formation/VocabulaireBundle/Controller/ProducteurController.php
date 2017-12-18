@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Formation\VocabulaireBundle\Entity\Source;
 
 class ProducteurController extends Controller {
 
@@ -181,14 +182,25 @@ class ProducteurController extends Controller {
         $nb_societe = 0;
         $nb_env_usg = 0;
         $nb_theme = 0;
+        $nb_dpt = 0;
+        $nb_sect = 0;
         $langue_origine = "";
         $critereSociete = "";
         $critereEnvirUsage = "";
         $critereTheme = "";
+        $critereDepartement = "";
+        $critereSecteur = "";
         $langue_traduction = "";
         $description_societe = "";
         $libelle_env_usage = "";
         $libelle_theme = "";
+        $libelle_departement = "";
+        $libelle_secteur = "";
+        $source_type = "";
+        $source_nom_stagiaire = "";
+        $lien_nom_doc = "";
+        $lien = "";
+
         $rang = "";
         if ($request->get('id')) {
             $id = $request->get('id');
@@ -198,13 +210,22 @@ class ProducteurController extends Controller {
         $repositoryVocabulaireSociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSociete');
         $repositoryVocabulaireTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireTheme');
         $repositoryVocabulaireEnvirUsage = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireEnvirUsage');
+        $repositoryVocabulaireDepartement = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireDepartement');
+        $repositoryVocabulaireSecteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireSecteur');
 
         $vocabulaire = $repositoryVocabulaire->find($id);
         if ($vocabulaire != null) {
-            $id_source = $vocabulaire->getSource()->getId();
+
             $langue_origine = $vocabulaire->getLangueOrigine();
             $langue_traduction = $vocabulaire->getLangueTraduction();
             $rang = $vocabulaire->getRang();
+            if ($vocabulaire->getSource()->getId() > 0) {
+                $id_source = $vocabulaire->getSource()->getId();
+                $source_type = $vocabulaire->getSource()->getSourceType();
+                $lien_nom_doc = $vocabulaire->getSource()->getLienNomDoc();
+                $lien = $vocabulaire->getSource()->getLien();
+                $source_nom_stagiaire = $vocabulaire->getSource()->getSourceNomStagiaire();
+            }
             //societe
             $vocabulaireSocietes = $repositoryVocabulaireSociete->getVocabulaireSocieteByVocabulaire($id);
             $nb_societe = count($vocabulaireSocietes);
@@ -237,6 +258,28 @@ class ProducteurController extends Controller {
                     $libelle_env_usage = $vt['libelle_env_usage'];
                 }
             }
+
+            //Departement
+            $vocabulaireDepartements = $repositoryVocabulaireDepartement->getVocabulaireDepartementByVocabulaire($id);
+            $nb_dpt = count($vocabulaireDepartements);
+            $critereDepartement = "Département";
+            if ($nb_dpt == 1) {
+                $vDmodifyOneCritere = $repositoryVocabulaireDepartement->modifyOneCritere($id);
+                foreach ($vDmodifyOneCritere as $vd) {
+                    $libelle_departement = $vd['libelle_departement'];
+                }
+            }
+
+            //Secteur
+            $vocabulaireSecteurs = $repositoryVocabulaireSecteur->getVocabulaireSecteurByVocabulaire($id);
+            $nb_sect = count($vocabulaireSecteurs);
+            $critereSecteur = "Secteur";
+            if ($nb_sect == 1) {
+                $vSmodifyOneCritere = $repositoryVocabulaireSecteur->modifyOneCritere($id);
+                foreach ($vSmodifyOneCritere as $vs) {
+                    $libelle_secteur = $vs['libelle_secteur'];
+                }
+            }
         }
 
         return $this->render('FormationVocabulaireBundle:Default:modif_vocabulaire.html.twig', array(
@@ -246,18 +289,116 @@ class ProducteurController extends Controller {
                     'description_societe' => $description_societe,
                     'critereTheme' => $critereTheme,
                     'libelle_theme' => $libelle_theme,
+                    'source_nom_stagiaire' => $source_nom_stagiaire,
+                    'critereDepartement' => $critereDepartement,
+                    'libelle_departement' => $libelle_departement,
+                    'critereSecteur' => $critereSecteur,
+                    'libelle_secteur' => $libelle_secteur,
                     'critereEnvirUsage' => $critereEnvirUsage,
                     'libelle_env_usage' => $libelle_env_usage,
                     'langue_origine' => $langue_origine,
                     'langue_traduction' => $langue_traduction,
                     'nb_societe' => $nb_societe,
+                    'source_type' => $source_type,
+                    'lien_nom_doc' => $lien_nom_doc,
+                    'lien' => $lien,
                     'vocabulaireSocietes' => $vocabulaireSocietes,
+                    'nb_dpt' => $nb_dpt,
+                    'vocabulaireDepartements' => $vocabulaireDepartements,
                     'nb_theme' => $nb_theme,
+                    'nb_sect' => $nb_sect,
                     'vocabulaireEnvirUsages' => $vocabulaireEnvirUsages,
                     'nb_env_usg' => $nb_env_usg,
                     'vocabulaireThemes' => $vocabulaireThemes,
+                    'vocabulaireSecteurs' => $vocabulaireSecteurs,
                     'id_source' => $id_source
         ));
+    }
+
+    /**
+     * @Route("/modifier_vocabulaire_update", name="modifier_vocabulaire_update")
+     */
+    public function modifVocabulaireUpdateAction(Request $request) {
+        $id = 0;
+        $id_source = 0;
+        $langue_origine = "";
+        $langue_traduction = "";
+        $source_type = "";
+        $rang = "";
+        $source_nom_stagiaire = "";
+        $lien_nom_doc = "";
+        $lien = "";
+        if ($request->get('id')) {
+            $id = $request->get('id');
+        }
+        if ($request->get('id_source')) {
+            $id_source = $request->get('id_source');
+        }
+        if ($id > 0) {
+            $id = intval($id);
+            $id_source = intval($id_source);
+        
+
+            if ($request->get('langue_origine')) {
+                $langue_origine = $request->get('langue_origine');
+            }
+            if ($request->get('langue_traduction')) {
+                $langue_traduction = $request->get('langue_traduction');
+            }
+
+            if ($request->get('source_type')) {
+                $source_type = $request->get('source_type');
+            }
+            if ($request->get('rang')) {
+                $rang = $request->get('rang');
+            }
+            if ($request->get('source_nom_stagiaire')) {
+                $source_nom_stagiaire = $request->get('source_nom_stagiaire');
+            }
+            if ($request->get('lien_nom_doc')) {
+                $lien_nom_doc = $request->get('lien_nom_doc');
+            }
+            if ($request->get('lien')) {
+                $lien = $request->get('lien');
+            }
+            $em = $this->getDoctrine()->getManager();
+            $vocab = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->find($id);
+            if ($vocab != null) {
+
+                $vocab->setLangueOrigine($langue_origine);
+                $vocab->setLangueTraduction($langue_traduction);
+                $vocab->setRang($rang);
+                $em->merge($vocab);
+                $em->flush();
+
+                if ($id_source > 0) {
+                    
+                    $source = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Source')->find($id_source);
+                    $source->setSourceType($source_type);
+                    $source->setSourceNomStagiaire($source_nom_stagiaire);
+                    $source->setLienNomDoc($lien_nom_doc);
+                    $source->setLien($lien);
+
+                    $em->merge($source);
+                    $em->flush();
+                } else {
+                    
+                    $source = new Source();
+                    $source->setSourceType($source_type);
+                    $source->setSourceNomStagiaire($source_nom_stagiaire);
+                    $source->setLienNomDoc($lien_nom_doc);
+                    $source->setLien($lien);
+                    $em->persist($source);
+                    $em->flush();
+                    $vocab->setSource($source);
+                    $em->merge($vocab);
+                    $em->flush();
+                }
+            }
+        }
+        echo "<SCRIPT language=javascript> window.opener.location.reload(true); window.close();</SCRIPT>";
+
+        return "";
     }
 
     private function getduplicaterows($a) {
@@ -627,6 +768,73 @@ class ProducteurController extends Controller {
             $sheet->setCellValue('G' . $counter, $v['source_nom_stagiaire']);
             $sheet->setCellValue('H' . $counter, $v['lien_nom_doc']);
             $sheet->setCellValue('I' . $counter, $v['lien']);
+            $counter++;
+        }
+
+        $phpExcelObject->getActiveSheet()->setTitle('Vocabulaire');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        // create the writer
+        $writer = $this->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+        // create the response
+        $response = $this->get('phpexcel')->createStreamedResponse($writer);
+        // adding headers
+        $dispositionHeader = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'contenuLE.xls'
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->headers->set('Content-Disposition', $dispositionHeader);
+
+        return $response;
+    }
+    
+    /**
+     * @Route("/export_terme", name="export_terme")
+     */
+    public function exportTermeAction(Request $request) {
+        $terme = "";
+        $langues_recherche = "";
+         if ($request->get('terme')) {
+            $terme = $request->get('terme');
+        }
+        if ($request->get('langues_recherche')) {
+            $langues_recherche = $request->get('langues_recherche');
+        }
+        $vocabulaires = array();
+        $nb_termes = 0;
+        $dic = "";
+        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+
+        if ($terme == "" && $langues_recherche == "") {
+            $vocabulaires = [];
+        } else {
+            $vocabulaires = $repositoryVocabulaire->findTermes($terme, $langues_recherche, $dic);
+            $nb_termes = count($vocabulaires);
+        }
+        // ask the service for a Excel5
+        $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
+
+        $phpExcelObject->getProperties()->setCreator("liuggio")
+                ->setTitle('Vocabulaire')
+                ->setSubject('Vocabulaire');
+
+        $sheet = $phpExcelObject->setActiveSheetIndex(0);
+
+        $sheet->setCellValue('A1', 'Francais');
+        $sheet->setCellValue('B1', 'Anglais');
+        $sheet->setCellValue('C1', 'Thème en français');
+        $sheet->setCellValue('D1', 'Thème en anglais');
+
+        $counter = 2;
+        foreach ($vocabulaires as $v) {
+            $sheet->setCellValue('A' . $counter, $v['libelle_theme']);
+            $sheet->setCellValue('B' . $counter, $v['theme_eng']);
+            $sheet->setCellValue('C' . $counter, $v['langue_origine']);
+            $sheet->setCellValue('D' . $counter, $v['langue_traduction']);
             $counter++;
         }
 

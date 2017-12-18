@@ -8,7 +8,8 @@
     }
 </style>
 <h2>Modification du vocabulaire et des critères associés</h2>
-<form action="modifierVocabulaireaction.php" method="post" enctype="multipart/form-data"  name="certform">
+<form action="{{ path('modifier_vocabulaire_update') }}" method="post" enctype="multipart/form-data"  name="certform">
+   
     <table id='recherche'>
         <input name="id" type="hidden" value="{{ id }}" />
         <input name="id_source" type="hidden" value="{{ id_source }} ?>" />
@@ -58,7 +59,7 @@
                 <td>{{ critereTheme }}</td>
                 <td>
                     <p>
-                        Aucune société associée
+                        Aucune theme associée
                     </p>
                 </td>
             {% elseif nb_theme == 1 %}
@@ -84,7 +85,7 @@
                 <td>{{ critereEnvirUsage }}</td>
                 <td>
                     <p>
-                        Aucune société associée
+                        Aucune environnement usage associée
                     </p>
                 </td>
             {% elseif nb_env_usg == 1 %}
@@ -104,6 +105,93 @@
                     </p>
                 </td>
             {% endif %}
+        </tr>
+        <tr>
+            {% if nb_dpt == 0 %}
+                <td>{{ critereDepartement }}</td>
+                <td>
+                    <p>
+                        Aucune département associée
+                    </p>
+                </td>
+            {% elseif nb_dpt == 1 %}
+                <td>{{ critereDepartement }}</td>
+                <td>
+                    <p>
+                        {{ libelle_departement }}
+                    </p>
+                </td>
+            {% else %}
+                <td>{{ critereDepartement }}</td>
+                <td>
+                    <p>
+                        {% for v in vocabulaireDepartements %}
+                            {{ v.libelle_departement }},
+                        {% endfor %}
+                    </p>
+                </td>
+            {% endif %}
+        </tr>
+        <tr>
+            {% if nb_sect == 0 %}
+                <td>{{ critereSecteur }}</td>
+                <td>
+                    <p>
+                        Aucune secteur associée
+                    </p>
+                </td>
+            {% elseif nb_sect == 1 %}
+                <td>{{ critereSecteur }}</td>
+                <td>
+                    <p>
+                        {{ libelle_secteur }}
+                    </p>
+                </td>
+            {% else %}
+                <td>{{ critereSecteur }}</td>
+                <td>
+                    <p>
+                        {% for v in vocabulaireSecteurs %}
+                            {{ v.libelle_secteur }},
+                        {% endfor %}
+                    </p>
+                </td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Source(glossaire,newsletter etc...)</td>
+            <td>
+
+                <input type="text" name="source_type" value="{{ source_type }}"/>
+
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Source(nom du stagiaire,journal etc...)</td>
+            <td>
+
+                <input type="text" name="source_nom_stagiaire" value="{{ source_nom_stagiaire }}"/>
+
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Nom du document</td>
+            <td>
+                <input type="text" name="lien_nom_doc" value="{{ lien_nom_doc }}"/>
+
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Lien du document</td>
+            <td>
+
+                <input type="text" name="lien" value="{{ lien }}"/>
+
+            </td>
+            <td></td>
         </tr>
         <tr>
             <td>Rang</td>
