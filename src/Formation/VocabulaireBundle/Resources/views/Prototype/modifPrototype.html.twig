@@ -63,7 +63,7 @@
                             {% for societe in societes %}
                                 <option value="{{ societe.id }}" {% if societe.id == prototypeAccess.societe.id %} selected="selected" {% endif %}>{{ societe.description }}
                                     - {{ societe.codeTiers }} </option>
-                            {% endfor %}
+                                {% endfor %}
                         </select>
                     </td>
                 </tr>
@@ -133,7 +133,7 @@
                         <td>
                             <a href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': lexique.id_theme, 'id': id, 'dic': 'dic'}) }}"
                                class="deleteCritere"><img src="{{ asset('images/oeil.jpeg') }}"
-                                                          style="width:20px;height:20px;"/></a>
+                                                       style="width:20px;height:20px;"/></a>
                         </td>
                         <td>
 
@@ -166,7 +166,7 @@
                         <td>
                             <a href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': lexique.id_theme, 'id': id, 'dic': 'dic'}) }}"
                                class="deleteCritere"><img src="{{ asset('images/oeil.jpeg') }}"
-                                                          style="width:20px;height:20px;"/></a>
+                                                       style="width:20px;height:20px;"/></a>
                         </td>
                         <td>
 
@@ -199,7 +199,7 @@
                         <td>
                             <a href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': lexique.id_theme, 'id': id, 'dic': 'dic'}) }}"
                                class="deleteCritere"><img src="{{ asset('images/oeil.jpeg') }}"
-                                                          style="width:20px;height:20px;"/></a>
+                                                       style="width:20px;height:20px;"/></a>
                         </td>
                         <td>
 
@@ -269,73 +269,72 @@
     </DIV>
 {% endblock %}
 
-            {% block javascripts %}
-                <script>
-                    $(function () {
-                        $("#date_old").datepicker();
-                        $("#dateprototype").datepicker();
-                        $("#choixpage").hide();
-                        $("#choixpageOtherSoc").hide();
-                        $("#impression").hide();
-                        $("#impression1").hide();
-                        $("#impression2").hide();
-                        $("#addLEsociete").click(function () {
-                            $("#choixpage").show();
-                        });
-                        $("#addLEOthersociete").click(function () {
-                            $("#choixpageOtherSoc").show();
-                        });
-                        $("#prepare").click(function () {
+{% block javascripts %}
+    <script>
+        $(function () {
+            $("#date_old").datepicker();
+            $("#dateprototype").datepicker();
+            $("#choixpage").hide();
+            $("#choixpageOtherSoc").hide();
+            $("#impression").hide();
+            $("#impression1").hide();
+            $("#impression2").hide();
+            $("#addLEsociete").click(function () {
+                $("#choixpage").show();
+            });
+            $("#addLEOthersociete").click(function () {
+                $("#choixpageOtherSoc").show();
+            });
+            $("#prepare").click(function () {
 
-                            $.ajax({
-                                url: '{{ path('check_impression',{'id' : id}) }}',
-                                dataType: 'html',
-                                beforeSend: function (jqXHR, settings) {
-                                    $("#prepage").show();
-                                },
-                                complete: function (jqXHR, textStatus) {
-                                    $("#prepage").hide();
-                                    $("#prepare").hide();
-                                },
-                                success: function (html) {
-                                    $("#impression").show();
-                                    $("#impression1").show();
-                                    $("#impression2").show();
-                                }
-                            });
-                        });
-                    });
-                </script>
-                <script type="text/javascript">
-                    function closeSelf(f) {
-                        //alert("ato");
-                        f.submit();
-                        setTimeout(function () {
-                            window.close();
-                        }, 1000);
-
+                $.ajax({
+                    url: '{{ path('check_impression',{'id' : id}) }}',
+                    dataType: 'html',
+                    beforeSend: function (jqXHR, settings) {
+                        $("#prepage").show();
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        $("#prepage").hide();
+                        $("#prepare").hide();
+                    },
+                    success: function (html) {
+                        $("#impression").show();
+                        $("#impression1").show();
+                        $("#impression2").show();
                     }
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function closeSelf(f) {
+            //alert("ato");
+            f.submit();
+            setTimeout(function () {
+                window.close();
+            }, 1000);
 
-                    $i = 1;
-                    $j = 1;
+        }
 
-                    function imprimer() {
-                        window.print();
-                    }
+        $i = 1;
+        $j = 1;
 
-                    function addTermes(id, id_societe, id_theme) {
-                        width = 1000;
-                        height = 1000;
-                        if (window.innerWidth) {
-                            var left = (window.innerWidth - width) / 2;
-                            var top = (window.innerHeight - height) / 2;
-                        }
-                        else {
-                            var left = (document.body.clientWidth - width) / 2;
-                            var top = (document.body.clientHeight - height) / 2;
-                        }
-                        window.open('modifContenuLE.php?id=' + id + '&id_societe=' + id_societe + '&id_theme=' + id_theme, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
-                    }
-                </script>
-            {% endblock %}
+        function imprimer() {
+            window.print();
+        }
+
+        function addTermes(id, id_societe, id_theme) {
+            width = 1000;
+            height = 1000;
+            if (window.innerWidth) {
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+            } else {
+                var left = (document.body.clientWidth - width) / 2;
+                var top = (document.body.clientHeight - height) / 2;
+            }
+            window.open('modifContenuLE.php?id=' + id + '&id_societe=' + id_societe + '&id_theme=' + id_theme, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+        }
+    </script>
+{% endblock %}
 

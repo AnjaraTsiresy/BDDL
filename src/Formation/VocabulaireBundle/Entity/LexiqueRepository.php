@@ -24,6 +24,16 @@ class LexiqueRepository extends EntityRepository {
                 ->getQuery();
         return $query->getResult();
     }
+    
+      public function getNbLESoc() {
+        $query = $this
+                ->createQueryBuilder('l')
+                ->select('l')
+                ->innerJoin('l.societe', 's')
+                ->where('s.id != 653')
+                ->getQuery();
+        return $query->getResult();
+    }
 
     public function getAllLexiqueByPrototypeAccess($id_prototype_access) {
         $query = $this

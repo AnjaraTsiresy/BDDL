@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        #tableauPrototype {
+            border-collapse: collapse;
+            font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+            font-size: 12px;
+            margin: auto;
+            text-align: left;
+            width: 50%;
+        }
+        #tableauPrototype td {
+            background: #e8edff none repeat scroll 0 0;
+            border-bottom: 1px solid #fff;
+            border-top: 1px solid #fff;
+            color: #669;
+            padding: 8px;
+        }
+        #tableauPrototype th{
+            background: #b9c9fe none repeat scroll 0 0;
+            border-bottom: 2px solid #d3ddff;
+            border-top: 2px solid #d3ddff;
+            color: #039;
+            font-size: 13px;
+            font-weight: normal;
+            padding: 8px;
+        }
+        protoParSociete {
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+        .contenuProtoParSociete {
+            display: none;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+
+    <div class="titreMenu">
+        <p>Statistiques globales de la BDDL</p>
+    </div>
+    <br/><br/>
+    <div>
+        <table id="tableauPrototype">
+            <thead>
+                <tr>
+                    <th scope="col">Indication</th>
+                    <th scope="col">Nombre enregistré en base</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Prototypes</td>
+                    <td>{{ nb_prototypes }}</td>
+                </tr>
+                <tr>
+                    <td>LE société tout prototype confondu</td>
+                    <td>{{ nb_LE }} </td>
+                </tr>
+                <tr>
+                    <td>LE génériques</td>
+                    <td>{{ nb_LE_gen }} </td>
+                </tr>
+                <tr>
+                    <td>Termes</td>
+                    <td>{{ nb_vocab }}</td>
+                </tr>
+                <tr>
+                    <td>Sociétés liées à des prototypes</td>
+                    <td>{{ nb_societe }}</td>
+                </tr>
+                <tr>
+                    <td colspan= "2">
+                        <div class="protoParSociete" onclick="ouvrirFermerprotoParSociete(this);">Prototypes par société (cliquer ici pour afficher/cacher le contenu)
+                            <div class="contenuProtoParSociete">
+
+                                <table id="tableau">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Société</th>
+                                            <th scope="col">Nombre de prototypes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for s in prototypeSociete_array %}
+                                            <tr>
+                                                <td>{{ s.nom_societe }}</td>
+                                                <td>{{ s.nb_soloc }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function ouvrirFermerprotoParSociete(div) {
+            var divContenu = div.getElementsByTagName('div')[0];
+            if (divContenu.style.display == 'none') {
+                divContenu.style.display = 'block';
+            } else {
+                divContenu.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}
+

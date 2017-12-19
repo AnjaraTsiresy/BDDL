@@ -54,6 +54,28 @@ class DefaultController extends Controller
             'societes' => $societes,
         ));
     }
+    
+    /**
+     * @Route("/add_new_termes_le", name="add_new_termes_le")
+     */
+    public function add_new_termes_LEAction(Request $request)
+    {
+
+        $repositoryLanguage = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Language');
+        $languages = $repositoryLanguage->findAll();
+
+        $repositoryTraducteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Traducteur');
+        $traducteurs = $repositoryTraducteur->findAll();
+
+        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
+        $societes = $repositorySociete->findAll();
+
+        return $this->render('FormationVocabulaireBundle:Default:add_new_termes_le.html.twig', array(
+            'languages' => $languages,
+            'traducteurs' => $traducteurs,
+            'societes' => $societes,
+        ));
+    }
 
 
     /**
@@ -127,6 +149,8 @@ class DefaultController extends Controller
      */
     public function mise_a_jour_vocabAction(Request $request)
     {
+        ini_set('max_execution_time', -1); //0=NOLIMIT
+        ini_set('memory_limit', '2048M');
 
         $id_societe = intval($request->get('societe'));
         $id_language = intval($request->get('langue'));
@@ -156,12 +180,11 @@ class DefaultController extends Controller
         $index_prototype = 0;
         $index_suffixe = 0;
         $index_millesime = 0;
-
+        print_r($colonneGaucheValue);
+        die();
         for ($index = 1; $index < count($colonneDroiteValue); $index++) {
             if ($colonneDroiteValue[$index] == 4) {
                 $index_theme = $colonneGaucheValue[$index];
-
-
             } else if ($colonneDroiteValue[$index] == 5) {
                 $index_contexte_usage = $colonneGaucheValue[$index];
             } else if ($colonneDroiteValue[$index] == 6) {
@@ -240,6 +263,7 @@ class DefaultController extends Controller
                     if ($index_theme != 0) {
                         $theme = htmlspecialchars($tab[$index_theme - 1]);
                         $theme = trim($theme);
+                       
                     }
                     if ($index_contexte_usage != 0) {
                         $environnement_usage = htmlspecialchars($tab[$index_contexte_usage - 1]);

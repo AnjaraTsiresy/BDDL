@@ -1,0 +1,96 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    <style>
+        table{
+            border:1px solid black; 
+            width:700px
+        }
+        td{
+            width : 430px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div>
+        <form method="post" action="{{ path('export_societe') }}">
+            <table id="recherche">
+                <tbody>
+                    <tr>
+                        <td><input type="submit" value="Exporter toutes les sociétés" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <form action="{{ path('liste_societe') }}" method="GET">
+            <table id="recherche">
+                <tbody>
+                    <tr>
+                        <td>Nom de la société</td>
+                        <td>
+                            <input type="text" value="{{ societe }}" name="societe" id="societe">
+                        </td>
+                        <td><input type="submit" value="Rechercher"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="titreMenu">
+                <p>{{ nb_soc }} société(s) enregistrée(s)</p>
+            </div>
+            <br/><br/>
+            <table id="tableau">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom de la société</th>
+                        <th scope="col">Action1</th>
+                        <th scope="col">Action2</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for s in societes %}
+                        <tr>
+                            <td>{{ s.nom_societe }}</td>
+                            <td>
+                                <input type="button" value="Modifier" onclick="modifier( {{ s.id_societe }})">
+                            </td>
+
+                            {% if(s.nb_soloc > 0) %}
+                                <td>Suppression impossible car lié à {{ s.nb_soloc }} prototype(s)</td>
+                            {% else %}
+
+                                <td>
+                                    <a href="{{ path('delete_societe',{'id_societe': s.id_societe}) }}" class="deleteCritere">
+                                        <img src="{{ asset('images/delete.png') }}"/>
+                                    </a>
+                                </td>
+                           {% endif %}
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function modifier(i) {
+            width = 1000;
+            height = 1000;
+            if (window.innerWidth)
+            {
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+            } else
+            {
+                var left = (document.body.clientWidth - width) / 2;
+                var top = (document.body.clientHeight - height) / 2;
+            }
+            window.open('{{ url }}?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+        }
+    </script>
+{% endblock %}

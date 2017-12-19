@@ -12,6 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulaireRepository extends EntityRepository {
 
+   
+    public function getLEgenerique()
+    {
+        $query = $this
+                ->createQueryBuilder('v')
+                ->select('t.id as id_theme, t.libelleTheme as libelle_theme, t.themeEng as theme_eng, s.id as id_societe, s.description as description')
+                ->innerJoin('v.vocabulaireThemes', 'vt')
+                ->innerJoin('vt.theme', 't')
+                ->innerJoin('v.vocabulaireSocietes', 'vs')
+                ->innerJoin('vs.societe', 's')
+                ->where('s.id = 653 AND v.dateModification = \'0000-00-00 00:00:00\' AND v.isAffiche = 1')
+                ->getQuery();
+        return $query->getResult();
+    }
+
     public function findLEParThematiqueBySecteur($id_secteur) {
         $query = $this
                 ->createQueryBuilder('v')

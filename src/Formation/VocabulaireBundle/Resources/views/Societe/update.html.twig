@@ -1,0 +1,49 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    <style>
+        table{
+            border:1px solid black; 
+            width:700px
+        }
+        td{
+            width : 430px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="titreMenu">
+        <p>Modification de la description d'une société</p>
+    </div>
+    <div>
+        <FORM ENCTYPE="multipart/form-data" ACTION="{{ path('update_societe') }}" METHOD="POST">
+            <table id="recherche">
+                <tr>
+                    <td>Nom de la société</td>
+                    <td>
+                        <input type="hidden" value="{{ id_societe }}" name="id_societe" id="societe">
+                        <input type="text" value="{{ societe }}" name="societe" id="societe">
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Enregistrer" /></td>
+                    <td><input type="button" name="Annuler" value="Annuler" onclick="window.close();" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function closeSelf(f) {
+            //alert("ato");
+            f.submit();
+            setTimeout(function () {
+                window.close();
+            }, 1000);
+
+        }
+        $i = 1;
+        $j = 1;
+    </script>
+{% endblock %}

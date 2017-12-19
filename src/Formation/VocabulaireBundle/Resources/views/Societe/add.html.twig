@@ -1,0 +1,36 @@
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    <style>
+        table{
+            border:1px solid black; 
+            width:700px
+        }
+        td{
+            width : 430px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="titreMenu">
+        <p>Création d'une nouvelle société</p>
+    </div>
+    <div>
+        <FORM ENCTYPE="multipart/form-data" ACTION="{{ path('save_societe') }}" METHOD="POST">
+            <table id="recherche">
+                <tr>
+                    <td>Nom de la société</td>
+                    <td>
+                        <input type="text" value="" name="societe" id="societe">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Créer">
+                        <a type="button" href="{{ path('mise_a_jour_vocab') }}">Annuler</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

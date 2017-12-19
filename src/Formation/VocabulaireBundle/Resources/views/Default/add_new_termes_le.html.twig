@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <br/><br/>
+    <div class="titreMenu">
+        <p style="font-size : 15px;">Veuillez sélectionner un fichier excel</p>
+    </div>
+    <div>
+        <INPUT TYPE="hidden" id="nbreColBody" value="0">
+        <table id="tableau" style="width: 100%;">
+            <tbody>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form action="{{ path('uploadExcel') }}" method="post" enctype="multipart/form-data" id="formulairefile">
+                            <INPUT TYPE="hidden" name="MAX_FILE_SIZE" value="4000000">
+                            <input type="file" name="userfile" id="userfile" accept=".xlsx, .xls, .ods">
+                        </form>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div id="ajaxAff"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <FORM ENCTYPE="multipart/form-data" ACTION="{{ path('mise_a_jour_vocab_action') }}" METHOD="POST" id="formulairefile2">
+            <table id="tableau2" style=" background: none repeat scroll 0 0 #e8edff; width:70%;
+                   border-bottom: 1px solid #fff;
+                   border-top: 1px solid #fff;
+                   color: #669;
+                   padding: 8px;">
+                <tbody>
+                    <tr>
+                        <td>Sélectionez la langue:</td>
+                        <td>
+                            <select name="langue" id="langue">
+                                {% for language in languages %}
+                                    <option  value="{{ language.id }}" >{{ language.libelle_language }} </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Traducteur:</td>
+                        <td>
+                            <select name="id_traducteur" id="id_traducteur">
+                                <option  value=""></option>
+                                {% for traducteur in traducteurs %}
+                                    <option  value="{{ traducteur.id }}" >{{ traducteur.nom }} </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sélectionez la société:</td>
+                        <td>
+                            <select name="societe" id="societe">
+                                <option  value=""></option>
+                                {% for societe in societes %}
+                                    <option  value="{{ societe.id }}" >{{ societe.description }} - {{ societe.codeTiers }} </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <INPUT TYPE="hidden" name="MAX_FILE_SIZE" value="4000000">
+                            Ré-uploader le fichier pour confirmer :
+                            <input type="hidden" id="colonneDroite" name="colonneDroite" value="">
+                            <input type="hidden" id="colonneGauche" name="colonneGauche" value="">
+                            <input type="file" name="userfile2" id="userfile2" accept=".xlsx, .xls, .ods">
+                            <INPUT TYPE="submit" VALUE="Envoyer" id="submitfinal">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </FORM>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $("#submitfinal").prop("disabled", true);
+            var $form2 = $('#formulairefile2');
+            var $form = $('#formulairefile');
+            var $result = $('#ajaxAff');
+            $form.delegate('#userfile', 'change', function () {
+                var $image = $('#userfile').val();
+                $form.ajaxForm({
+                    target: $result,
+                    beforeSend: function () {
+                        $("#ajaxAff").html("En cours de chargement ....");
+                    },
+                    success: function (data) {
+                        $("#ajaxAff").html(data);
+                    },
+                    complete: function () {
+                        var nbreCol = parseInt($("#nbreCol").val());
+                        $("#nbreColBody").val(nbreCol);
+                        $("#userfile").hide();
+                        $form2.show();
+                    }
+                }).submit();
+            });
+
+            $('#recupAllCol').on('click', function () {
+                var nbreCol = parseInt($("#nbreColBody").val());
+                var allvalueCol_ = "";
+                var allvalue = "";
+                for (var i = 0; i < nbreCol; i++) {
+                    var valueColonne = parseInt($('#colonne' + i).val());
+                    if (valueColonne != 0) {
+                        allvalue = allvalue + "," + $('#colonne' + i).val();
+                        allvalueCol_ = allvalueCol_ + "," + $('#valueCol_' + i).val();
+                    }
+                }
+                alert("allvalue : " + allvalue + "-- allvalueCol_ : " + allvalueCol_);
+            });
+
+            $form2.hide();
+            $form2.delegate('#userfile2', 'change', function () {
+                $("#submitfinal").prop("disabled", false);
+                var nbreCol = parseInt($("#nbreColBody").val());
+                var allvalueCol_ = "";
+                var allvalue = "";
+                var k = 1;
+                for (var i = 1; i <= nbreCol; i++) {
+                    var valueColonne = parseInt($('#colonne' + i).val());
+                    if (valueColonne != 0) {
+                        allvalue = allvalue + "," + $('#colonne' + i).val();
+                        allvalueCol_ = allvalueCol_ + "," + $('#valueCol_' + i).val();
+                        k++;
+                    }
+                }
+                //alert(allvalueCol_+"             "+allvalue);
+                $("#colonneDroite").val(allvalue);
+                $("#colonneGauche").val(allvalueCol_);
+
+                //if (allvalue=="" && allvalueCol_=="" || k <= 14){
+                if (allvalue == "" && allvalueCol_ == "") {
+                    //alert ("Veuillez sélectionner quatorze colonnes !");
+                    $('#userfile2').val("");
+                } else {
+                    var $file1 = $('#userfile').val();
+                    var $file2 = $('#userfile2').val();
+                    if ($file1 == $file2) {
+                        //traitement
+                    } else {
+                        alert("Les deux fichiers sont differents !");
+                    }
+                }
+
+            });
+
+        });
+    </script>
+{% endblock %}

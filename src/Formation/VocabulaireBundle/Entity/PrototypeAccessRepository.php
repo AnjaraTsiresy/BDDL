@@ -22,5 +22,15 @@ class PrototypeAccessRepository extends EntityRepository {
                 ->getQuery();
         return count($query->getResult());
     }
+    
+    public function getNbSocieteAvecPrototype() {
+        $query = $this
+                ->createQueryBuilder('pa')
+                ->select('distinct s.id as id_societe, s.description as description')
+                ->innerJoin('pa.societe', 's')
+                ->getQuery();
+        return $query->getResult();
+    }
+    
 
 }
