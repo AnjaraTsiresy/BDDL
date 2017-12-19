@@ -46,7 +46,8 @@ class LexiqueRepository extends EntityRepository {
         return $query->getResult();
     }
 
-    public function getLexiqueBySocieteAndThemeAndPrototypeAccess($id_societe, $id_theme, $id_prototype_access) {
+    
+     public function getLexiqueBySocieteAndThemeAndPrototypeAccess($id_societe, $id_theme, $id_prototype_access) {
         $query = $this
                 ->createQueryBuilder('l')
                 ->select('l')
@@ -59,23 +60,24 @@ class LexiqueRepository extends EntityRepository {
                 ->setParameter('id_theme', $id_theme)
                 ->setMaxResults(1)
                 ->getQuery();
-        return $query->getSingleResult();
+        return $query->getResult();
     }
 
-    public function getAllLexiqueBySocieteAndThemeAndPrototypeAccess($id_societe, $id_theme, $id_prototype_access) {
+    public function recherchePrototypeBySoc($id_societe) {
         $query = $this
                 ->createQueryBuilder('l')
-                ->select('l')
-                ->innerJoin('l.prototypeAccess', 'pa')
+                ->select('distinct s.id as id_societe, s.description as description, t.id as id_theme, t.libelleTheme as libelle_theme, 
+			t.themeEng as theme_eng')
                 ->innerJoin('l.societe', 's')
                 ->innerJoin('l.theme', 't')
-                ->where('pa.id = :id_prototype_access AND s.id = :id_societe AND t.id = :id_theme')
-                ->setParameter('id_prototype_access', $id_prototype_access)
+                ->where('s.id = :id_societe')
                 ->setParameter('id_societe', $id_societe)
-                ->setParameter('id_theme', $id_theme)
+                ->orderBy('t.libelleTheme','asc')
                 ->getQuery();
         return $query->getResult();
     }
+    
+
 
     public function findAllLE1($nom_prototype, $id_theme, $theme) {
         $nom_prototype = strtolower($nom_prototype);

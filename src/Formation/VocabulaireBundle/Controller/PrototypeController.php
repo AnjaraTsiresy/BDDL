@@ -30,9 +30,16 @@ class PrototypeController extends Controller
 
         $prototypeAccess = $repositoryPrototypeAccess->find($id);
         if ($prototypeAccess != null) {
-            $traducteur = $prototypeAccess->getTraducteur()->getNom();
-            $nom_societe = $prototypeAccess->getSociete()->getDescription();
-            $id_societe = $prototypeAccess->getSociete()->getId();
+            if($prototypeAccess->getTraducteur()->getId() != 0) 
+            {   
+                $traducteur = $prototypeAccess->getTraducteur()->getNom();
+            }
+            
+            if($prototypeAccess->getSociete()->getId() != 0) 
+            {   
+                $nom_societe = $prototypeAccess->getSociete()->getDescription();
+                $id_societe = $prototypeAccess->getSociete()->getId();
+            }
         }
         $nb_termes_array = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getTermesAssocies($id);
         $nb_termes = $nb_termes_array['nb_termes'];
@@ -45,35 +52,34 @@ class PrototypeController extends Controller
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
                 $lexique = new \Formation\VocabulaireBundle\Model\Lexique();
                 $lexique->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
-                $lexique->setNom_societe($lexique_obj->getSociete()->getDescription());
-                $lexique->setRang($lexique_obj->getRang());
-                $lexique->setLibelle_theme($lexique_obj->getTheme()->getLibelleTheme());
-                $lexique->setIdLexique($lexique_obj->getId());
+                $lexique->setRang($lexique_obj[0]->getRang());
+                $lexique->setLibelle_theme($lexique_obj[0]->getTheme()->getLibelleTheme());
+                $lexique->setIdLexique($lexique_obj[0]->getId());
                 $lexique->setNb_lxq($nb_lxq1);
-                $lexique->setId_theme($lexique_obj->getTheme()->getId());
+                $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
                 $lexiques1_array[] = $lexique;
             }elseif ($lx->getSociete()->getId() == 653){
                 $nb_lxq2++;
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
                 $lexique = new \Formation\VocabulaireBundle\Model\Lexique();
                 $lexique->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
-                $lexique->setNom_societe($lexique_obj->getSociete()->getDescription());
-                $lexique->setRang($lexique_obj->getRang());
-                $lexique->setLibelle_theme($lexique_obj->getTheme()->getLibelleTheme());
-                $lexique->setIdLexique($lexique_obj->getId());
+                $lexique->setNom_societe($lexique_obj[0]->getSociete()->getDescription());
+                $lexique->setRang($lexique_obj[0]->getRang());
+                $lexique->setLibelle_theme($lexique_obj[0]->getTheme()->getLibelleTheme());
+                $lexique->setIdLexique($lexique_obj[0]->getId());
                 $lexique->setNb_lxq($nb_lxq2);
-                $lexique->setId_theme($lexique_obj->getTheme()->getId());
+                $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
                 $lexiques2_array[] = $lexique;
             }else{
                 $nb_lxq3++;
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
                 $lexique = new \Formation\VocabulaireBundle\Model\Lexique();
                 $lexique_3->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
-                $lexique_3->setNom_societe($lexique_obj->getSociete()->getDescription());
-                $lexique_3->setRang($lexique_obj->getRang());
-                $lexique_3->setLibelle_theme($lexique_obj->getTheme()->getLibelleTheme());
-                $lexique_3->setIdLexique($lexique_obj->getId());
-                $lexique_3->setId_theme($lexique_obj->getTheme()->getId());
+                $lexique_3->setNom_societe($lexique_obj[0]->getSociete()->getDescription());
+                $lexique_3->setRang($lexique_obj[0]->getRang());
+                $lexique_3->setLibelle_theme($lexique_obj[0]->getTheme()->getLibelleTheme());
+                $lexique_3->setIdLexique($lexique_obj[0]->getId());
+                $lexique_3->setId_theme($lexique_obj[0]->getTheme()->getId());
                 $lexique_3->setNb_lxq($nb_lxq3);
                 $lexiques3_array[] = $lexique_3;
             }

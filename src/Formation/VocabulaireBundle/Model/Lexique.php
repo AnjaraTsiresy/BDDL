@@ -22,9 +22,11 @@ class Lexique {
     private $rang;
     private $id_societe;
     private $libelle_theme;
+    private $theme_eng;
     private $nb_termes;
     private $nom_societe;
     private $nb_lxq;
+    
     public function nb_lxq()
     {
         return $this->nb_lxq;
@@ -33,6 +35,15 @@ class Lexique {
     public function setNb_lxq($nb_lxq)
     {
         $this->nb_lxq = $nb_lxq;
+    }
+    public function theme_eng()
+    {
+        return $this->theme_eng;
+    }
+
+    public function setTheme_eng($theme_eng)
+    {
+        $this->theme_eng = $theme_eng;
     }
 
     public function id_lexique()

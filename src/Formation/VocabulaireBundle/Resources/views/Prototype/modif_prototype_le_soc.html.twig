@@ -1,0 +1,71 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <div class="titreMenu">
+        <p>{{ compteur }} LE(s) trouvé(s)</p>
+    </div>
+    <table id="tableau">
+        {% set i = 0 %}
+        {% for lexique in lexiques %}
+            {% set i = i + 1 %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="choix" {% if lexique.id_lexique != "" and lexique.id_lexique != null %} checked='checked' onclick="sendData(this.checked, {{ i }}, {{ lexique.id_societe }}, {{ lexique.id_theme }},{{ id }} );" {% endif %}>
+                </td>
+                <td><p class="terme_fr sous_titre_fr" >{{ lexique.libelle_theme  | convert_encoding('ISO-8859-1','UTF-8') }}/ {{ lexique.theme_eng  | convert_encoding('ISO-8859-1','UTF-8') }} </p></td>
+                <td><input type="button" id="bouton{{ i }}"  {% if lexique.id_lexique != "" and lexique.id_lexique != null %} enabled='enabled' {% else %}"disabled=disabled style='background:#808080;'" {% endif %} value="Modifier" onclick="modifLE({{ id }},{{ lexique.id_societe }}, {{ lexique.id_theme }})"></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br/><br/>
+    <table id="tableau">
+        <tr>
+            <td><a href="{{ path('modif_prototype', {'id': id}) }}">Terminer</a></td>
+            <td><a href="{{ path('modif_prototype', {'id': id}) }}">Retour à la page précédente</a></td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        function modifLE(id, id_societe, id_theme) {
+            width = 1000;
+            height = 1000;
+            if (window.innerWidth)
+            {
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+            } else
+            {
+                var left = (document.body.clientWidth - width) / 2;
+                var top = (document.body.clientHeight - height) / 2;
+            }
+            window.open('modifContenuLE.php?id=' + id + '&id_societe=' + id_societe + '&id_theme=' + id_theme, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+        }
+        function sendData(value, i, id_societe, id_theme, id) {
+            if (value == true) {
+                document.getElementById("bouton" + i).removeAttribute("disabled");
+                document.getElementById("bouton" + i).setAttribute("style", "background: #284294;");
+                //#284294
+                $.ajax({
+                    url: "sendData2.php",
+                    data: 'id_societe=' + id_societe + '&id_theme=' + id_theme + '&id=' + id,
+                    dataType: 'html',
+                    success: function (html) {
+                    }
+                });
+            } else {
+                document.getElementById("bouton" + i).setAttribute("disabled", "disabled");
+                document.getElementById("bouton" + i).setAttribute("style", "background: #808080;");
+                $.ajax({
+                    url: "deleteData.php",
+                    data: 'id_societe=' + id_societe + '&id_theme=' + id_theme + '&id=' + id,
+                    dataType: 'html',
+                    success: function (html) {
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

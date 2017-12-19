@@ -27,7 +27,7 @@
                             <select name="id_secteur" id="id_secteur">
                                 <option value=""></option>
                                 {% for secteur in secteurs %}
-                                    <option value="{{ secteur.id }}" {% if id_secteur == secteur.id %} selected='selected' {% endif %}>{{ secteur.libelleSecteur }}</option>
+                                    <option value="{{ secteur.id }}" {% if id_secteur == secteur.id %} selected='selected' {% endif %}>{{ secteur.libelleSecteur | convert_encoding('ISO-8859-1','UTF-8')}}</option>
                                 {% endfor %}
                             </select>
                         </td>

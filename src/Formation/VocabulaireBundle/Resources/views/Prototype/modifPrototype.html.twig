@@ -225,8 +225,7 @@
             <table>
                 <tr>
                     <td>
-                        <!--a  href="modifPrototypeLE.php?id={{ id }}&id_societe={{ id_societe }}">choisir des LE tout prototype confondu</a-->
-                        <a  href="modifPrototypeLESoc.php?id={{ id }}&id_societe={{ id_societe }}">choisir des LE tout prototype confondu</a>
+                        <a  href="{{ path('modif_prototype_le_soc', {'id': id, 'id_societe' : id_societe }) }}">choisir des LE tout prototype confondu</a>
                     </td>
 
                 </tr>
