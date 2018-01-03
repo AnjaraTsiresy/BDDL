@@ -10,10 +10,13 @@
             {% set i = i + 1 %}
             <tr>
                 <td>
-                    <input type="checkbox" name="choix" {% if lexique.id_lexique != "" and lexique.id_lexique != null %} checked='checked' onclick="sendData(this.checked, {{ i }}, {{ lexique.id_societe }}, {{ lexique.id_theme }},{{ id }} );" {% endif %}>
+                    <input type="checkbox" name="choix" {% if lexique.id_lexique != "" and lexique.id_lexique != null %} checked='checked'  {% endif %} onclick="sendData(this.checked, {{ i }}, {{ lexique.id_societe }}, {{ lexique.id_theme }},{{ id }} );">
                 </td>
                 <td><p class="terme_fr sous_titre_fr" >{{ lexique.libelle_theme  | convert_encoding('ISO-8859-1','UTF-8') }}/ {{ lexique.theme_eng  | convert_encoding('ISO-8859-1','UTF-8') }} </p></td>
-                <td><input type="button" id="bouton{{ i }}"  {% if lexique.id_lexique != "" and lexique.id_lexique != null %} enabled='enabled' {% else %}"disabled=disabled style='background:#808080;'" {% endif %} value="Modifier" onclick="modifLE({{ id }},{{ lexique.id_societe }}, {{ lexique.id_theme }})"></td>
+
+                <td>
+                    <input type="button" id="bouton{{ i }}"  {% if lexique.id_lexique != "" and lexique.id_lexique != null %} enabled='enabled' {% else %} disabled='disabled' style='background:#808080;'  {% endif %}  value="Modifier" onclick="modifLE({{ i }}, {{ lexique.id_societe }}, {{ lexique.id_theme }})">
+                </td>
             </tr>
         {% endfor %}
     </table>
@@ -41,7 +44,7 @@
                 var left = (document.body.clientWidth - width) / 2;
                 var top = (document.body.clientHeight - height) / 2;
             }
-            window.open('modifContenuLE.php?id=' + id + '&id_societe=' + id_societe + '&id_theme=' + id_theme, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+            window.open('{{ url }}?id=' + id + '&id_societe=' + id_societe + '&id_theme=' + id_theme, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
         }
         function sendData(value, i, id_societe, id_theme, id) {
             if (value == true) {

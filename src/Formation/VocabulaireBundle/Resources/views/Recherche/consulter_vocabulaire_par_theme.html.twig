@@ -111,9 +111,9 @@
             <tbody>
                 {% for v in vocabulaires %}
                     <tr>
-                        <td><p class="terme_fr sous_titre_fr" >{{ v.langue_origine }} </p></td>
-                        <td><p class="terme_en">{{ v.langue_traduction }}</p></td>
-                        <td><p>{{ v.libelle_theme }}</p></td>
+                        <td><p class="terme_fr sous_titre_fr" >{{ v.langue_origine | convert_encoding('ISO-8859-1','UTF-8') }} </p></td>
+                        <td><p class="terme_en">{{ v.langue_traduction | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
+                        <td><p>{{ v.libelle_theme | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
                         <td><input type="button" value="Modifier" onclick="modifier({{ v.id_vocabulaire }})"></td>
                         <td>
                             {% if langues_recherche == '' %}

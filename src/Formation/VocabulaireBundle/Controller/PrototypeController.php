@@ -73,7 +73,7 @@ class PrototypeController extends Controller
             }else{
                 $nb_lxq3++;
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
-                $lexique = new \Formation\VocabulaireBundle\Model\Lexique();
+                $lexique_3 = new \Formation\VocabulaireBundle\Model\Lexique();
                 $lexique_3->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
                 $lexique_3->setNom_societe($lexique_obj[0]->getSociete()->getDescription());
                 $lexique_3->setRang($lexique_obj[0]->getRang());

@@ -4,6 +4,8 @@ namespace Formation\VocabulaireBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PrototypeSocieteController extends Controller
 {
@@ -27,13 +29,36 @@ class PrototypeSocieteController extends Controller
              $le->setTheme_eng($l['theme_eng']);
             $lexiques_array[] = $le;
         }
-        
+        $url = $this->generateUrl(
+            'modif_contenu_le',
+            array(),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
         return $this->render('FormationVocabulaireBundle:Prototype:modif_prototype_le_soc.html.twig', array(
             'id' => $id,
             'id_societe' => $id_societe,
             'compteur' => $compteur,
-            'lexiques' => $lexiques_array
+            'lexiques' => $lexiques_array,
+            'url' => $url
         ));
 
+    }
+
+    /**
+     * @Route("/modif_contenu_le", name="modif_contenu_le")
+     */
+    public function modifContenuLeAction(Request $request) {
+        $id_theme = 0;
+        $id_societe = 0;
+        if ($request->get('id_theme')) {
+            $id_theme = $request->get('id_theme');
+        }
+        if ($request->get('id_societe')) {
+            $id_societe = $request->get('id_societe');
+        }
+
+        return $this->render('FormationVocabulaireBundle:Prototype:modif_contenu_le.html.twig', array(
+           'id_theme'
+        ));
     }
 }

@@ -43,8 +43,8 @@
         <tbody>
         {% for vpa in vocabulairePrototypeAccess %}
         <tr>
-            <td><p class="terme_fr sous_titre_fr" >{{ vpa['langue_origine'] }}</p></td>
-            <td><p class="terme_en">{{ vpa['langue_traduction'] }}</p></td>
+            <td><p class="terme_fr sous_titre_fr" >{{ vpa['langue_origine'] | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
+            <td><p class="terme_en">{{ vpa['langue_traduction'] | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
             <td>
                 <a href="{{ path('suppr_vocab_le', {'id_vocabulaire': vpa['id_vocabulaire'], 'id': id, 'id_societe': id_societe, 'id_theme': id_theme}) }}" class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>
             </td>

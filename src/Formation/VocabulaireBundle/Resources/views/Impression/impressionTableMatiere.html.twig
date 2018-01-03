@@ -30,14 +30,14 @@
                 {% endif %}
                 {% for table in table_matiere %}
                     {% if loop.index <= 8 and i  == 0 %}
-                    <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                    <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                     <br/>
                     {% elseif loop.index >= (9 + (i-1)) and loop.index <= (8 * (i+1)) %}
-                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% endif %}
                 {% endfor %}
-                <div class='nomprototype1'>{{ prototypeTitle }}</div>
+                <div class='nomprototype1'>{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
             </div>
             <div class='colonne2 tableMatiere'>
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
@@ -48,14 +48,14 @@
                 {% endif %}
                 {% for table in table_matiere %}
                     {% if loop.index <= 8 and i  == 0 %}
-                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% elseif loop.index >= (9 + (i-1)) and loop.index <= (8 * (i+1)) %}
                         <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% endif %}
                 {% endfor %}
-                <div class='nomprototype2'>{{ prototypeTitle }}</div>
+                <div class='nomprototype2'>{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
             </div>
         </div>
     </div>
@@ -73,14 +73,14 @@
                 {% endif %}
                 {% for table in table_matiere1 %}
                     {% if loop.index <= 8 and j  == 0 %}
-                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% elseif loop.index >= (9 + (j-1)) and loop.index <= (8 * (j+1)) %}
-                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% endif %}
                 {% endfor %}
-                <div class='nomprototype1'>{{ prototypeTitle }}</div>
+                <div class='nomprototype1'>{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
             </div>
             <div class='colonne2 tableMatiere'>
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
@@ -91,14 +91,14 @@
                 {% endif %}
                 {% for table in table_matiere1 %}
                     {% if loop.index <= 8 and j  == 0 %}
-                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% elseif loop.index >= (9 + (j-1)) and loop.index <= (8 * (j+1)) %}
-                        <span style="float:left;">{{ table.theme }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% endif %}
                 {% endfor %}
-                <div class='nomprototype2'>{{ prototypeTitle }}</div>
+                <div class='nomprototype2'>{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
             </div>
         </div>
     </div>

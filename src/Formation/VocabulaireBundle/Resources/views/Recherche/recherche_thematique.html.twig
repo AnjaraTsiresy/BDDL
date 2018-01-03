@@ -57,7 +57,7 @@
                     <select name="id_suffixe" id="id_suffixe" onChange="refresh(this.value, {{ id_secteur }})">
                         <option></option>
                         {% for suffixe in suffixes %}
-                            <option value="{{ suffixe['id_suffixe'] }}" {% if id_suffixe == suffixe['id_suffixe'] %} selected='selected' {% endif %}>{{ suffixe['libelle_suffixe'] }}</option>
+                            <option value="{{ suffixe['id_suffixe'] }}" {% if id_suffixe == suffixe['id_suffixe'] %} selected='selected' {% endif %}>{{ suffixe['libelle_suffixe'] | convert_encoding('ISO-8859-1','UTF-8') }}</option>
                         {% endfor %}
                     </select>
                 </td>
@@ -86,8 +86,8 @@
             <tbody>
                 {% for societe in societes %}
                     <tr>
-                        <td><input type="checkbox" name="listeSociete[]" id="listeSociete{{ societe.id_societe }}" value="{{ societe.id_societe }}"/>{{ societe.description }} ({{ societe.prototypes }} prototypes)</td>
-                        <td>{{ societe.libelle_secteur }}</td>
+                        <td><input type="checkbox" name="listeSociete[]" id="listeSociete{{ societe.id_societe }}" value="{{ societe.id_societe }}"/>{{ societe.description | convert_encoding('ISO-8859-1','UTF-8') }} ({{ societe.prototypes }} prototypes)</td>
+                        <td>{{ societe.libelle_secteur | convert_encoding('ISO-8859-1','UTF-8') }}</td>
                     </tr>
                 {% endfor %}
                 <tr>

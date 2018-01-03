@@ -29,7 +29,7 @@
 	<tbody> {% for p in prototype_access_array %}
                     <tr>
 						<td>
-							<input type="checkbox" name="listePrototype[]" id="listePrototype{{p.id_prototype_access}}" value="{{p.id_prototype_access}}"/>{{p.prototype_access}} ({{ p.nb_LE }})
+							<input type="checkbox" name="listePrototype[]" id="listePrototype{{p.id_prototype_access}}" value="{{p.id_prototype_access}}"/>{{p.prototype_access | convert_encoding('ISO-8859-1','UTF-8') }} ({{ p.nb_LE }})
 						</td>
 					</tr>
                     {% endfor %}

@@ -66,7 +66,7 @@ class ProducteurController extends Controller {
             $vocabulaires_array[] = $vocab;
         }
 
-        return $this->render('FormationVocabulaireBundle:Default:recherche_thematique.html.twig', array(
+        return $this->render('FormationVocabulaireBundle:Recherche:recherche_thematique.html.twig', array(
                     'secteurs' => $secteurs,
                     'societes' => $vocabulaires_array,
                     'id_secteur' => $id_secteur,
@@ -134,7 +134,7 @@ class ProducteurController extends Controller {
             $has_data = 1;
         }
 
-        return $this->render('FormationVocabulaireBundle:Default:recherche_le.html.twig', array(
+        return $this->render('FormationVocabulaireBundle:Recherche:recherche_le.html.twig', array(
                     'themes' => $themes,
                     'id_societe' => $id_societe,
                     'id_theme' => $id_theme,
@@ -164,7 +164,7 @@ class ProducteurController extends Controller {
             $nb_termes = count($vocabulaires);
         }
 
-        return $this->render('FormationVocabulaireBundle:Default:consulter_contenu_le.html.twig', array(
+        return $this->render('FormationVocabulaireBundle:Recherche:consulter_contenu_le.html.twig', array(
                     'id_societe' => $id_societe,
                     'id_theme' => $id_theme,
                     'nb_termes' => $nb_termes,
@@ -456,7 +456,7 @@ class ProducteurController extends Controller {
         $vocabulaires = $repositoryVocabulaire->findTermes($terme, $langues_recherche, $dic);
         $nb_vocab = count($vocabulaires);
 
-        return $this->render('FormationVocabulaireBundle:Default:consulter_vocabulaire_par_theme.html.twig', array(
+        return $this->render('FormationVocabulaireBundle:Recherche:consulter_vocabulaire_par_theme.html.twig', array(
                     'terme' => $terme,
                     'url' => $url,
                     'sql' => $sql,
@@ -652,10 +652,18 @@ class ProducteurController extends Controller {
         ));
     }
 
+    private function convert_utf8( $string ) { 
+        return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
+    }
+
+
     /**
      * @Route("/export_le", name="export_le")
      */
     public function export_leAction(Request $request) {
+        
+        ini_set('mbstring.substitute_character', "none");
+
         $vocabulaires = array();
         if ($request->get('id_societe') && $request->get('id_secteur') && $request->get('id_theme') && $request->get('id_prototype_access')) {
             $id_prototype_access = $request->get('id_prototype_access');
@@ -687,20 +695,20 @@ class ProducteurController extends Controller {
 
         $counter = 2;
         foreach ($vocabulaires as $v) {
-            $sheet->setCellValue('A' . $counter, $v['description']);
-            $sheet->setCellValue('B' . $counter, $v['libelle_secteur']);
-            $sheet->setCellValue('C' . $counter, $v['type']);
-            $sheet->setCellValue('D' . $counter, $v['libelle_theme']);
-            $sheet->setCellValue('E' . $counter, $v['theme_eng']);
-            $sheet->setCellValue('F' . $counter, $v['langue_origine']);
-            $sheet->setCellValue('G' . $counter, $v['langue_traduction']);
-            $sheet->setCellValue('H' . $counter, $v['source_type']);
-            $sheet->setCellValue('I' . $counter, $v['source_nom_stagiaire']);
-            $sheet->setCellValue('J' . $counter, $v['lien_nom_doc']);
-            $sheet->setCellValue('K' . $counter, $v['lien']);
+            
+            $sheet->setCellValue('A' . $counter, $this->convert_utf8($v['description']));
+            $sheet->setCellValue('B' . $counter, $this->convert_utf8($v['libelle_secteur']));
+            $sheet->setCellValue('C' . $counter, $this->convert_utf8($v['type']));
+            $sheet->setCellValue('D' . $counter, $this->convert_utf8($v['libelle_theme']));
+            $sheet->setCellValue('E' . $counter, $this->convert_utf8($v['theme_eng']));
+            $sheet->setCellValue('F' . $counter, $this->convert_utf8($v['langue_origine']));
+            $sheet->setCellValue('G' . $counter, $this->convert_utf8($v['langue_traduction']));
+            $sheet->setCellValue('H' . $counter, $this->convert_utf8($v['source_type']));
+            $sheet->setCellValue('I' . $counter, $this->convert_utf8($v['source_nom_stagiaire']));
+            $sheet->setCellValue('J' . $counter, $this->convert_utf8($v['lien_nom_doc']));
+            $sheet->setCellValue('K' . $counter, $this->convert_utf8($v['lien']));
             $counter++;
         }
-
         $phpExcelObject->getActiveSheet()->setTitle('Vocabulaire');
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
@@ -759,15 +767,15 @@ class ProducteurController extends Controller {
 
         $counter = 2;
         foreach ($vocabulaires as $v) {
-            $sheet->setCellValue('A' . $counter, $v['description']);
-            $sheet->setCellValue('B' . $counter, $v['libelle_theme']);
-            $sheet->setCellValue('C' . $counter, $v['theme_eng']);
-            $sheet->setCellValue('D' . $counter, $v['langue_origine']);
-            $sheet->setCellValue('E' . $counter, $v['langue_traduction']);
-            $sheet->setCellValue('F' . $counter, $v['source_type']);
-            $sheet->setCellValue('G' . $counter, $v['source_nom_stagiaire']);
-            $sheet->setCellValue('H' . $counter, $v['lien_nom_doc']);
-            $sheet->setCellValue('I' . $counter, $v['lien']);
+            $sheet->setCellValue('A' . $counter, $this->convert_utf8($v['description']));
+            $sheet->setCellValue('B' . $counter, $this->convert_utf8($v['libelle_theme']));
+            $sheet->setCellValue('C' . $counter, $this->convert_utf8($v['theme_eng']));
+            $sheet->setCellValue('D' . $counter, $this->convert_utf8($v['langue_origine']));
+            $sheet->setCellValue('E' . $counter, $this->convert_utf8($v['langue_traduction']));
+            $sheet->setCellValue('F' . $counter, $this->convert_utf8($v['source_type']));
+            $sheet->setCellValue('G' . $counter, $this->convert_utf8($v['source_nom_stagiaire']));
+            $sheet->setCellValue('H' . $counter, $this->convert_utf8($v['lien_nom_doc']));
+            $sheet->setCellValue('I' . $counter, $this->convert_utf8($v['lien']));
             $counter++;
         }
 
@@ -831,10 +839,10 @@ class ProducteurController extends Controller {
 
         $counter = 2;
         foreach ($vocabulaires as $v) {
-            $sheet->setCellValue('A' . $counter, $v['libelle_theme']);
-            $sheet->setCellValue('B' . $counter, $v['theme_eng']);
-            $sheet->setCellValue('C' . $counter, $v['langue_origine']);
-            $sheet->setCellValue('D' . $counter, $v['langue_traduction']);
+            $sheet->setCellValue('A' . $counter, $this->convert_utf8($v['libelle_theme']));
+            $sheet->setCellValue('B' . $counter, $this->convert_utf8($v['theme_eng']));
+            $sheet->setCellValue('C' . $counter, $this->convert_utf8($v['langue_origine']));
+            $sheet->setCellValue('D' . $counter, $this->convert_utf8($v['langue_traduction']));
             $counter++;
         }
 

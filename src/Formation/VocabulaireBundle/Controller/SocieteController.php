@@ -77,8 +77,9 @@ class SocieteController extends Controller {
             $societes_array[] = $pro;
         }
         $url = $this->generateUrl(
-                'edit_societe', [
-                ], UrlGeneratorInterface::ABSOLUTE_URL
+                'edit_societe',
+                array(),
+                UrlGeneratorInterface::ABSOLUTE_URL
         );
         return $this->render('FormationVocabulaireBundle:Societe:liste.html.twig', array(
                     'societe' => $societe,

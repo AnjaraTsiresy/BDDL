@@ -660,16 +660,19 @@ class PDFPage
             for ($j = $k; $j < $isanyInterne; $j ++){
                 $kj = 1;
                 $string = "";
-                foreach ($data[$j] as $coco){
-                    $string = $string."".$coco;
-                    $kj ++;
-                }
+                if($j < count($data)) {
+                    foreach ($data[$j] as $coco) {
+                        $string = $string . "" . $coco;
+                        $kj++;
+                    }
+
                 $nbreCaractere = strlen($string);
                 $totalNbrecaractData = $totalNbrecaractData + $nbreCaractere;
                 $fixeNbreCaractreLigne = 98;
                 $partieEntiere = (int)($nbreCaractere/$fixeNbreCaractreLigne);
                 $tabNbrePartieALaliggne[] = $partieEntiere;
                 $tab1[] = $data[$j];
+                }
             }
             $i1 = $i;
             if ($i==1){
