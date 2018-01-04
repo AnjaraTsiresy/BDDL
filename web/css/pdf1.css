@@ -59,7 +59,7 @@ table tr td{
 	border: 1px solid red;
 	overflow: hidden; /* Empêche le dépassement des flottants. */
 	margin-bottom: 1.5mm;
-	 width: 210mm;
+	 width: 222mm;
    height: 297mm;
 	position: relative;
 	top : 0;
