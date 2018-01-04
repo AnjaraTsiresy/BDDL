@@ -268,7 +268,7 @@ class ImpressionController extends Controller
 
                 return new Response(
 
-                    $snappy->getOutputFromHtml($html),
+                    $snappy->getOutputFromHtml($html,array('orientation' => 'Landscape')),
                     200,
                     array(
 
