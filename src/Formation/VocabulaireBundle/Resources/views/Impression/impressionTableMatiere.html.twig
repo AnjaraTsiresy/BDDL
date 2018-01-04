@@ -1,19 +1,4 @@
-
-
-<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <style>
-
-
-body {
-  background: rgb(204,204,204); 
-}
-page {
-  background: white;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 0.5cm;
-  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
-}
    page[size="A4"] {  
   width: 21cm;
   height: 29.7cm; 
@@ -25,6 +10,10 @@ page {
         }
     }
 </style>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="{{ pathToWeb }}/css/pdf1.css" type="text/css">
+{#<link rel="stylesheet" href="{{ asset('css/pdf1.css') }}" type="text/css">#}
 
 {% for j, k in tablenbreParTable %}
     <page size= "A4">
