@@ -1,14 +1,15 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 <link rel="stylesheet" href="{{ asset('css/pdf1.css') }}" type="text/css">
 <style>
-   page[size="A4"] {  
-  width: 21cm;
-  height: 29.7cm; 
+   @page {
+ size: A4;
+ margin: 0;
 }
-    @media print {
-        body, page{
-            margin: 0;
-            box-shadow: 0;
-        }
-    }
+@media print {
+ html, body {
+   width: 210mm;
+   height: 297mm;
+ }
+}
+      
 </style>
