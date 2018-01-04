@@ -11,6 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ImportationCorpsController extends Controller {
 
+
+    private function convert_utf8( $string ) {
+        return mb_convert_encoding($string, 'Cp1252', 'UTF-8');
+    }
     
     /**
      * @Route("/generateCorpsGlossaire/{id}/{id_societe}", name="generateCorpsGlossaire")
@@ -50,10 +54,10 @@ class ImportationCorpsController extends Controller {
 
         $dataTheme = array();
         foreach ($dataThemeResult as $row) {
-            $lib = $row["lib"];
-            $idT = $row["idT"];
-            $description = $row["description"];
-            $id_societe = $row["id_societe"];
+            $lib = $this->convert_utf8($row["lib"]);
+            $idT = $this->convert_utf8($row["idT"]);
+            $description = $this->convert_utf8($row["description"]);
+            $id_societe = $this->convert_utf8($row["id_societe"]);
             $dataTheme[] = array($lib, $idT, $description, $id_societe);
         }
 
@@ -67,9 +71,9 @@ class ImportationCorpsController extends Controller {
             $loadDtaWithThemes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->LoadDtaWithTheme($id, $rowpips['1']);
             $dataNum = array();
             foreach ($loadDtaWithThemes as $row) {
-                $langue_origine = $row["langue_origine"];
-                $langue_traduction = $row["langue_traduction"];
-                $langue_origine_sans_modif = $row["langue_origine_sans_modif"];
+                $langue_origine = $this->convert_utf8($row["langue_origine"]);
+                $langue_traduction = $this->convert_utf8($row["langue_traduction"]);
+                $langue_origine_sans_modif = $this->convert_utf8($row["langue_origine_sans_modif"]);
 
                 $langue_origine = strtolower($langue_origine);
                 $dataNum[] = array($langue_origine, $langue_traduction, $langue_origine_sans_modif);
@@ -116,11 +120,11 @@ class ImportationCorpsController extends Controller {
         $x = 0;
         $i = 1;
         foreach ($dataTheme as $row) {
-            $societe = $row[3];
+            $societe = $this->convert_utf8($row[3]);
             if ($societe == "FORMA2+") {
                 $societe = "général";
             }
-            $titre_theme = $row[0];
+            $titre_theme = $this->convert_utf8($row[0]);
             $pdf->PrintChapter($i, $row[0], $titre_theme, $dataAll[$x], $societe, $nb_page);
             $i++;
             $x++;

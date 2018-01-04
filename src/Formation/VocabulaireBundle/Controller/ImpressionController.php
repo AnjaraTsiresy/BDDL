@@ -90,8 +90,8 @@ class ImpressionController extends Controller
                     $lib = $row["lib"];
                     $idT = $row["idT"];
                     $description = $row["description"];
-                    $id_societe = $row["id_societe"];
-                    $dataTheme[] = array($lib, $idT,$description,$id_societe);
+                    $id_soc= $row["id_societe"];
+                    $dataTheme[] = array($lib, $idT,$description,$id_soc);
                 }
 
 
@@ -101,7 +101,7 @@ class ImpressionController extends Controller
 
              foreach($dataTheme as $rowpips)
               {
-                
+
                   $loadDtaWithThemes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->LoadDtaWithTheme($id, $rowpips['1']);
                   $dataNum = array();
                   foreach ($loadDtaWithThemes as $row)
@@ -147,40 +147,57 @@ class ImpressionController extends Controller
 
         $table_matiere1 = array();
         $table_matiere = array();
+        $table_matiere3 = array();
 
         $tab_m1 = array();
         $tab_m2 = array();
+        $tab_m3 = array();
 
         foreach($dataTheme as $row)
         {
-            //$id_soc = $row[5];
             $id_soc = $row[3];
-            if($id_societe == $id_soc){
-                if ($htme!=$row[0]){
 
+         if($id_societe == $id_soc){
+                  if ($htme!=$row[0]){
+
+                      $numpge = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getMinOrdreSousTheme($row[0], $id_societe, $id);
+                      $tableMatiereModel = new \Formation\VocabulaireBundle\Model\TableMatiere();
+                      $tableMatiereModel->seTheme($row[0]);
+                      $tableMatiereModel->setNbPage($numpge);
+                     $table_matiere[] = $tableMatiereModel;
+                      $tab_m1[] = "generique";
+
+                  }
+
+                  $htme = $row[0];
+              }
+
+            elseif($id_soc == 653){
+
+               if ($htme!=$row[0]){
                     $numpge = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getMinOrdreSousTheme($row[0], $id_societe, $id);
-                    $tableMatiereModel = new \Formation\VocabulaireBundle\Model\TableMatiere();
-                    $tableMatiereModel->seTheme($row[0]);
-                    $tableMatiereModel->setNbPage($numpge);
-                    $table_matiere[] = $tableMatiereModel;
-                    $tab_m1[] = "generique";
-
+                    $tableMatiereModel3 = new \Formation\VocabulaireBundle\Model\TableMatiere();
+                    $tableMatiereModel3->seTheme($row[0]);
+                    $tableMatiereModel3->setNbPage($numpge);
+                    $table_matiere3[] = $tableMatiereModel3;
+                    $tab_m3[] = "generique";
                 }
-
                 $htme = $row[0];
             }
 
-            if($id_societe != $id_soc){
-                if ($htme!=$row[0]){
-                    $numpge = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getMinOrdreSousTheme($row[0], $id_societe, $id);
-                    $tableMatiereModel1 = new \Formation\VocabulaireBundle\Model\TableMatiere();
-                    $tableMatiereModel1->seTheme($row[0]);
-                    $tableMatiereModel1->setNbPage($numpge);
-                    $table_matiere1[] = $tableMatiereModel1;
-                    $tab_m2[] = "non generique";
-                }
-                $htme = $row[0];
-            }
+             else{
+                  if ($htme!=$row[0]){
+                      $numpge = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getMinOrdreSousTheme($row[0], $id_societe, $id);
+                      $tableMatiereModel1 = new \Formation\VocabulaireBundle\Model\TableMatiere();
+                      $tableMatiereModel1->seTheme($row[0]);
+                      $tableMatiereModel1->setNbPage($numpge);
+                      $table_matiere1[] = $tableMatiereModel1;
+                      $tab_m3[] = "non generique";
+                  }
+                  $htme = $row[0];
+              }
+
+
         }
 
         $tabletotal1 = array();
@@ -189,10 +206,21 @@ class ImpressionController extends Controller
             $tabletotal1[] = $texte;
         }
 
+
+        foreach ($table_matiere1 as $tm){
+            $table_matiere3[] = $tm;
+        }
+
         $tabletotal2 = array();
 
         foreach ($tab_m2 as $texte){
             $tabletotal2[] = $texte;
+        }
+
+        $tabletotal3 = array();
+
+        foreach ($tab_m3 as $texte3){
+            $tabletotal3[] = $texte3;
         }
 
         $nbreParTable = 8;
@@ -203,44 +231,55 @@ class ImpressionController extends Controller
         $tablenbreParTable1 = array_chunk($tabletotal2, $nbreParTable1);
         $nbreTableparTable1 = count ($tablenbreParTable1);
 
-     /*  return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
+         $nbreParTable3 = 8;
+        $tablenbreParTable3 = array_chunk($tabletotal3, $nbreParTable3);
+        $nbreTableparTable3 = count ($tablenbreParTable3);
+
+
+/*
+      return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
             'table_matiere'=>$table_matiere,
             'table_matiere1'=>$table_matiere1,
+          'table_matiere3'=>$table_matiere3,
             'tablenbreParTable' => $tablenbreParTable,
             'nbreTableparTable' => $nbreTableparTable,
             'tablenbreParTable1' => $tablenbreParTable1,
             'nbreTableparTable1' => $nbreTableparTable1,
+          'tablenbreParTable3' => $tablenbreParTable3,
+          'nbreTableparTable3' => $nbreTableparTable3,
             'prototypeTitle' => $prototypeTitle,
             'nom_societe' => $nom_societe
-        ));
-*/
-        $html = $this->renderView('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
-            'table_matiere'=>$table_matiere,
-            'table_matiere1'=>$table_matiere1,
-            'tablenbreParTable' => $tablenbreParTable,
-            'nbreTableparTable' => $nbreTableparTable,
-            'tablenbreParTable1' => $tablenbreParTable1,
-            'nbreTableparTable1' => $nbreTableparTable1,
-            'prototypeTitle' => $prototypeTitle,
-            'nom_societe' => $nom_societe
-        ));
+        )); */
+                $html = $this->renderView('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
+                    'table_matiere'=>$table_matiere,
+                    'table_matiere1'=>$table_matiere1,
+                    'table_matiere3'=>$table_matiere3,
+                    'tablenbreParTable' => $tablenbreParTable,
+                    'nbreTableparTable' => $nbreTableparTable,
+                    'tablenbreParTable1' => $tablenbreParTable1,
+                    'nbreTableparTable1' => $nbreTableparTable1,
+                    'tablenbreParTable3' => $tablenbreParTable3,
+                    'nbreTableparTable3' => $nbreTableparTable3,
+                    'prototypeTitle' => $prototypeTitle,
+                    'nom_societe' => $nom_societe
+                ));
 
-        $filename = 'IndexGlossaire'.$nom_societe.''.$prototypeTitle;
+                $filename = 'IndexGlossaire'.$nom_societe.''.$prototypeTitle;
 
-        return new Response(
+                return new Response(
 
-            $snappy->getOutputFromHtml($html),
-            200,
-            array(
+                    $snappy->getOutputFromHtml($html),
+                    200,
+                    array(
 
-                'Content-Type'          => 'application/pdf',
+                        'Content-Type'          => 'application/pdf',
 
-                'Content-Disposition'   => 'inline; filename="'.$filename.'.pdf"',
+                        'Content-Disposition'   => 'inline; filename="'.$filename.'.pdf"',
 
 
-            )
+                    )
 
-        );
+                );
  }
 
 

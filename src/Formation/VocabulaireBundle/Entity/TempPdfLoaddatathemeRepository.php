@@ -35,6 +35,7 @@ class TempPdfLoaddatathemeRepository extends EntityRepository
             ->innerJoin('temp.prototypeAccess', 'pa')
             ->where('pa.id = :id_prototype_access')
             ->setParameter('id_prototype_access', $id)
+            ->orderBy('temp.lib','asc')
             ->getQuery();
 
         return $query->getResult();

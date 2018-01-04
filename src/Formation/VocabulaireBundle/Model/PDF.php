@@ -141,8 +141,11 @@ class PDF
         return $isP1;
     }
 
+
     // Tableau simple	
 	function BasicTable($data, $title, $num, $theme,$societe,$nb_page){
+       // echo '<link rel="stylesheet" href="{{ pathToWeb }}/css/pdf1.css" type="text/css">';
+
 		//echo "-------------- Initial <br/>";
 		$isany = count ($data);
 		//$nbreParPage = 16;
