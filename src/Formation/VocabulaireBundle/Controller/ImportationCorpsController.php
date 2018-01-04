@@ -164,7 +164,7 @@ class ImportationCorpsController extends Controller {
                     ], UrlGeneratorInterface::ABSOLUTE_URL
         );
 $snappy->setOption('no-outline', true);
-$snappy->setOption('page-size','A4');
+$snappy->setOption('page-size','LETTER');
 $snappy->setOption('encoding', 'UTF-8');
         return new Response($snappy->getOutput($link,array(
                 'orientation' => 'landscape'

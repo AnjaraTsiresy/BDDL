@@ -266,7 +266,7 @@ class ImpressionController extends Controller
 
                 $filename = 'IndexGlossaire'.$nom_societe.''.$prototypeTitle;
                 $snappy->setOption('no-outline', true);
-$snappy->setOption('page-size','A4');
+$snappy->setOption('page-size','LETTER');
 $snappy->setOption('encoding', 'UTF-8');
                 return new Response(
 
