@@ -274,6 +274,7 @@ class ImpressionController extends Controller
                 'javascript-delay' => 1000, 
                 'no-stop-slow-scripts' => true, 
                 'no-background' => false, 
+                'page-size' => 'A4',
                 'lowquality' => false,
                 'page-height' => 600,
                 'page-width'  => 1000,

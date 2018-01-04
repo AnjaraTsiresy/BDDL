@@ -170,6 +170,7 @@ class ImportationCorpsController extends Controller {
                 'no-stop-slow-scripts' => true, 
                 'no-background' => false, 
                 'lowquality' => false,
+                'page-size' => 'A4',
                 'page-height' => 600,
                 'page-width'  => 1000,
                 'encoding' => 'utf-8',
