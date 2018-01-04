@@ -164,7 +164,7 @@ class ImportationCorpsController extends Controller {
         );
 
         return new Response($snappy->getOutput($link,array('orientation'=>'Landscape',
-                                         'default-header'=>true)), 200, array(
+                                         'default-header'=>false)), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
            )
