@@ -163,8 +163,23 @@ class ImportationCorpsController extends Controller {
                     ], UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        return new Response($snappy->getOutput($link,array('orientation'=>'Landscape',
-                                         'default-header'=>false)), 200, array(
+        return new Response($snappy->getOutput($link,array(
+                'orientation' => 'landscape', 
+                'enable-javascript' => true, 
+                'javascript-delay' => 1000, 
+                'no-stop-slow-scripts' => true, 
+                'no-background' => false, 
+                'lowquality' => false,
+                'page-height' => 600,
+                'page-width'  => 1000,
+                'encoding' => 'utf-8',
+                'images' => true,
+                'cookie' => array(),
+                'dpi' => 300,
+                'image-dpi' => 300,
+                'enable-external-links' => true,
+                'enable-internal-links' => true
+            )), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
            )
