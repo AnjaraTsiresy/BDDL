@@ -163,7 +163,8 @@ class ImportationCorpsController extends Controller {
                     ], UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        return new Response($snappy->getOutput($link), 200, array(
+        return new Response($snappy->getOutput($link,array('orientation'=>'Landscape',
+                                         'default-header'=>true)), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
            )
