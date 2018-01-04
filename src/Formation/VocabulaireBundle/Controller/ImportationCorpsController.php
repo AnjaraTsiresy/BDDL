@@ -17,7 +17,7 @@ class ImportationCorpsController extends Controller {
     }
     
     /**
-     * @Route("/generateCorpsGlossaire/{id}/{id_societe}", name="generateCorpsGlossaire")
+     * @Route("/impressionCorpsGlossaire/{id}/{id_societe}", name="impressionCorpsGlossaire")
      */
     public function generateCorpsGlossaireAction($id, $id_societe) {
 
@@ -139,8 +139,9 @@ class ImportationCorpsController extends Controller {
     }
 
     
+    
     /**
-     * @Route("/impressionCorpsGlossaire/{id}/{id_societe}", name="impressionCorpsGlossaire")
+     * @Route("/generateCorpsGlossaire/{id}/{id_societe}", name="generateCorpsGlossaire")
      */
     public function impressionCorpsGlossaireAction($id, $id_societe) {
         ini_set('max_execution_time', -1); //0=NOLIMIT
