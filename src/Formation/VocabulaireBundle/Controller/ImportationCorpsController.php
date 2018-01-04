@@ -162,24 +162,11 @@ class ImportationCorpsController extends Controller {
                         'id_societe' => $id_societe,
                     ], UrlGeneratorInterface::ABSOLUTE_URL
         );
-
+$snappy->setOption('no-outline', true);
+$snappy->setOption('page-size','LETTER');
+$snappy->setOption('encoding', 'UTF-8');
         return new Response($snappy->getOutput($link,array(
-                'orientation' => 'landscape', 
-                'enable-javascript' => true, 
-                'javascript-delay' => 1000, 
-                'no-stop-slow-scripts' => true, 
-                'no-background' => false, 
-                'lowquality' => false,
-                'page-size' => 'A4',
-                'page-height' => '21cm',
-                'page-width'  => '29.7cm',
-                'encoding' => 'utf-8',
-                'images' => true,
-                'cookie' => array(),
-                'dpi' => 300,
-                'image-dpi' => 300,
-                'enable-external-links' => true,
-                'enable-internal-links' => true
+                'orientation' => 'landscape'
             )), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'

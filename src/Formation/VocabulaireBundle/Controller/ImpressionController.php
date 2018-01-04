@@ -265,26 +265,13 @@ class ImpressionController extends Controller
                 ));
 
                 $filename = 'IndexGlossaire'.$nom_societe.''.$prototypeTitle;
-
+                $snappy->setOption('no-outline', true);
+$snappy->setOption('page-size','LETTER');
+$snappy->setOption('encoding', 'UTF-8');
                 return new Response(
 
                     $snappy->getOutputFromHtml($html,array(
-                'orientation' => 'landscape', 
-                'enable-javascript' => true, 
-                'javascript-delay' => 1000, 
-                'no-stop-slow-scripts' => true, 
-                'no-background' => false, 
-                'page-size' => 'A4',
-                'lowquality' => false,
-                'page-height' => '21cm',
-                'page-width'  => '29.7cm',
-                'encoding' => 'utf-8',
-                'images' => true,
-                'cookie' => array(),
-                'dpi' => 300,
-                'image-dpi' => 300,
-                'enable-external-links' => true,
-                'enable-internal-links' => true
+                'orientation' => 'landscape'
             )),
                     200,
                     array(
