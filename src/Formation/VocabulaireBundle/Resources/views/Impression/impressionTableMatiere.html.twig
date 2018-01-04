@@ -21,7 +21,7 @@
 {#<link rel="stylesheet" href="{{ asset('css/pdf1.css') }}" type="text/css">#}
 
 {% for j, k in tablenbreParTable %}
-    <div class= "A4">
+    <page class= "A4">
         <div class='conteneur'>
             <div class='colonne1 tableMatiere'>
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
@@ -60,7 +60,7 @@
                 <div class='nomprototype2'>{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
             </div>
         </div>
-    </div>
+    </page>
 {% endfor %}
 
 {% for j, k in tablenbreParTable3 %}
