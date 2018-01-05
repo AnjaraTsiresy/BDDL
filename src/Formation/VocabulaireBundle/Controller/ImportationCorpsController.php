@@ -13,9 +13,11 @@ class ImportationCorpsController extends Controller {
 
 
     private function convert_utf8( $string ) {
-        return mb_convert_encoding($string, 'Cp1252', 'UTF-8');
+        return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
     }
-    
+
+
+
     /**
      * @Route("/generateCorpsGlossaire/{id}/{id_societe}", name="generateCorpsGlossaire")
      */
@@ -138,11 +140,11 @@ class ImportationCorpsController extends Controller {
         ));
     }
 
-    
+
     /**
      * @Route("/impressionCorpsGlossaire/{id}/{id_societe}", name="impressionCorpsGlossaire")
      */
-    
+
     public function impressionCorpsGlossaireAction($id, $id_societe) {
         ini_set('max_execution_time', -1); //0=NOLIMIT
         ini_set('memory_limit', '2048M');
@@ -163,9 +165,6 @@ class ImportationCorpsController extends Controller {
                         'id_societe' => $id_societe,
                     ], UrlGeneratorInterface::ABSOLUTE_URL
         );
-$snappy->setOption('no-outline', true);
-$snappy->setOption('page-size','LETTER');
-$snappy->setOption('encoding', 'UTF-8');
         return new Response($snappy->getOutput($link,array(
                 'orientation' => 'landscape'
             )), 200, array(

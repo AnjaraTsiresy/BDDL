@@ -314,7 +314,7 @@ class PDF
 					// Affichage titre centré
 					echo '<page size="A4">';
 					echo "<div class='conteneur'>";
-					echo "<div class='colonne1  tableMatiere'>";
+					echo "<div class='colonne1'>";
 					echo "<span style='position:absolute;
 					font-size: 10pt;
 					font-weight: bold;
@@ -324,9 +324,9 @@ class PDF
 					height: 200px;
 					margin-left: 0;
 					margin-top: 0; '>$title</span>";
-					echo "<div class='numpage1' style='margin-right:60px;float:right;'>".$this->numpage."/".$nb_page."</div>";
+					echo "<div class='numpage1'>".$this->numpage."/".$nb_page."</div>";
 					echo '</div>';
-					echo "<div class='colonne2  tableMatiere'>";
+					echo "<div class='colonne2'>";
 					echo "<span style='position:absolute;
 					font-size: 10pt;
 									font-weight: bold;
@@ -336,7 +336,7 @@ class PDF
 									height: 200px;
 									margin-left: 0;
 									margin-top: 0; '>$title</span>";
-					echo "<div class='numpage2' style='margin-right:60px;float:right;'>".$this->numpage."/".$nb_page."</div>";
+					echo "<div class='numpage2'>".$this->numpage."/".$nb_page."</div>";
 					echo '</div>';
 					echo '</div>';
 					echo '</page>';
@@ -345,7 +345,7 @@ class PDF
 				
 				echo '<page size="A4">';
 				echo "<div class='conteneur'>";
-				echo "<div class='colonne1  tableMatiere'>";
+				echo "<div class='colonne1'>";
 				
 				if ($i==0){
 						//echo "<b  class='titremangamanga'>$title</b>";
@@ -359,14 +359,14 @@ class PDF
 				
 				echo "<div class='numpage1'>".$this->numpage."/".$nb_page."</div>";
 				echo "</div>";
-				echo "<div class='colonne2 tableMatiere'>";
+				echo "<div class='colonne2'>";
 				if ($i==0){
 					//echo "<b class='titremangamanga' >$title</b>";
 					//echo "<span class='titremangamanga'>$title</span>";
 					echo " <table class='titremangamanga'><tbody><tr><td><span>$title</span></td><td></td></tr></tbody></table>";
 				}
 				$nbreMaj2 = $this->colonnedata($tab);
-				echo "<div class='numpage2' style='margin-right:60px;float:right;'>".$this->numpage."/".$nb_page."</div>";
+				echo "<div class='numpage2'>".$this->numpage."/".$nb_page."</div>";
 				echo "</div>";
 				echo "</div>";
 				echo '</page>';

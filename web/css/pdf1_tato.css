@@ -55,7 +55,7 @@ table tr td{
 	/*height: auto;  
 	height: 209mm;
 	width: 294mm;*/
-	
+	height: 24.35cm;
 	/*border: 2px solid red;*/
 	border: 1px solid white;
 	overflow: hidden; /* Empêche le dépassement des flottants. */
