@@ -29,9 +29,8 @@ body{
     clear: both;
     float: right;
     font-size: 7.5pt;
-	position: absolute;
     top : 110mm;
-	margin-left: 15mm;
+	margin-left: 5mm;
 }
 
 .nomprototype2 {
@@ -39,9 +38,8 @@ body{
     clear: both;
     float: right;
     font-size: 7.5pt;
-    position: absolute;
     top : 110mm;
-	margin-left: 15mm;
+	margin-left: 5mm;
 }
 table tr td{
 	font-family: times new roman;
