@@ -27,14 +27,12 @@ body{
 .nomprototype1 {
     float: right;
     font-size: 7.5pt;
-	position: absolute;
     top : 110mm;
 }
 
 .nomprototype2 {
     float: right;
     font-size: 7.5pt;
-    position: absolute;
     top : 110mm;
 }
 table tr td{
