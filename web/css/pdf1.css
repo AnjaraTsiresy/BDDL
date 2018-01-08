@@ -25,23 +25,17 @@ body{
 	margin-left: 105mm;
 }
 .nomprototype1 {
-	/*border: 2px solid green;*/
-    clear: both;
     float: right;
     font-size: 7.5pt;
 	position: absolute;
     top : 110mm;
-	margin-left: 45mm;
 }
 
 .nomprototype2 {
-	/*border: 2px solid green;*/
-    clear: both;
     float: right;
     font-size: 7.5pt;
     position: absolute;
     top : 110mm;
-	margin-left: 45mm;
 }
 table tr td{
 	font-family: times new roman;
