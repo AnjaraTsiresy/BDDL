@@ -30,7 +30,7 @@ body{
     float: right;
     font-size: 7.5pt;
     top : 110mm;
-	margin-left: 5mm;
+	/*margin-left: 5mm;*/
 }
 
 .nomprototype2 {
@@ -39,7 +39,7 @@ body{
     float: right;
     font-size: 7.5pt;
     top : 110mm;
-	margin-left: 5mm;
+	/*margin-left: 5mm;*/
 }
 table tr td{
 	font-family: times new roman;
