@@ -46,7 +46,7 @@ class ImpressionController extends Controller
 
     }
     /**
-     * @Route("/impressionTableMatiere/{id}/{id_societe}", name="impressionTableMatiere")
+     * @Route("/impressionTableMatiere1/{id}/{id_societe}", name="impression_table_matiere")
      */
     public function impressionTableMatiereAction($id,$id_societe)
     {
@@ -237,7 +237,7 @@ class ImpressionController extends Controller
 
 
 
-     /*    return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
+       return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
             'table_matiere'=>$table_matiere,
             'table_matiere1'=>$table_matiere1,
           'table_matiere3'=>$table_matiere3,
@@ -249,8 +249,8 @@ class ImpressionController extends Controller
           'nbreTableparTable3' => $nbreTableparTable3,
             'prototypeTitle' => $prototypeTitle,
             'nom_societe' => $nom_societe
-        )); */ 
-             $html = $this->renderView('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
+        )); 
+      /*         $html = $this->renderView('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
                     'table_matiere'=>$table_matiere,
                     'table_matiere1'=>$table_matiere1,
                     'table_matiere3'=>$table_matiere3,
@@ -284,8 +284,42 @@ $snappy->setOption('encoding', 'UTF-8');
                     )
 
                 );
-
+*/ 
  }
+
+
+ /**
+     * @Route("/impressionTableMatiere/{id}/{id_societe}", name="impressionTableMatiere")
+     */
+
+    public function impressionTableMatiere1Action($id, $id_societe) {
+        ini_set('max_execution_time', -1); //0=NOLIMIT
+        ini_set('memory_limit', '2048M');
+        $snappy = $this->get('knp_snappy.pdf');
+        $snappy->getInternalGenerator()->setTimeout(1500);
+        $societe_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe')->find($id_societe);
+        $pdf = new \Formation\VocabulaireBundle\Model\PDF();
+        $nom_societe = $pdf->getClient($societe_obj);
+        $ptte = new \Formation\VocabulaireBundle\Model\Propriete();
+        $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id);
+        $prototypeTitle = $ptte->getPrototypeTitle($prototypeAccess);
+        $prototypeTitle = mb_strtoupper($prototypeTitle, 'UTF-8');
+        $filename = 'IndexGlossaire'.$nom_societe.''.$prototypeTitle;
+        $link = $this->generateUrl(
+                'impression_table_matiere', 
+                    [
+                        'id' => $id,
+                        'id_societe' => $id_societe,
+                    ], UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        return new Response($snappy->getOutput($link,array(
+                'orientation' => 'landscape'
+            )), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
+           )
+        );
+    }
 
 
 }
