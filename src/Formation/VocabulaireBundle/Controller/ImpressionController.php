@@ -8,6 +8,7 @@ use Formation\VocabulaireBundle\Entity\TempPdfLoaddatatheme;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ImpressionController extends Controller
 {
