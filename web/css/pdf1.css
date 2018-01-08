@@ -30,8 +30,8 @@ body{
     float: right;
     font-size: 7.5pt;
 	position: absolute;
-    top : 70mm;
-	margin-left: 45mm;
+    top : 110mm;
+	margin-left: 15mm;
 }
 
 .nomprototype2 {
@@ -40,8 +40,8 @@ body{
     float: right;
     font-size: 7.5pt;
     position: absolute;
-    top : 70mm;
-	margin-left: 45mm;
+    top : 110mm;
+	margin-left: 15mm;
 }
 table tr td{
 	font-family: times new roman;
