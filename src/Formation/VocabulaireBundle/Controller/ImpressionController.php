@@ -237,7 +237,7 @@ class ImpressionController extends Controller
 
 
 
-      return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
+     /*    return $this->render('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
             'table_matiere'=>$table_matiere,
             'table_matiere1'=>$table_matiere1,
           'table_matiere3'=>$table_matiere3,
@@ -249,8 +249,8 @@ class ImpressionController extends Controller
           'nbreTableparTable3' => $nbreTableparTable3,
             'prototypeTitle' => $prototypeTitle,
             'nom_societe' => $nom_societe
-        ));
-         /*       $html = $this->renderView('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
+        )); */ 
+             $html = $this->renderView('FormationVocabulaireBundle:Impression:impressionTableMatiere.html.twig', array(
                     'table_matiere'=>$table_matiere,
                     'table_matiere1'=>$table_matiere1,
                     'table_matiere3'=>$table_matiere3,
@@ -284,7 +284,7 @@ $snappy->setOption('encoding', 'UTF-8');
                     )
 
                 );
-                */ 
+
  }
 
 
