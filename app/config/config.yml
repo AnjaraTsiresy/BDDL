@@ -34,6 +34,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+      pathToWeb: "%kernel.root_dir%/../web"
 
 # Assetic Configuration
 assetic:
@@ -58,6 +60,8 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
+        options:
+            1002: "SET NAMES 'UTF8'"
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: '%kernel.root_dir%/data/data.db3'
@@ -81,9 +85,9 @@ swiftmailer:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     "\"C:\\Program Files (x86)\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\""
+        binary:     "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe\""
         options:    []
     image:
         enabled:    true
-        binary:     "\"C:\\Program Files (x86)\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\""
+        binary:     "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\""
         options:    []

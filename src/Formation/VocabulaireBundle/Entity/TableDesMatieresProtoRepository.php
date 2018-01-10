@@ -27,7 +27,7 @@ class TableDesMatieresProtoRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getMinOrdreSousTheme($theme, $id_societe, $id)
+    public function getMinOrdreSousTheme1($theme, $id_societe, $id)
     {
         $query = $this
             ->createQueryBuilder('tm')
@@ -46,6 +46,30 @@ class TableDesMatieresProtoRepository extends EntityRepository
         {
 
             $numpge = $res['min_ordre'];
+        }
+        return $numpge;
+    }
+
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+
+
+    public function getMinOrdreSousTheme($theme, $id_societe, $id)
+    {
+        $query = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="'.$theme.'" and id_societe="'.$id_societe.'" and No_prototype="'.$id.'"';
+
+
+        $result = $this->fetch($query);
+        $numpge = 0;
+        foreach ($result as $res)
+        {
+
+            $numpge = $res['numpge'];
         }
         return $numpge;
     }

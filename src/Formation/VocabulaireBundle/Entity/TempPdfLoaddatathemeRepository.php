@@ -14,7 +14,7 @@ class TempPdfLoaddatathemeRepository extends EntityRepository
 {
     public function LoadDataTheme($id)
     {
-        $query = $this
+       $query = $this
             ->createQueryBuilder('temp')
             ->select('temp.lib, th.id as idT, temp.description, s.id as id_societe')
              ->innerJoin('temp.prototypeAccess', 'pa')
@@ -40,4 +40,26 @@ class TempPdfLoaddatathemeRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getThemes($id)
+    {
+         return  $this->fetch("SELECT lib, idT, description, id_societe FROM `temp_Pdf_LoadDataTheme` where id=$id");
+    }
+
+    public function bigSelect()
+    {
+        $query = "set sql_big_selects=1";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+    }
+
+
 }

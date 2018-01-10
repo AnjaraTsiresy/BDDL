@@ -9,22 +9,67 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-class ImportationCorpsController extends Controller {
+class GlossaireController extends Controller
+{
 
+    private function convert_utf8( $string ) {
+       if ( mb_detect_encoding($string) != 'ASCII') {
+         // echo $string.' =====> '.mb_detect_encoding($string).'<br>';
+           return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
+       }
 
-    private function convert_utf8( $string ) { 
-       // return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
-        return $string;
+       return $string;
     }
 
 
-
-
-
     /**
-     * @Route("/generateCorpsGlossaire/{id}/{id_societe}", name="generateCorpsGlossaire")
+     * @Route("/glossaire/{id}/{id_societe}", name="glossaire")
      */
-    public function generateCorpsGlossaireAction($id, $id_societe) {
+    public function glossaireAction($id, $id_societe) {
+        ini_set('max_execution_time', -1); //0=NOLIMIT
+        ini_set('memory_limit', '2048M');
+
+        echo '<style>
+page[size="A4"] {
+    background: white;
+    /*
+    height: 21cm;
+    width: 29.7cm;
+    */
+    /*height: 21.035cm;*/
+    /*height: 21cm;*/
+    height: 21.010cm;
+    width: 29.7cm;
+    display: block;
+    margin: 0 auto;
+    margin-top: 0 cm;
+	vertical-align:top;
+}
+@media print {
+  body, page[size="A4"] {
+    margin: 0;
+    box-shadow: 0;
+  }
+}
+
+.colonnedata td {
+  	width:90mm; padding-top:2mm; vertical-align:top;
+  	/*font-variant-position: sub;*/
+}
+
+.colonnedata {
+  	width:480px;
+}
+
+.titremangamanga {
+	font-size: 9.5pt; margin-right : 10mm;
+	margin-top: 1mm;
+}
+
+</style>';
+
+        echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
+        echo '<link rel="stylesheet" type="text/css" href="../../../css/pdf1_tato1.css">';
 
         $id = intval($id);
         $id_societe = intval($id_societe);
@@ -33,7 +78,7 @@ class ImportationCorpsController extends Controller {
 
         $ptte = new \Formation\VocabulaireBundle\Model\Propriete();
         $prototypeTitle = $ptte->getPrototypeTitle($prototypeAccess);
-        $prototypeTitle = mb_strtoupper($prototypeTitle, 'UTF-8');
+        $prototypeTitle = strtoupper($prototypeTitle);
 
         $pdf = new \Formation\VocabulaireBundle\Model\PDF();
         $societe_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe')->find($id_societe);
@@ -54,8 +99,8 @@ class ImportationCorpsController extends Controller {
             $em->remove($nbPage);
             $em->flush();
         }
-
-        $dataThemeResult = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TempPdfLoaddatatheme')->LoadDataTheme($id);
+        $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TempPdfLoaddatatheme')->bigSelect();
+        $dataThemeResult = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TempPdfLoaddatatheme')->getThemes($id);
 
         $dataTheme = array();
         foreach ($dataThemeResult as $row) {
@@ -73,15 +118,16 @@ class ImportationCorpsController extends Controller {
 
         foreach ($dataTheme as $rowpips) {
 
-            $loadDtaWithThemes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->LoadDtaWithTheme($id, $rowpips['1']);
+            $loadDtaWithThemes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getDataWithThemes($id, $rowpips['1']);
             $dataNum = array();
             foreach ($loadDtaWithThemes as $row) {
                 $langue_origine = $this->convert_utf8($row["langue_origine"]);
-                $langue_traduction = $this->convert_utf8($row["langue_traduction"]);
+                $langue_traduction = $row["langue_traduction"];
                 $langue_origine_sans_modif = $this->convert_utf8($row["langue_origine_sans_modif"]);
-
-                $langue_origine = strtolower($langue_origine);
-                $dataNum[] = array($langue_origine, $langue_traduction, $langue_origine_sans_modif);
+                $nbreLigneLo = $row["nbreLigneLo"];
+                $nbreCaractLo = $row["nbreCaractLo"];
+                $langue_origine = strtolower ( $langue_origine );
+                $dataNum[] = array($langue_origine, $langue_traduction, $langue_origine_sans_modif,$nbreCaractLo,$nbreLigneLo);
             }
 
             $dataAll[] = $dataNum;
@@ -111,7 +157,7 @@ class ImportationCorpsController extends Controller {
             $em->flush();
             $j++;
         }
-        
+
 
         $nb_page = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:NbPage')->getNbPage($id);
 
@@ -129,7 +175,8 @@ class ImportationCorpsController extends Controller {
             if ($societe == "FORMA2+") {
                 $societe = "général";
             }
-            $titre_theme = $this->convert_utf8($row[0]);
+            $titre_theme =$row[0];
+
             $pdf->PrintChapter($i, $row[0], $titre_theme, $dataAll[$x], $societe, $nb_page);
             $i++;
             $x++;
@@ -137,15 +184,15 @@ class ImportationCorpsController extends Controller {
 
         $totaltableau = array();
         return $this->render('FormationVocabulaireBundle:Impression:impressionCorpsGlossaire.html.twig', array(
-                    'id' => $id,
-                    'totaltableau' => $totaltableau,
-                    'id_societe' => $id_societe
+            'id' => $id,
+            'totaltableau' => $totaltableau,
+            'id_societe' => $id_societe
         ));
     }
 
 
     /**
-     * @Route("/impressionCorpsGlossaire/{id}/{id_societe}", name="impressionCorpsGlossaire")
+     * @Route("/impression_glossaire/{id}/{id_societe}", name="impression_glossaire")
      */
 
     public function impressionCorpsGlossaireAction($id, $id_societe) {
@@ -162,19 +209,20 @@ class ImportationCorpsController extends Controller {
         $prototypeTitle = mb_strtoupper($prototypeTitle, 'UTF-8');
         $filename = 'CorpsGlossaire' . $nom_societe . '' . $prototypeTitle;
         $link = $this->generateUrl(
-                'generateCorpsGlossaire', 
-                    [
-                        'id' => $id,
-                        'id_societe' => $id_societe,
-                    ], UrlGeneratorInterface::ABSOLUTE_URL
+            'glossaire',
+            [
+                'id' => $id,
+                'id_societe' => $id_societe,
+            ], UrlGeneratorInterface::ABSOLUTE_URL
         );
         return new Response($snappy->getOutput($link,array(
-                'orientation' => 'landscape'
-            )), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
-           )
+            'orientation' => 'landscape'
+        )), 200, array(
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
+            )
         );
     }
+
 
 }

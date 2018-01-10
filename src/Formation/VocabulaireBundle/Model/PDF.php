@@ -88,8 +88,10 @@ class PDF
 
     function PrintChapter($num, $theme, $title,$data,$societe,$nb_page)
 	{
-		$this->BasicTable($data, $title, $num, $theme,$societe,$nb_page);
+	    $this->BasicTable($data, $title, $num, $theme,$societe,$nb_page);
 	}
+
+
 
     function array_insert(&$array, $position, $insert)
     {
@@ -144,7 +146,7 @@ class PDF
 
     // Tableau simple	
 	function BasicTable($data, $title, $num, $theme,$societe,$nb_page){
-       // echo '<link rel="stylesheet" href="{{ pathToWeb }}/css/pdf1.css" type="text/css">';
+
 
 		//echo "-------------- Initial <br/>";
 		$isany = count ($data);
@@ -223,7 +225,7 @@ class PDF
 				$nbMajk = $nbMajk + 1;
 			}
 			$initiallettre = $premierLettre;
-			
+
 			
 			if ($dorig >3){
 				$compteurMatavy ++;
@@ -342,7 +344,9 @@ class PDF
 					echo '</page>';
 					$this->numpage = $this->numpage +1;
 				}
-				
+
+
+
 				echo '<page size="A4">';
 				echo "<div class='conteneur'>";
 				echo "<div class='colonne1'>";
@@ -429,6 +433,7 @@ class PDF
                 $maj = strtoupper($premierLettre);
                 $nbreMajuscule = $nbreMajuscule + 1;
                 $tab[] = $maj;
+
                 if($maj != ""){
                     echo "<tr><td colspan='2' style='padding-top:2mm;'><b>$maj</b></td></tr>";
                 }else{

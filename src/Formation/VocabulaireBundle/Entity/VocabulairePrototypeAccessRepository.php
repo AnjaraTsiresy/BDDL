@@ -152,4 +152,32 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getDataWithThemes($id, $id_theme)
+    {
+        $query = "SELECT distinct vocabulaire.langue_origine as langue_origine, vocabulaire.langue_traduction as langue_traduction,
+		vocabulaire.langue_origine_sans_modif as langue_origine_sans_modif, vocabulaire.nbreLigneLo as nbreLigneLo, vocabulaire.nbreCaractLo as nbreCaractLo FROM vocabulaire_prototype_access
+		INNER JOIN vocabulaire ON vocabulaire_prototype_access.id_vocabulaire = vocabulaire.id_vocabulaire
+		INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire and vocabulaire_theme.id_theme = $id_theme
+		INNER JOIN theme ON theme.id_theme = $id_theme
+		WHERE vocabulaire_prototype_access.id_prototype_access=$id  order by langue_origine collate utf8_general_ci";
+
+        return  $this->fetch($query);
+    }
+
+    public function bigSelect()
+    {
+        $query = "set sql_big_selects=1";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+    }
+
 }

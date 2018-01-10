@@ -43,4 +43,34 @@ class NbPageRepository extends EntityRepository
             ->getQuery();
         return $query->getResult();
     }
+
+
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getPages($id)
+    {
+        $nbDepage = 0;
+
+        $result = $this->fetch("select max(nbDepage) as nbDepage from nb_page where id_prototype_access='$id' ");
+
+        foreach ($result as $resp)
+        {
+            if($resp['nbDepage'] != '') $nbDepage = $resp['nbDepage'];
+        }
+
+        return $nbDepage;
+    }
+
+    public function bigSelect()
+    {
+        $query = "set sql_big_selects=1";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+    }
+
 }
