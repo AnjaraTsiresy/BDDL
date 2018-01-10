@@ -69,7 +69,7 @@ page[size="A4"] {
 </style>';
 
         echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
-        echo '<link rel="stylesheet" type="text/css" href="../../../css/pdf1_tato1.css">';
+        echo '<link rel="stylesheet" type="text/css" href="../../../css/pdf1_tato.css">';
 
         $id = intval($id);
         $id_societe = intval($id_societe);
