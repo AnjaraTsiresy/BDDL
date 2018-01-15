@@ -29,45 +29,6 @@ class GlossaireController extends Controller
         ini_set('max_execution_time', -1); //0=NOLIMIT
         ini_set('memory_limit', '2048M');
 
-        echo '<style>
-page[size="A4"] {
-    background: white;
-    /*
-    height: 21cm;
-    width: 29.7cm;
-    */
-    /*height: 21.035cm;*/
-    /*height: 21cm;*/
-    height: 21.010cm;
-    width: 29.7cm;
-    display: block;
-    margin: 0 auto;
-    margin-top: 0 cm;
-	vertical-align:top;
-}
-@media print {
-  body, page[size="A4"] {
-    margin: 0;
-    box-shadow: 0;
-  }
-}
-
-.colonnedata td {
-  	width:90mm; padding-top:2mm; vertical-align:top;
-  	/*font-variant-position: sub;*/
-}
-
-.colonnedata {
-  	width:480px;
-}
-
-.titremangamanga {
-	font-size: 9.5pt; margin-right : 10mm;
-	margin-top: 1mm;
-}
-
-</style>';
-
         echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
         echo '<link rel="stylesheet" type="text/css" href="../../../css/pdf1_tato.css">';
 

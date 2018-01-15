@@ -55,18 +55,15 @@ table tr td{
 	/*height: auto;  
 	height: 209mm;
 	width: 294mm;*/
-	height: 50.4cm;
-	/*border: 2px solid red;*/
-	border: 1px solid white;
+
 	overflow: hidden; /* Empêche le dépassement des flottants. */
 	/*margin-bottom: 61.5mm;*/
-	/*height: 20.9cm;*/
+	height: 23.9cm;
 	display: block;
-    margin: 0 auto;
-    margin-top: 0 cm;
+	margin: 0 auto;
+	margin-top: 0 cm;
 	vertical-align:top;
- 	width: 29.7cm;
-	position: relative;
+	width: 29.7cm;
 	top : 0;
 }
 .colonne1 {

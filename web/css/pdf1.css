@@ -48,7 +48,7 @@ table tr td{
 	height: 209mm;
 	width: 294mm;*/
 	
-	border: 1px solid red;
+
 	overflow: hidden; /* Empêche le dépassement des flottants. */
 	margin-bottom: 1.5mm;
 	
