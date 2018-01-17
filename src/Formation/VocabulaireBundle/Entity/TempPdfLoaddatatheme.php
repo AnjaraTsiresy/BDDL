@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TempPdfLoaddatatheme
  *
- * @ORM\Table(name="temp_pdf_loaddatatheme")
+ * @ORM\Table(name="temp_Pdf_LoadDataTheme")
  * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\TempPdfLoaddatathemeRepository")
  */
 class TempPdfLoaddatatheme
