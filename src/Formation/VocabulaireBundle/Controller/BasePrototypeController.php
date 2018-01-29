@@ -16,62 +16,45 @@ class BasePrototypeController extends Controller
      */
     public function consulter_prototypeAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-
         $id_societe = 0;
-        $societes = array();
+        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
+        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
+        $repositoryTraducteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Traducteur');
         $prototype_accesss_array = array();
+
         if ($request->get('id_societe')) {
             $id_societe = $request->get('id_societe');
-            $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
-            $societe = $repositorySociete->find($id_societe);
-            $prototype_accesss = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findBy(array('societe' => $societe));
+            $prototype_accesss = $repositoryPrototypeAccess->getPrototypeAccessBySociete($id_societe);
             $compteur = count($prototype_accesss);
 
         } else {
 
-            $query = $em->createQuery(
-                'SELECT p
-                FROM FormationVocabulaireBundle:PrototypeAccess p
-                ORDER BY p.id ASC'
-            );
-            $prototype_accesss = $query->getResult();
-            #$prototype_accesss = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findBy(1,50,0);
+            $prototype_accesss = $repositoryPrototypeAccess->getPrototypeAccess();
+
             $compteur = count($prototype_accesss);
 
         }
-        $query_prototypes = $em->createQuery(
-            'SELECT p
-                FROM FormationVocabulaireBundle:PrototypeAccess p
-                ORDER BY p.id ASC'
-        );
-        $prototypes = $query_prototypes->getResult();
-        #$prototypes = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findAll();
 
-        foreach ($prototypes as $prototype_access) {
-            $societes[] = $prototype_access->getSociete();
-        }
+        $societes = $repositoryPrototypeAccess->getSocietes();
+
         foreach ($prototype_accesss as $prototype_access) {
             $protoModel = new \Formation\VocabulaireBundle\Model\ProtoType();
-            $protoModel->setNbSoloc($this->getLESocAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
-            $protoModel->setNbLeGen($this->getLEGenAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
-            //$protoModel->setNbPage($this->getNbPagesAssocies($prototype_access->getSociete()->getId(), $prototype_access->getId()));
-            $nb_termes_array = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getTermesAssocies($prototype_access->getId());
+            $protoModel->setNbSoloc($this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getLESocAssocies($prototype_access['id_societe'], $prototype_access['id_prototype_access']));
+            $protoModel->setNbLeGen($this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getLEGenAssocies($prototype_access['id_prototype_access']));
+            $nb_termes_array = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getTermesAssocies($prototype_access['id_prototype_access']);
             $nb_termes = $nb_termes_array['nb_termes'];
             $protoModel->setNb_termes($nb_termes);
-            $protoModel->setId($prototype_access->getId());
-            $protoModel->setSociete($prototype_access->getSociete()->getDescription());
-            $protoModel->setTraducteur($prototype_access->getTraducteur()->getNom());
-            $protoModel->setType($prototype_access->getType());
-            $protoModel->setDate($prototype_access->getDate());
-            $prototype_accesss_array [] = $protoModel;
-            /* $nb_le_gen = getLEGenAssocies($resp['id_societe'], $resp['id_prototype_access']);
-             $nb_page = getNbPagesAssocies($resp['id_societe'], $resp['id_prototype_access']);
-             $nb_termes = getTermesAssocies($resp['id_prototype_access']);
-             $societe = getClient($resp['id_societe']);
-             $traducteur = getTraducteur($resp['createur']); */
-        }
+            $protoModel->setId($prototype_access['id_prototype_access']);
+            $societe = $repositorySociete->find($prototype_access['id_societe']);
+            if ($societe != null) $protoModel->setSociete($societe->getDescription());
+
+           $traducteur = $repositoryTraducteur->find($prototype_access['createur']);
+            if ($traducteur != null)   $protoModel->setTraducteur($traducteur->getNom());
+                $protoModel->setType($prototype_access['type']);
+                $protoModel->setDate(new \DateTime($prototype_access['date']));
+                $prototype_accesss_array [] = $protoModel;
+
+     }
 
         return $this->render('FormationVocabulaireBundle:Default:consulter_prototype.html.twig', array(
             'compteur' => $compteur,
@@ -80,7 +63,29 @@ class BasePrototypeController extends Controller
             'prototype_accesss_array' => $prototype_accesss_array
         ));
     }
+    /**
+     * @Route("/modif_prot_LE/{id}/{id_societe}", name="modif_prot_LE")
+     */
+    public function modifPrototypeLEAction($id, $id_societe)
+    {
+        $valuesIdtheme = "";
+        $id = intval($id);
+        $id_societe = intval($id_societe);
+        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
+        $prototypeAccesss = $repositoryPrototypeAccess->recherchePrototypeParSoc($id_societe, $id);
+        $compteur = count($prototypeAccesss);
+        foreach ($prototypeAccesss as $proto) {
+            $valuesIdtheme = $valuesIdtheme.",".$proto['id_prototype_access'];
+        }
 
+        return $this->render('FormationVocabulaireBundle:Default:modif_prot_LE.html.twig', array(
+            'id' => $id,
+            'compteur' => $compteur,
+            'id_societe' => $id_societe,
+            'valuesIdtheme' => $valuesIdtheme,
+            'prototypeAccesss' => $prototypeAccesss
+        ));
+    }
     /**
      * @Route("/export_prototype", name="export_prototype")
      */
@@ -143,32 +148,6 @@ class BasePrototypeController extends Controller
 
     }
 
-
-    private function getLESocAssocies($id_societe, $id_prototype_access)
-    {
-
-        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
-        $societe = $repositorySociete->find($id_societe);
-        $prototype_access = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findBy(array('id' => $id_prototype_access, 'societe' => $societe));
-
-        return count($prototype_access);
-    }
-
-    private function getLEGenAssocies($id_societe, $id_prototype_access)
-    {
-        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
-        $societe = $repositorySociete->find(653);
-        if($societe != null) {
-            $prototype_access = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->findBy(array('id' => $id_prototype_access, 'societe' => $societe));
-            return count($prototype_access);
-        }
-       return 0;
-    }
-
-    private function getNbPagesAssocies($id_societe, $id_prototype_access)
-    {
-        return 0;
-    }
 
 }
 

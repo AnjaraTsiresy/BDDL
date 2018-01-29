@@ -6,7 +6,7 @@
 
 
 @media print {
- html, body,  {
+ html, body{
    width: 210mm;
    height: 297mm;
  }
@@ -110,53 +110,3 @@
         </div>
     </page>
 {% endfor %}
-
-{#
-{% for io, dataTable in tablenbreParTable1 %}
-    <div class="A4">
-        <div class='conteneur'>
-            <div class='colonne1 tableMatiere'>
-                <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
-                {% if io==0 %}
-                    <b>{{ nom_societe }}</b>
-                    <br/><br/>
-                {% endif %}
-                {% set i = 0 %}
-                {% for table in table_matiere1 %}
-                    {% set k = ( (8 * io) + i ) %}
-                    {% if k < table_matiere1 | length and k  <  ((8*(io + 1 ))+1) %}
-                        <span style="float:left;">{{ table_matiere1[k].theme | convert_encoding('ISO-8859-1','UTF-8') }}</span>
-                        <span class='pointpoint'>&nbsp; </span><span
-                            style='margin-right:60px;float:right;'>{{ table_matiere1[k].nbPage }}</span></br>
-                        <br/>
-                    {% endif %}
-                    {% set i = i + 1 %}
-
-                {% endfor %}
-                <div class="nomprototype1">{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
-            </div>
-            <div class='colonne2 tableMatiere'>
-                <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
-
-                {% if io==0 %}
-                    <b>{{ nom_societe }}</b>
-                    <br/><br/>
-                {% endif %}
-                {% set i = 0 %}
-                {% for table in table_matiere1 %}
-                    {% set k = ( (8 * io) + i ) %}
-                    {% if k < table_matiere1 | length and k  <  ((8*(io + 1 ))+1) %}
-                        <span style="float:left;">{{ table_matiere1[k].theme | convert_encoding('ISO-8859-1','UTF-8') }}</span>
-                        <span class='pointpoint'>&nbsp; </span><span
-                            style='margin-right:60px;float:right;'>{{ table_matiere1[k].nbPage }}</span></br>
-                        <br/>
-                    {% endif %}
-                    {% set i = i + 1 %}
-
-                {% endfor %}
-                <div class="nomprototype2">{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
-            </div>
-        </div>
-    </div>
-{% endfor %}#}
-

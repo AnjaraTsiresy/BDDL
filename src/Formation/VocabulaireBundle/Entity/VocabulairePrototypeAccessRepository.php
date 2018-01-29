@@ -26,6 +26,18 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
         return $query->getSingleResult();
     }
 
+    public function getLEGenAssocies( $id_prototype_access){
+        $sql = "SELECT * FROM lexique WHERE id_prototype_access = '$id_prototype_access' AND id_societe = '653' ";
+        $nb_lexiques = count( $this->fetch($sql));
+        return $nb_lexiques;
+    }
+
+    public function getLESocAssocies( $id_societe, $id_prototype_access){
+        $sql = "SELECT * FROM lexique WHERE id_prototype_access = '$id_prototype_access' AND id_societe = '$id_societe' ";
+        $nb_lexiques = count( $this->fetch($sql));
+        return $nb_lexiques;
+    }
+
     public function getVocabulairePrototypeAccessByPrototypeAndVocabulaire($id_prototype_access, $id_vocabulaire)
     {
         $query = $this

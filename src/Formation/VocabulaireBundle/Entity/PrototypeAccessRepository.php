@@ -31,6 +31,43 @@ class PrototypeAccessRepository extends EntityRepository {
                 ->getQuery();
         return $query->getResult();
     }
-    
+
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getSocietes()
+    {
+        $query = "SELECT * FROM prototype_access INNER JOIN societe ON societe.id_societe = prototype_access.id_societe GROUP BY societe.description";
+
+        return  $this->fetch($query);
+    }
+
+    public function getPrototypeAccess()
+    {
+        $query = "SELECT * FROM prototype_access   ORDER BY prototype_access.type collate utf8_general_ci";
+
+        return  $this->fetch($query);
+    }
+
+    public function getPrototypeAccessBySociete($id_societe)
+    {
+        $query = "SELECT * FROM prototype_access   INNER JOIN societe ON societe.id_societe = '$id_societe' WHERE prototype_access.id_societe = '$id_societe' ORDER BY prototype_access.type collate utf8_general_ci";
+
+        return  $this->fetch($query);
+    }
+
+    public function recherchePrototypeParSoc($id_societe, $id_prototype_access){
+        if($id_societe == ""){
+            $sql = array();
+        }else{
+            $sql = "SELECT * FROM prototype_access
+				WHERE prototype_access.id_societe = '$id_societe' AND prototype_access.id_prototype_access != '$id_prototype_access'";
+        }
+        return  $this->fetch($sql);
+    }
 
 }

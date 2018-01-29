@@ -43,7 +43,7 @@
                         <select name="id_societe" id="id_societe">
                             <option  value=""></option>
                             {% for societe in societes %}
-                                <option  value="{{ societe.id }}" {% if id_societe == societe.id %} selected='selected' {% endif %}>{{ societe.description }}</option>
+                                <option  value="{{ societe.id_societe }}" {% if id_societe == societe.id_societe %} selected='selected' {% endif %}>{{ societe.description }}</option>
                             {% endfor %}
                         </select>
                     </td>
