@@ -192,4 +192,22 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
         $stmt->execute();
     }
 
+
+    public function getContenuLE($id, $id_societe, $id_theme){
+        $sql = "SELECT vocabulaire.langue_origine, vocabulaire.langue_traduction, vocabulaire.id_vocabulaire
+			FROM vocabulaire_prototype_access
+			INNER JOIN vocabulaire ON vocabulaire_prototype_access.id_vocabulaire = vocabulaire.id_vocabulaire
+			INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_theme.id_theme = '$id_theme'
+			INNER JOIN theme ON theme.id_theme = '$id_theme'
+			INNER JOIN vocabulaire_societe ON vocabulaire_societe.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_societe.id_societe = '$id_societe'
+			INNER JOIN societe ON societe.id_societe = '$id_societe'
+			WHERE vocabulaire_prototype_access.id_prototype_access=$id";
+        return $this->fetch($sql);
+    }
+
+    public function getVocabulaireProtoByProtoAccessAndVocabulaire($id, $id_vocabulaire)
+    {
+         $sql ="select * from vocabulaire_prototype_access where id_prototype_access='$id' and id_vocabulaire='$id_vocabulaire' ";
+        return $this->fetch($sql);
+    }
 }

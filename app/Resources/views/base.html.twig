@@ -17,7 +17,8 @@
     </head>
 	<body>
 	<div class="header">
-		<img src="{{  asset('images/logo.jpeg') }}" border="0">
+		<div class="retourMenu"><a href="{{  path('homepage') }}">Retour au menu</a></div>
+		<img  src="{{  asset('images/logo.jpeg') }}" border="0" id="logo">
 		<span>Base lexicale</span>
 	</div>
     {% block body %}{% endblock %}

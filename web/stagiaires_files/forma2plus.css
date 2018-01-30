@@ -43,6 +43,12 @@ body{
 	text-decoration:none;					
 	color:#FFFFFF;
 }
+#logo{
+	width:35%;
+	margin-top: 10px;
+	margin-left : -20%;
+	margin-right : auto;
+}
 
 .header img{
 	width:35%;
@@ -160,6 +166,7 @@ div.FilAriane a:hover{
 	width: 300px;
 	float: right;
 }
+
 .retourMenu{
 	float : left;
 	margin-top : 30px;

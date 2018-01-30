@@ -1,4 +1,31 @@
 {% extends 'base.html.twig' %}
+{% block javascripts %}
+    <script type="text/javascript">
+        function refresh1(id_prototype_access, id_societe, id, idinput){
+            $("#resultDiv").empty();
+            $.ajax({
+                url:"{{ url }}",
+                data: 'id_prototype_access='+ id_prototype_access+'&id='+id+'&id_societe='+id_societe,
+                dataType: 'html',
+                success:function(html){
+                    $("#resultDiv"+id_prototype_access).html(html);
+
+                    var valuesIdtheme = $("#valuesIdtheme").val();
+                    var res = valuesIdtheme.split(",");
+                    for (var i=0; i <res.length; i++){
+                        if (res[i]==id_prototype_access){
+                            $("#resultDiv"+id_prototype_access).show();
+                        }
+                        else {
+                            $("#resultDiv"+res[i]).hide();
+                        }
+                    }
+                }
+            });
+
+        }
+    </script>
+{% endblock %}
 {% block stylesheets %}
     <style>
         #prepage {
@@ -63,31 +90,4 @@
 </table>
 <input id="valuesIdtheme" type="hidden" value="{{ valuesIdtheme }}" />
 
-{% endblock %}
-{% block javascripts %}
-    <script type="text/javascript">
-        function refresh1(id_prototype_access, id_societe, id, idinput){
-            $("#resultDiv").empty();
-            $.ajax({
-                url: "modifContenuProtLE.php",
-                data: 'id_prototype_access='+ id_prototype_access+'&id='+id+'&id_societe='+id_societe,
-                dataType: 'html',
-                success:function(html){
-                    $("#resultDiv"+id_prototype_access).html(html);
-
-                    var valuesIdtheme = $("#valuesIdtheme").val();
-                    var res = valuesIdtheme.split(",");
-                    for (var i=0; i <res.length; i++){
-                        if (res[i]==id_prototype_access){
-                            $("#resultDiv"+id_prototype_access).show();
-                        }
-                        else {
-                            $("#resultDiv"+res[i]).hide();
-                        }
-                    }
-                }
-            });
-
-        }
-    </script>
 {% endblock %}

@@ -12,6 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class LexiqueRepository extends EntityRepository {
 
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
     public function getDataTheme($id_prototype_access) {
         $query = $this
                 ->createQueryBuilder('l')
@@ -24,7 +31,41 @@ class LexiqueRepository extends EntityRepository {
                 ->getQuery();
         return $query->getResult();
     }
-    
+
+    public function rechercheContenuProtLE($id_prototype_access, $id_societe){
+        $sql = "SELECT distinct societe.id_societe as id_societe, societe.description as description, theme.id_theme as id_theme, theme.libelle_theme as libelle_theme,
+			theme.theme_eng as theme_eng FROM lexique
+			INNER JOIN theme ON theme.id_theme = lexique.id_theme
+			INNER JOIN societe ON societe.id_societe = lexique.id_societe
+			WHERE lexique.id_prototype_access = '$id_prototype_access' AND lexique.id_societe = '$id_societe'
+			ORDER BY theme.libelle_theme collate utf8_general_ci";
+
+        return $this->fetch($sql);
+    }
+
+    public function getMaxRangLE($id_prototype_access){
+        $rangLE = 0;
+        $sql = "select max(rang) as rang from lexique where id_prototype_access='$id_prototype_access' ";
+        $result = $this->fetch($sql);
+        foreach ($result as $row) $rangLE = $row['rang'];
+        return $rangLE;
+
+    }
+
+    public function recupIdLE($id_societe, $id_theme, $id_prototype_access){
+        $id_lexique = 0;
+        $sql = "select id_lexique from lexique where id_societe='$id_societe' AND id_theme='$id_theme' AND id_prototype_access='$id_prototype_access' ";
+        $result = $this->fetch($sql);
+        foreach($result as $row)
+            $id_lexique = $row['id_lexique'];
+        return $id_lexique;
+
+    }
+    public function getLexiaueByProtoTypeAndThemeAndSociete($id_prototype_access, $id_theme, $id_societe)
+    {
+       $sql =  "select * from lexique where id_societe='$id_societe' AND id_theme='$id_theme' AND id_prototype_access='$id_prototype_access' ";
+       return $this->fetch($sql);
+    }
       public function getNbLESoc() {
         $query = $this
                 ->createQueryBuilder('l')
