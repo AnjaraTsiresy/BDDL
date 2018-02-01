@@ -150,5 +150,20 @@ class ThemeRepository extends EntityRepository {
 
         return $query->getResult();
     }
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+    function getLibelleTheme($id_theme){
+        $libelle_theme = "";
+        $sql = "SELECT libelle_theme FROM theme where id_theme='$id_theme'" ;
+        $results = $this->fetch($sql);
+        foreach ($results as $resp) {
+            $libelle_theme = $resp['libelle_theme'];
+        }
+        return $libelle_theme;
+    }
 
 }

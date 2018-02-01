@@ -4,6 +4,7 @@ namespace Formation\VocabulaireBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class StatController extends Controller {
 
@@ -38,5 +39,6 @@ class StatController extends Controller {
                     'prototypeSociete_array' => $prototypeSociete_array,
         ));
     }
+
 
 }

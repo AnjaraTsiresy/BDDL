@@ -12,7 +12,75 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulaireRepository extends EntityRepository {
 
-   
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getVocabulaireByLangueOrigineAndLangueTraduction($langue_origine_verif,$langue_traduction)
+    {
+        $sql1 ="select * from  vocabulaire where langue_origine='$langue_origine_verif' and langue_traduction='$langue_traduction' ";
+        return $this->fetch($sql1);
+    }
+
+    public function getThemes()
+    {
+        $theme_query="SELECT theme.id_theme as id_theme, theme.libelle_theme as libelle_theme,societe.id_societe as id_societe, societe.description as description FROM `vocabulaire`  
+					INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire 
+					INNER JOIN theme ON theme.id_theme = vocabulaire_theme.id_theme
+					INNER JOIN vocabulaire_societe ON vocabulaire_societe.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_societe.id_societe = '653'
+					INNER JOIN societe ON societe.id_societe = '653'  WHERE vocabulaire.date_modification = '0000-00-00 00:00:00' AND vocabulaire.isAffiche = '1' 
+					GROUP BY theme.id_theme ORDER BY theme.libelle_theme collate utf8_general_ci";
+        return $this->fetch($theme_query);
+    }
+
+    public function findTermeGen($id_theme, $terme, $langues_recherche, $dic){
+        if($id_theme == "" && $terme == ""){
+            $sql = "";
+        }else{
+            $sql = "SELECT distinct vocabulaire.id_vocabulaire, vocabulaire.langue_traduction, vocabulaire.langue_origine, theme.id_theme, theme.libelle_theme FROM `vocabulaire`";
+
+            if ($id_theme != ""){
+                $sql = $sql." INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_theme.id_theme = '$id_theme'
+					INNER JOIN theme ON theme.id_theme = '$id_theme'";
+            }else{
+                $sql = $sql." INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire 
+					INNER JOIN theme ON theme.id_theme = vocabulaire_theme.id_theme";
+            }
+            if($terme != ""){
+                $terme = strtolower($terme);
+                if($langues_recherche == "francais"){
+                    $sql = $sql." WHERE lower(langue_origine) LIKE '%".trim($terme)."%'";
+                }
+                else if($langues_recherche == "anglais"){
+                    $sql = $sql." WHERE lower(langue_traduction) LIKE '%".trim($terme)."%'";
+                }
+                else {
+                    $sql = $sql." WHERE lower(langue_origine) LIKE '%".trim($terme)."%' OR lower(langue_traduction) LIKE '%".trim($terme)."%'";
+                }
+            }
+        }
+        if ($dic != '') {
+
+            if ($dic == "fr1"){
+                $sql = $sql." order by vocabulaire.langue_origine asc";
+            }
+            else if ($dic == "en1"){
+                $sql = $sql." order by vocabulaire.langue_traduction asc";
+            }
+            else if ($dic == "en2"){
+                $sql = $sql." order by vocabulaire.langue_traduction desc";
+            }
+            else if ($dic == "fr2"){
+                $sql = $sql." order by vocabulaire.langue_origine desc";
+            }
+        }
+        if ($sql != "") return $this->fetch($sql);
+        return array();
+    }
+
     public function getLEgenerique()
     {
         $query = $this

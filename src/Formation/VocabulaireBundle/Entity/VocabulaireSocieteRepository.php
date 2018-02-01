@@ -12,6 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulaireSocieteRepository extends EntityRepository {
 
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getVocSocBySocAndVoc($id_societe, $id_vocabulaire)
+    {
+        $sql_test_societe ="select * from vocabulaire_societe where id_societe='$id_societe' AND id_vocabulaire='$id_vocabulaire' ";
+        return $this->fetch($sql_test_societe);
+
+    }
+
     public function getVocabulaireSocieteByVocabulaire($id_vocabulaire) {
         $query = $this
                 ->createQueryBuilder('vs')

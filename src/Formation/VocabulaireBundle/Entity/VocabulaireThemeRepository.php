@@ -12,6 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulaireThemeRepository extends EntityRepository
 {
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getVocabulaireThemeByVocabulaireAndTheme($id_vocabulaire, $id_theme) {
+        $sql_test_theme ="select * from vocabulaire_theme where id_theme='$id_theme' AND id_vocabulaire='$id_vocabulaire' ";
+
+        return $this->fetch($sql_test_theme);
+    }
+
     public function getVocabulaireThemeByVocabulaire($id_vocabulaire) {
         $query = $this
                 ->createQueryBuilder('vt')

@@ -13,6 +13,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TableDeMatiereController extends Controller
 {
 
+    private function convert_utf8( $string ) {
+        if ( mb_detect_encoding($string) != 'ASCII') {
+            // echo $string.' =====> '.mb_detect_encoding($string).'<br>';
+            return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
+        }
+
+        return $string;
+    }
     /**
      * @Route("/table_matiere/{id}/{id_societe}", name="table_matiere")
      */

@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="{{ asset('js/jquery-1.10.2.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var i = 2;
+            $("#btnAdd").click(function () {
+                $.post('{{ url_add_new_termes  }}', {incr: i}, function (html) {
+                    $("#resultDiv").append(html);
+                });
+                i++;
+            });
+        });
+    </script>
+    <style>
+        select option {
+            width: 300px;
+        }
+    </style>
+    <div class="titreMenu">
+        <p>Ecran d'ajout de nouveaux termes au LE générique {{  libelle_theme  | convert_encoding('ISO-8859-1','UTF-8')  }}</p>
+    </div>
+    <form action="{{ path('modif_gen_insert') }}" method="post" enctype="multipart/form-data"  name="certform">
+        <input type="hidden" name="id_theme" value="{{  id_theme }}"/>
+        <input type="hidden" name="incr" value="1" />
+        <table>
+            <tr>
+                <td><b>Termes en français</b></td>
+                <td><b>Termes en anglais</b></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="frs1" id="frs1" value=""/></td>
+                <td><input type="text" name="eng1" id="eng1" value=""/></td>
+                <td><input type="button" id="btnAdd" value="Cliquer ici pour ajouter d'autres nouveaux termes" /></td>
+            </tr>
+        </table>
+        <div id="resultDiv" ></div>
+        <div>
+            <input type="submit" value="Enregistrer" />
+            <input type="button" value="Annuler" onclick="window.location.href='{{ url }}?id_theme={{ id_theme }}'"  />
+        </div>
+    </form>

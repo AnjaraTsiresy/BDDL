@@ -1,0 +1,186 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        #prepage {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+        / / background: red;
+        }
+
+        .styleFiltre {
+            background: none;
+            border: 0px;
+            border-radius: 0px;
+            box-shadow: 0 0px 0 rgba(255, 255, 255, 0.4) inset, 0 0px 0px rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+            padding: 0px 0px;
+            text-decoration: none;
+            text-shadow: 0 0px 0 rgba(0, 0, 0, 0.4);
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function modifier(i) {
+            width = 1000;
+            height = 1000;
+            if (window.innerWidth) {
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+            }
+            else {
+                var left = (document.body.clientWidth - width) / 2;
+                var top = (document.body.clientHeight - height) / 2;
+            }
+            window.open('modifierVocabulaireGen.php?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+        }
+
+        function showHistory(i) {
+            width = 1000;
+            height = 1000;
+            if (window.innerWidth) {
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+            }
+            else {
+                var left = (document.body.clientWidth - width) / 2;
+                var top = (document.body.clientHeight - height) / 2;
+            }
+            window.open('historiqueModif.php?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+        }
+    </script>
+{% endblock %}
+{% block body %}
+    <div class="titreMenu">
+        <p>Ecran d'ajout, de modification et de suppression de termes génériques</p>
+    </div>
+    <div>
+        <form action="{{ path('gestion_contenu_LE_generique') }}">
+            <table id="recherche">
+                <tbody>
+                <tr>
+                    <td>Liste des LE génériques({{ nb_theme }}):</td>
+                    <td>
+                        <select name="id_theme" id="id_theme">
+                            <option value="">choix indifférent</option>
+                            {% for theme_array in themes %}
+                                {% if theme_array['id_theme'] == id_theme %}
+                                    <option value="{{ theme_array['id_theme'] }}"
+                                            selected="selected">{{ theme_array['libelle_theme'] | convert_encoding('ISO-8859-1','UTF-8') }}
+                                    </option>
+                                {% else %}
+                                    <option value="{{ theme_array['id_theme'] }}"> {{ theme_array['libelle_theme']  | convert_encoding('ISO-8859-1','UTF-8') }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Terme</td>
+                    <td>
+                        <input type="text" value="{{ terme }}" name="terme" id="terme">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Effectuer la recherche sur :</td>
+                    <td>
+                        <p><input type="radio" value="toutes" id="anglais_francais" name="langues_recherche">l'anglais
+                            et le français</p>
+                        <p class="terme_en"><input type="radio" value="anglais" id="anglais" name="langues_recherche">l'anglais
+                            seulement</p>
+                        <p class="terme_fr"><input type="radio" value="francais" id="francais" name="langues_recherche">le
+                            français seulement</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Chercher"></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <br/><br/><br/>
+
+    {% if( nb_vocab > 0) %}
+        {% if id_theme != 0 and id_theme != "" %}
+
+            <table id="recherche">
+                <tbody>
+                <tr>
+                    <td>
+                        <a href="{{ path('modif_Gen', {'id_theme':id_theme}) }}">Ajouter de nouveaux termes</a>
+                    </td>
+                    <td>
+                        <form method="post" action="exportGenerique.php">
+                            <input type="hidden" name="id_theme" value="{{ id_theme }}"/>
+                            <input type="hidden" name="terme" value="{{ terme }}"/>
+                            <input type="hidden" name="langues_recherche" value="{{ langues_recherche }}"/>
+                            <input type="submit" value="Exporter"/>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        {% endif %}
+        <div class="titreMenu">
+            <p>{{ nb_vocab }} terme(s) trouvé(s) </p>
+        </div>
+        <br/><br/>
+        {% if nb_vocab > 0 %}
+        <table id="tableau">
+            <thead>
+            <tr>
+                <th scope="col">
+                    <table style="background: #FFF;">
+                        <tr>
+                            <td>&nbsp;français&nbsp;</td>
+                            <td><a class="styleFiltre" href="{{ path('gestion_contenu_LE_generique', {'terme': terme, 'id_theme': id_theme,  'dic': 'fr1'}) }}"><img src="{{ asset('images/haut.jpeg') }}"
+                                                                                         width="15"></a></td>
+                            <td><a class="styleFiltre" href="{{ path('gestion_contenu_LE_generique', {'terme': terme, 'id_theme': id_theme, 'dic': 'fr2'}) }}"><img
+                                            src="{{ asset('images/bas.jpeg') }}" width="15"></a></td>
+                        </tr>
+                    </table>
+                </th>
+                <th scope="col">
+                    <table style="background: #FFF;">
+                        <tr>
+                            <td>anglais</td>
+                            <td><a class="styleFiltre" href="{{ path('gestion_contenu_LE_generique', {'terme': terme, 'id_theme': id_theme,  'dic': 'en1'}) }}"><img src="{{ asset('images/haut.jpeg') }}"
+                                                                                         width="15"></a></td>
+                            <td><a class="styleFiltre" href="{{ path('gestion_contenu_LE_generique', {'terme': terme, 'id_theme': id_theme, 'dic': 'en2'}) }}"><img
+                                            src="{{ asset('images/bas.jpeg') }}" width="15"></a></td>
+                        </tr>
+                    </table>
+                </th>
+                <th scope="col">thème</th>
+                <th scope="col">Action1</th>
+                <th scope="col">Action2</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for donnees2 in vocabulaires %}
+            <tr>
+                <td><p class="terme_fr sous_titre_fr">{{  donnees2['langue_origine'] | convert_encoding('ISO-8859-1','UTF-8')   }} </p></td>
+                <td><p class="terme_en">{{ donnees2['langue_traduction']   | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
+                <td><p>{{ donnees2['libelle_theme']   | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
+                <td><input type="button" value="Modifier"
+                           onclick="modifier({{ donnees2['id_vocabulaire']  }})"></td>
+                <td>
+                    <a href="deleteVocabGen.php?id={{ donnees2['id_vocabulaire']  }}&id_theme={{ donnees2['id_theme']  }}&terme={{  terme  }}&langues_recherche={{ langues_recherche }}"
+                       class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        <br/><br/>
+    {% endif %}
+{% endblock %}
+
