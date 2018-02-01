@@ -19,6 +19,18 @@ class DefaultController extends Controller
         ));
     }
 	
+    /**
+     * @Route("/statistique", name="statistique")
+     */
+    public function statistiqueAction(Request $request)
+    {
+       
+        return $this->render('default/statistique.html.twig', array(
+            
+        ));
+    }
+    
+
 	/**
      * @Route("/admin", name="adminpage")
      */
