@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        #prepage {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+        //background: red;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="titreMenu">
+        <p>Nombre d'occurrences des LE génériques dans les prototypes</p>
+    </div>
+    <br/><br/>
+    <table id="tableau">
+        <thead>
+        <tr>
+            <th scope="col">thème</th>
+            <th scope="col">Nombre</th>
+        </tr>
+        </thead>
+        <tbody>
+
+       {% for theme_array in themes %}
+           {{ render(controller('FormationVocabulaireBundle:Stat:loadTableGenerique', {'id_theme': theme_array['id_theme'], 'libelle_theme':theme_array['libelle_theme']})) }}
+       {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

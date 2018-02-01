@@ -52,6 +52,14 @@ class LexiqueRepository extends EntityRepository {
 
     }
 
+    function getNbOccurence($id_theme){
+        $sql = "SELECT count(id_theme) AS nbOccurence FROM `lexique` WHERE id_theme = '$id_theme' AND id_societe = '653'";
+        $nbOccurence = 0;
+        $res = $this->fetch($sql);
+        foreach ($res as $row) $nbOccurence = $row['nbOccurence'];
+        return $nbOccurence;
+    }
+
     public function recupIdLE($id_societe, $id_theme, $id_prototype_access){
         $id_lexique = 0;
         $sql = "select id_lexique from lexique where id_societe='$id_societe' AND id_theme='$id_theme' AND id_prototype_access='$id_prototype_access' ";

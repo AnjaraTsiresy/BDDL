@@ -40,5 +40,32 @@ class StatController extends Controller {
         ));
     }
 
+    /**
+     * @Route("/stat_generique", name="stat_generique")
+     */
+    public function statGeneriqueAction() {
+        ini_set('max_execution_time', -1); //0=NOLIMIT
+        ini_set('memory_limit', '2048M');
+         $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+        $themes = $repositoryVocabulaire->getThemes();
+        return $this->render('FormationVocabulaireBundle:Default:stat_generique.html.twig', array(
+              'themes' => $themes
+        ));
+    }
+
+    /**
+     * @Route("/load_table_generique/{libelle_theme}/{nbOccurence}", name="load_table_generique")
+     */
+    public function loadTableGeneriqueAction($id_theme, $libelle_theme) {
+        ini_set('max_execution_time', -1); //0=NOLIMIT
+        ini_set('memory_limit', '2048M');
+        $repositoryLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
+        $nbOccurence = $repositoryLexique->getNbOccurence($id_theme);
+        return $this->render('FormationVocabulaireBundle:Default:load_table_generique.html.twig', array(
+            'nbOccurence' => $nbOccurence,
+            'libelle_theme' => $libelle_theme
+        ));
+    }
+
 
 }
