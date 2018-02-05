@@ -41,19 +41,6 @@
             window.open('modifierVocabulaireGen.php?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
         }
 
-        function showHistory(i) {
-            width = 1000;
-            height = 1000;
-            if (window.innerWidth) {
-                var left = (window.innerWidth - width) / 2;
-                var top = (window.innerHeight - height) / 2;
-            }
-            else {
-                var left = (document.body.clientWidth - width) / 2;
-                var top = (document.body.clientHeight - height) / 2;
-            }
-            window.open('historiqueModif.php?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
-        }
     </script>
 {% endblock %}
 {% block body %}
@@ -118,7 +105,7 @@
                         <a href="{{ path('modif_Gen', {'id_theme':id_theme}) }}">Ajouter de nouveaux termes</a>
                     </td>
                     <td>
-                        <form method="post" action="exportGenerique.php">
+                        <form method="post" action="{{ path('export_generique') }}">
                             <input type="hidden" name="id_theme" value="{{ id_theme }}"/>
                             <input type="hidden" name="terme" value="{{ terme }}"/>
                             <input type="hidden" name="langues_recherche" value="{{ langues_recherche }}"/>
@@ -173,7 +160,7 @@
                 <td><input type="button" value="Modifier"
                            onclick="modifier({{ donnees2['id_vocabulaire']  }})"></td>
                 <td>
-                    <a href="deleteVocabGen.php?id={{ donnees2['id_vocabulaire']  }}&id_theme={{ donnees2['id_theme']  }}&terme={{  terme  }}&langues_recherche={{ langues_recherche }}"
+                    <a href="{{url_delete_vocab_gen}}?id={{ donnees2['id_vocabulaire'] }}&id_theme={{ id_theme }}&terme={{ terme }}&langues_recherche={{ langues_recherche }}"
                        class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a></td>
                 </tr>
             {% endfor %}

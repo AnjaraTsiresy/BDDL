@@ -210,4 +210,17 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
          $sql ="select * from vocabulaire_prototype_access where id_prototype_access='$id' and id_vocabulaire='$id_vocabulaire' ";
         return $this->fetch($sql);
     }
+
+    public function getVocabulaireProtoByProtoAccessAndVocabulaire2($id)
+    {
+        $query = $this
+            ->createQueryBuilder('vpa')
+            ->select('vpa')
+            ->innerJoin('vpa.vocabulaire', 'v')
+            ->where('v.id = :id_vocabulaire')
+            ->setParameter('id_vocabulaire', $id)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

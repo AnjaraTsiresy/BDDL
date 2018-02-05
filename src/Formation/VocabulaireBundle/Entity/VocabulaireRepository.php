@@ -37,6 +37,51 @@ class VocabulaireRepository extends EntityRepository {
     }
 
     public function findTermeGen($id_theme, $terme, $langues_recherche, $dic){
+    if($id_theme == "" && $terme == ""){
+        $sql = "";
+    }else{
+        $sql = "SELECT distinct vocabulaire.id_vocabulaire, vocabulaire.langue_traduction, vocabulaire.langue_origine, theme.id_theme, theme.libelle_theme FROM `vocabulaire`";
+
+        if ($id_theme != ""){
+            $sql = $sql." INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_theme.id_theme = '$id_theme'
+					INNER JOIN theme ON theme.id_theme = '$id_theme'";
+        }else{
+            $sql = $sql." INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire 
+					INNER JOIN theme ON theme.id_theme = vocabulaire_theme.id_theme";
+        }
+        if($terme != ""){
+            $terme = strtolower($terme);
+            if($langues_recherche == "francais"){
+                $sql = $sql." WHERE lower(langue_origine) LIKE '%".trim($terme)."%'";
+            }
+            else if($langues_recherche == "anglais"){
+                $sql = $sql." WHERE lower(langue_traduction) LIKE '%".trim($terme)."%'";
+            }
+            else {
+                $sql = $sql." WHERE lower(langue_origine) LIKE '%".trim($terme)."%' OR lower(langue_traduction) LIKE '%".trim($terme)."%'";
+            }
+        }
+    }
+    if ($dic != '') {
+
+        if ($dic == "fr1"){
+            $sql = $sql." order by vocabulaire.langue_origine asc";
+        }
+        else if ($dic == "en1"){
+            $sql = $sql." order by vocabulaire.langue_traduction asc";
+        }
+        else if ($dic == "en2"){
+            $sql = $sql." order by vocabulaire.langue_traduction desc";
+        }
+        else if ($dic == "fr2"){
+            $sql = $sql." order by vocabulaire.langue_origine desc";
+        }
+    }
+    if ($sql != "") return $this->fetch($sql);
+    return array();
+}
+
+    public function exportTermeGen($id_theme, $terme, $langues_recherche){
         if($id_theme == "" && $terme == ""){
             $sql = "";
         }else{
@@ -62,25 +107,10 @@ class VocabulaireRepository extends EntityRepository {
                 }
             }
         }
-        if ($dic != '') {
-
-            if ($dic == "fr1"){
-                $sql = $sql." order by vocabulaire.langue_origine asc";
-            }
-            else if ($dic == "en1"){
-                $sql = $sql." order by vocabulaire.langue_traduction asc";
-            }
-            else if ($dic == "en2"){
-                $sql = $sql." order by vocabulaire.langue_traduction desc";
-            }
-            else if ($dic == "fr2"){
-                $sql = $sql." order by vocabulaire.langue_origine desc";
-            }
-        }
-        if ($sql != "") return $this->fetch($sql);
+        $sql1 = str_replace("SELECT distinct vocabulaire.id_vocabulaire, vocabulaire.langue_traduction, vocabulaire.langue_origine, theme.id_theme, theme.libelle_theme", "SELECT distinct vocabulaire.langue_traduction, vocabulaire.langue_origine, theme.libelle_theme", $sql);
+        if ($sql1 != "") return $this->fetch($sql1);
         return array();
     }
-
     public function getLEgenerique()
     {
         $query = $this

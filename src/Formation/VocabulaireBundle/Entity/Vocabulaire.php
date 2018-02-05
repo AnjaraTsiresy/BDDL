@@ -39,28 +39,35 @@ class Vocabulaire {
     /**
      * @var string
      *
-     * @ORM\Column(name="langue_origine", type="string", length=255)
+     * @ORM\Column(name="langue_origine", type="string", length=255, nullable=true)
      */
     private $langueOrigine;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="langue_origine_sans_modif", type="string", length=255)
+     * @ORM\Column(name="langue_origine_clean", type="string", length=255)
+     */
+    private $langueOrigineClean = "";
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="langue_origine_sans_modif", type="string", length=255, nullable=true)
      */
     private $langueOrigineSansModif;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="langue_traduction", type="string", length=255)
+     * @ORM\Column(name="langue_traduction", type="string", length=255, nullable=true, nullable=true)
      */
     private $langueTraduction;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="rang", type="string", length=255)
+     * @ORM\Column(name="rang", type="string", length=255, nullable=true)
      */
     private $rang;
 
@@ -79,11 +86,26 @@ class Vocabulaire {
     private $nbreCaractLo;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="nbreCaractLt", type="integer", nullable=true)
+     */
+    private $nbreCaractLt = 0;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="nbreLigneLo", type="string", length=255)
      */
     private $nbreLigneLo;
+
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="nbreLigneLt", type="integer")
+     */
+    private $nbreLigneLt = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="vocabulaires")
@@ -357,6 +379,29 @@ class Vocabulaire {
         return $this->dateModification;
     }
 
+
+
+    /**
+     * Get langueOrigineClean
+     *
+     * @return string 
+     */
+    public function getLangueOrigineClean() {
+        return $this->langueOrigineClean;
+    }
+
+    /**
+     * Set langueOrigine
+     *
+     * @param string $langueOrigineCleanClean
+     * @return Vocabulaire
+     */
+    public function setLangueOrigineClean($langueOrigineClean) {
+        $this->langueOrigineClean = $langueOrigineClean;
+
+        return $this;
+    }
+
     /**
      * Set langueOrigine
      *
@@ -372,7 +417,7 @@ class Vocabulaire {
     /**
      * Get langueOrigine
      *
-     * @return string 
+     * @return string
      */
     public function getLangueOrigine() {
         return $this->langueOrigine;
@@ -481,6 +526,51 @@ class Vocabulaire {
      */
     public function getNbreCaractLo() {
         return $this->nbreCaractLo;
+    }
+
+
+
+    /**
+     * Set nbreLigneLt
+     *
+     * @param integer $nbreLigneLt
+     * @return Vocabulaire
+     */
+    public function setNbreLigneLt($nbreLigneLt) {
+        $this->nbreLigneLt = $nbreLigneLt;
+
+        return $this;
+    }
+
+    /**
+     * Get nbreLigneLt
+     *
+     * @return integer
+     */
+    public function getNbreLigneLt() {
+        return $this->nbreLigneLt;
+    }
+
+
+    /**
+     * Set nbreCaractLt
+     *
+     * @param integer $nbreCaractLt
+     * @return Vocabulaire
+     */
+    public function setNbreCaractLt($nbreCaractLt) {
+        $this->nbreCaractLt = $nbreCaractLt;
+
+        return $this;
+    }
+
+    /**
+     * Get nbreCaractLt
+     *
+     * @return integer
+     */
+    public function getNbreCaractLt() {
+        return $this->nbreCaractLt;
     }
 
     /**

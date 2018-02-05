@@ -25,6 +25,20 @@ class VocabulaireThemeRepository extends EntityRepository
         return $this->fetch($sql_test_theme);
     }
 
+    public function getVocabulaireThemeByVocabulaireAndTheme2($id_theme, $id) {
+        $query = $this
+            ->createQueryBuilder('vt')
+            ->select('vt')
+            ->innerJoin('vt.vocabulaire', 'v')
+            ->innerJoin('vt.theme', 't')
+            ->where('v.id = :id_vocabulaire')
+            ->where('t.id = :id_theme')
+            ->setParameter('id_vocabulaire', $id)
+            ->setParameter('id_theme', $id_theme)
+            ->getQuery();
+        return $query->getResult();
+    }
+
     public function getVocabulaireThemeByVocabulaire($id_vocabulaire) {
         $query = $this
                 ->createQueryBuilder('vt')

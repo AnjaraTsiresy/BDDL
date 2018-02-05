@@ -94,7 +94,6 @@
                 </tr>
                 <tr>
                     <td><input type="submit" value="Enregistrer"/></td>
-                    <!--td><a href="consulterGlossaire.php?id={{ id }}&id_societe={{ id_societe }}">Consulter</a></td-->
                     <td colspan="3">
                         <input type="button" value="Préparer l'impression PDF" id="prepare"/>
                         <a id="impression" target="_blank"
@@ -103,7 +102,6 @@
                         <a id="impression1" target="_blank"
                            href="{{ path('impression_glossaire',{'id': id, 'id_societe':id_societe}) }}">Impression
                             corps du glossaire</a>
-                        <!--a id="impression2" target="_blank" href="impressionFlippingBook1.php?id={{ id }}&id_societe={{ id_societe }}">Flipping book</a-->
                     </td>
                 </tr>
             </table>
@@ -113,7 +111,7 @@
             <div style="height : 30px;">
                 <input type="button" value="Cliquer ici pour ajouter des LE propres à {{ nom_societe }}"
                        id="addLEsociete"/>
-                <a href="importLEPrototype.php?id={{ id }}&id_societe={{ id_societe }}">Cliquer ici pour importer des LE
+                <a href="{{ path('import_prototype_LE', {'id':id, 'id_societe':id_societe }) }}">Cliquer ici pour importer des LE
                     propres à {{ nom_societe }}</a>
             </div>
             <br/>
@@ -148,8 +146,7 @@
             <br/><br/>
             <div style="height : 30px;">
                 <input type="button" value="Cliquer ici pour ajouter des LE d'autres sociétés" id="addLEOthersociete"/>
-                <!--a href="modifPrototypeLE2.php?id={{ id }}&id_societe={{ id_societe }}">Cliquer ici pour ajouter des lexiques élémentaires (autres sociétés)</a-->
-            </div>
+             </div>
             <br/>
             <table>
                 {% for lexique in lexiques3 %}
@@ -212,9 +209,6 @@
 
             </table>
         </div>
-        <!--a href="modifPrototypeLE1.php?id={{ id }}&id_societe=<?php echo $respLEsoc['id_societe']; ?>">Ajouter/modifier des lexiques élémentaires (autres sociétés)</a-->
-        <!--<a href="modifTerme.php?id={{ id }}">Ajouter/modifier des termes</a>-->
-        <input type="hidden" id="nb_lxq" name="nb_lxq" value="{{ nb_lxq1 }}"/>
         <input type="hidden" id="nb_lxq1" name="nb_lxq1" value="{{ nb_lxq2 }}"/>
         <input type="hidden" id="nb_lxq2" name="nb_lxq2" value="{{ nb_lxq3 }}"/>
     </form>
