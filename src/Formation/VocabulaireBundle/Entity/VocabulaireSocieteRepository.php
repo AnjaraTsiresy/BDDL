@@ -28,16 +28,14 @@ class VocabulaireSocieteRepository extends EntityRepository {
 
     public function getVocSocBySocAndVoc2($id)
     {
-        $id_societe = '653';
+        $id_societe = 653;
         $query = $this
             ->createQueryBuilder('vs')
             ->select('vs')
             ->innerJoin('vs.vocabulaire', 'v')
             ->innerJoin('vs.societe', 's')
-            ->where('v.id = :id_vocabulaire')
-            ->where('s.id = :id_societe')
+            ->where('v.id = :id_vocabulaire AND s.id = 653')
             ->setParameter('id_vocabulaire', $id)
-            ->setParameter('id_societe', $id_societe)
             ->getQuery();
 
         return $query->getResult();

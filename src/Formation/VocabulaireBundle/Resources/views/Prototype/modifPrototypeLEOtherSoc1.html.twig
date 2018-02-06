@@ -1,0 +1,136 @@
+{% extends "::base.html.twig" %}
+
+{% block stylesheets %}
+<style>
+#prepage {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  z-index: 15;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -150px;
+  //background: red;
+}
+</style>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+	function refresh1(id_prototype_access, id_societe, id, idinput){
+		$("#resultDiv").empty();
+		$.ajax({
+			url: "{{ path('modif_contenu_prot_LE') }}", 
+			data: 'id_prototype_access='+ id_prototype_access+'&id='+id+'&id_societe='+id_societe, 
+			dataType: 'html',
+			success:function(html){				
+				$("#resultDiv"+id_prototype_access).html(html);
+				
+				var valuesIdtheme = $("#valuesIdtheme").val();
+				var res = valuesIdtheme.split(","); 
+				for (var i=0; i <res.length; i++){
+					if (res[i]==id_prototype_access){
+						$("#resultDiv"+id_prototype_access).show();
+					}
+					else {
+						$("#resultDiv"+res[i]).hide();
+					}
+				}
+			}
+		}); 
+		
+	}
+</script>
+{% endblock %}
+{% block body %}
+<br/><br/>
+<DIV id="prepage" class="waiting" style="display:none;">
+<img src="{{ asset('images/ajax_loader.gif') }}"/>
+</DIV>
+<div>
+<form action="{{ path('modifPrototypeLEOtherSoc1') }}?id={{ id }}&id_societe={{ id_societe }}">
+<input name="id" type="hidden" value="{{ id }}" />
+<input name="id_societe" type="hidden" value="{{ id_societe }}" />
+<table id="recherche">
+    <tbody>
+        <tr>
+            <td>Secteur d'activité:</td>
+            <td>
+				<select name="id_secteur" id="id_secteur">
+					<option value="">choix indifférent</option>
+					{% for secteur_array in secteurs %}
+						<option value="{{ secteur_array['id_secteur']  }}" {% if secteur_array['id_secteur'] == id_secteur %} selected='selected' {% endif %}> {{ secteur_array['libelle_secteur'] | convert_encoding('ISO-8859-1','UTF-8')  }} </option>
+					{% endfor %}
+				</select>
+			</td>
+        </tr>
+		<tr>
+            <td>Suffixe prototype:</td>
+            <td>
+				<select name="id_suffixe" id="id_suffixe">
+					<option value="">choix indifférent</option>
+						{% for suffixe_array in suffixes %}
+						<option value="{{ suffixe_array['id_suffixe']  }}" {% if suffixe_array['id_suffixe'] == id_suffixe %} selected='selected' {% endif %}> {{ suffixe_array['libelle_suffixe'] | convert_encoding('ISO-8859-1','UTF-8')  }} </option>
+					    {% endfor %}
+				</select>
+			</td>
+        </tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" value="Chercher"></td>
+		</tr>
+    </tbody>
+	</table>
+</form>
+<br/>
+</div>
+{% if id_secteur > 0 or id_suffixe > 0 %}
+<div class="titreMenu">
+	<p>{{ compteur }} prototype(s) trouvé(s)</p>
+</div>
+<br/><br/>
+{% if compteur > 0 %}
+		<table id="tableau">
+		  <thead>
+			<tr>
+			  <th scope="col">Prototype</th>
+			  <th scope="col">Action1</th>
+			</tr>
+		  </thead>
+		<tbody>
+		{% for donnees2 in requete %}
+            {% set valuesIdtheme = "" %}
+			{% set id_prototype_access = donnees2['id_prototype_access'] %}
+			{% set valuesIdtheme = valuesIdtheme ~ id_prototype_access %}
+		
+			<tr>
+				<td><p class="terme_fr sous_titre_fr" >{{ donnees2['type'] }} </p></td>
+				<td>
+					<div id="id{{ id_prototype_access }}">
+					<input id="idinput{{ id_prototype_access }}" type="button" style="background: none; border: none;text-decoration: none; color: #3333cc;font: bold 12px; box-shadow:none;" value="Cliquer ici pour afficher les LE présents" onclick="refresh1({{ id_prototype_access }}, {{ donnees2['id_societe'] }}, {{ id }}, this.id)"><br/>	
+						<div id="resultDiv{{ id_prototype_access }}"></div>
+					</div>
+				</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		</table>
+		<br/><br/>
+		<table id="tableau">
+		<tr>
+			<td><a href="modifPrototype.php?id={{ id }}">Terminer</a></td>
+			<td><a href="modifPrototype.php?id={{ id }}">Retour à la page précédente</a></td>
+		</tr>
+		</table>
+		
+	{% else %}
+		
+		<table id="tableau">
+		<tr>
+			<td>Aucun résultat</td>
+			<td></td>
+		</tr>
+		</table>
+
+	{% endif %}	
+{% endif %}
+{% endblock %}

@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class SecteurRepository extends EntityRepository
 {
+    public function getSelecteurs()
+    {
+        $secteur_query="select secteur.id_secteur as id_secteur, secteur.libelle_secteur as libelle_secteur from secteur";
+        return $this->fetch($secteur_query);
+    }
+
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
 }

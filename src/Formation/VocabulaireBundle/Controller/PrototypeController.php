@@ -6,6 +6,7 @@ use Formation\VocabulaireBundle\Entity\Lexique;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PrototypeController extends Controller
 {
@@ -283,16 +284,36 @@ class PrototypeController extends Controller
 
     }
 
-    /**
-     * @Route("/suppr_vocab_le/{id_vocabulaire}/{id}/{id_societe}/{id_theme}", name="suppr_vocab_le")
+
+/**
+     * @Route("/modif_les", name="modif_les")
      */
-    public function supprVocabLEAction($id_vocabulaire, $id,$id_societe, $id_theme)
+    public function modifLesAction(Request $request)
     {
+        $id = 0;
+        $id_societe = 0;
+        $id_theme = 0;
+         if ($request->get('id')) {
+            $id = intval($request->get('id'));
+        }
+        if ($request->get('id_theme')) {
+            $id_theme = intval($request->get('id_theme'));
+        }
+        if ($request->get('id_societe')) {
+            $id_societe = intval($request->get('id_societe'));
+        }
         $vocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess')->getVocabulairePrototypeAccessByPrototypeAndSocieteAndTheme($id, $id_societe, $id_theme,'dic');
         $theme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme')->find($id_theme);
         $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id);
         $libelle_theme = "";
         $nom_prototype = "";
+         if($prototypeAccess != null )
+        $nom_prototype = $prototypeAccess->getType();
+        $url = $this->generateUrl(
+            'modif_contenu_le',
+            array(),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         if($theme != null && $prototypeAccess != "")
         {
@@ -305,13 +326,40 @@ class PrototypeController extends Controller
 
         }
 
+        $url_add_new_termes = $this->generateUrl(
+            'add_new_termes',
+            array(),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
         return $this->render('FormationVocabulaireBundle:Prototype:modifLe.html.twig', array(
             'id' => $id,
             'id_theme' => $id_theme,
             'id_societe' => $id_societe,
             'libelle_theme' => $libelle_theme,
-            'nom_prototype' => $nom_prototype
+            'nom_prototype' => $nom_prototype,
+            'url' => $url,
+            'url_add_new_termes' => $url_add_new_termes
         ));
+
+    }
+
+
+    /**
+     * @Route("/suppr_vocab_le/{id_vocabulaire}/{id}/{id_societe}/{id_theme}", name="suppr_vocab_le")
+     */
+    public function supprVocabLEAction($id_vocabulaire, $id,$id_societe, $id_theme)
+    {
+        $em = $this->getDoctrine()->getManager();
+         $date_today = date("Y-m-d");
+
+        $sql_delete="DELETE FROM vocabulaire_prototype_access WHERE id_prototype_access = '$id' AND id_vocabulaire = '$id_vocabulaire'";
+        $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');
+        $datas = $repositoryVocabulairePrototypeAccess->getVocabulaireProtoByProtoAccessAndVocabulaire3($id, $id_vocabulaire);
+        foreach($datas as $row)
+            $em->remove($row);
+
+        return $this->redirectToRoute('voir_le', array('id'=>$id,'dic'=> 'fr1','id_prototype_access' => $id, 'id_societe'=> $id_societe, 'id_theme'=> $id_theme));
 
     }
 }

@@ -31,11 +31,11 @@ class VocabulaireThemeRepository extends EntityRepository
             ->select('vt')
             ->innerJoin('vt.vocabulaire', 'v')
             ->innerJoin('vt.theme', 't')
-            ->where('v.id = :id_vocabulaire')
-            ->where('t.id = :id_theme')
+            ->where('v.id = :id_vocabulaire AND t.id = :id_theme')
             ->setParameter('id_vocabulaire', $id)
             ->setParameter('id_theme', $id_theme)
             ->getQuery();
+
         return $query->getResult();
     }
 

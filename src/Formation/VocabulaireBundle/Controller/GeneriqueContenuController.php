@@ -100,6 +100,63 @@ class GeneriqueContenuController extends Controller
     }
 
     /**
+     *
+     * @Route("/modifierVocabulaireGen", name="modifierVocabulaireGen")
+     */
+    public function modifierVocabulaireGenAction(Request $request){
+        $id = intval($request->get('id'));
+        $langue_origine = "";
+        $langue_traduction = "";
+        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+        $vocabulaire = $repositoryVocabulaire->find($id);
+        if($vocabulaire != null)
+        {
+            $langue_origine = $vocabulaire->getLangueOrigine();
+            $langue_traduction = $vocabulaire->getLangueTraduction();
+        }
+        return $this->render('FormationVocabulaireBundle:Generique:modifierVocabulaireGen.html.twig', array(
+            'id' => $id,
+            'vocabulaire' => $vocabulaire,
+            'langue_origine' => $langue_origine,
+            'langue_traduction' => $langue_traduction
+        ));
+    }
+
+    /**
+     *
+     * @Route("/modifierVocabulaireGenaction", name="modifierVocabulaireGenaction")
+     */
+    public function modifierVocabulaireGe1Action(Request $request){
+        $id = intval($request->get('id'));
+        if($id > 0){
+                $date = date("Y-m-d");
+                $id_vocabulaire = intval($request->get('id'));
+                $langue_origine = $request->get('langue_origine');
+                $langue_traduction = $request->get('langue_traduction');
+                $langue_origine_avec_maj = $this->trim_ucfirst_strtolower_utf8($langue_origine);
+                $langue_origine_sans_modif = "";
+                $alphabet_min = range('a', 'z');
+                $alphabet_maj = range('A', 'Z');
+                $first_lettre = $langue_origine[0];
+                if(!in_array($first_lettre,$alphabet_min) && !in_array($first_lettre,$alphabet_maj)){
+                    $langue_origine_sans_modif = $langue_origine;
+                }
+
+                $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
+                $vocabulaire = $repositoryVocabulaire->find($id);
+                if($vocabulaire != null)
+                {
+                    $vocabulaire->setLangueOrigine($langue_origine_avec_maj);
+                    $vocabulaire->setLangueOrigineSansModif($langue_origine_sans_modif);
+                    $vocabulaire->setLangueTraduction($langue_traduction);
+                }
+            }
+            echo "<SCRIPT language=javascript> window.opener.location.reload(true); window.close();</SCRIPT>";
+
+    }
+
+
+    /**
      * @Route("/delete_vocab_gen", name="delete_vocab_gen")
      */
     public function deleteVocabGenAction(Request $request){
@@ -131,29 +188,29 @@ class GeneriqueContenuController extends Controller
         $repositoryVocabulaireTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulaireTheme');
         $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');
 
-        $vocThemes = $repositoryVocabulaireTheme->getVocabulaireThemeByVocabulaireAndTheme2($id_theme, $id);
-        $vocSocietes = $repositoryVocabulaireSociete->getVocSocBySocAndVoc2($id);
-        $vocProtoAs = $repositoryVocabulairePrototypeAccess->getVocabulaireProtoByProtoAccessAndVocabulaire2($id);
 
-        foreach ($vocThemes as $vT)
-        {
-            $em->remove($vT);
+               $vocThemes = $repositoryVocabulaireTheme->getVocabulaireThemeByVocabulaireAndTheme2($id_theme, $id);
+             $vocSocietes = $repositoryVocabulaireSociete->getVocSocBySocAndVoc2($id);
+                  $vocProtoAs = $repositoryVocabulairePrototypeAccess->getVocabulaireProtoByProtoAccessAndVocabulaire2($id);
+              echo count($vocThemes);
+                 foreach ($vocThemes as $vT)
+                {
+                    $em->remove($vT);
+                    $em->flush();
+                }
 
+                foreach ($vocSocietes as $vS)
+                {
+                    $em->remove($vS);
 
-        }
-        $em->flush();
-        foreach ($vocSocietes as $vS)
-        {
-            $em->remove($vS);
+                }
+                $em->flush();
+                foreach ($vocProtoAs as $vP)
+                {
+                    $em->remove($vP);
 
-        }
-        $em->flush();
-        foreach ($vocProtoAs as $vP)
-        {
-            $em->remove($vP);
-
-        }
-        $em->flush();
+                }
+                $em->flush();
 
         return $this->redirectToRoute('gestion_contenu_LE_generique',array('id_theme'=>$id_theme,'terme'=>$terme,'langues_recherche'=>$langues_recherche));
 

@@ -113,6 +113,7 @@ class BasePrototypeController extends Controller
 
         echo '<table>';
         $i = 0;
+        
         foreach ($lexiques as $row) {
             $id_lexique = $repositoryLexique->recupIdLE($row['id_societe'], $row['id_theme'], $id);
             $i++;
@@ -124,7 +125,7 @@ class BasePrototypeController extends Controller
                 echo "checked='checked'";
             }
             echo 'onclick="sendData(this.checked, ' . $i . ', ' . $row['id_societe'] . ', ' . $row['id_theme'] . ',' . $id_prototype_access_origine . ',' . $id . ');"> </td>';
-            echo '<td><p class="terme_fr sous_titre_fr" >'.html_entity_decode($row['libelle_theme'])."/".html_entity_decode($row['theme_eng']).'</p></td>';
+            echo '<td><p class="terme_fr sous_titre_fr" >'.utf8_encode(html_entity_decode($row['libelle_theme']))."/".utf8_encode(html_entity_decode($row['theme_eng'])).'</p></td>';
             echo '<td><input type="button" id="bouton'.$i.'"';
             if ($id_lexique != "" && $id_lexique != null) { echo "enabled='enabled'" ; } else {echo "disabled=disabled style='background:#808080;'";} echo   'value="Modifier" onclick="modifLE('.$id.','.$row['id_societe'].','.$row['id_theme'].')"></td>';
 

@@ -38,7 +38,7 @@
                 var left = (document.body.clientWidth - width) / 2;
                 var top = (document.body.clientHeight - height) / 2;
             }
-            window.open('modifierVocabulaireGen.php?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
+            window.open('{{ path('modifierVocabulaireGen') }}?id=' + i, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
         }
 
     </script>

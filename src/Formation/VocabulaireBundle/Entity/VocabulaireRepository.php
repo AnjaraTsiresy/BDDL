@@ -11,7 +11,39 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class VocabulaireRepository extends EntityRepository {
+    public function getLibelleSuffixe($id_suffixe){
+	
+    $libelle_suffixe = "";
+	$sql = "SELECT libelle_suffixe FROM suffixe where id_suffixe='$id_suffixe'" ;
+	$requete = $this->fetch($sql);
+    foreach($requete as $resp) $libelle_suffixe = $resp['libelle_suffixe'];
+	return $libelle_suffixe;
+    
+    }
+    public function mres($value)
+    {
+    $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+    $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
 
+    return str_replace($search, $replace, $value);
+    }
+    public function rechercheLEBysuffixe1($id_secteur, $id_suffixe, $id_societe){
+	$sql = " SELECT distinct prototype_access.id_prototype_access as id_prototype_access, prototype_access.type as type,
+	prototype_access.id_societe as id_societe FROM vocabulaire
+	INNER JOIN vocabulaire_prototype_access ON vocabulaire_prototype_access.id_vocabulaire = vocabulaire.id_vocabulaire
+	INNER JOIN prototype_access ON prototype_access.id_prototype_access = vocabulaire_prototype_access.id_prototype_access AND prototype_access.id_societe != $id_societe";
+	if($id_secteur != ""){
+		$sql = $sql." INNER JOIN vocabulaire_secteur ON vocabulaire_secteur.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_secteur.id_secteur = '$id_secteur'
+				INNER JOIN secteur ON secteur.id_secteur = '$id_secteur'";
+	}
+	if($id_suffixe != ""){
+		$libelle_suffixe = $this->getLibelleSuffixe($id_suffixe);
+		$libelle_suffixe = $this->mres($libelle_suffixe);
+		$sql = $sql." INNER JOIN suffixe ON  suffixe.id_suffixe = '$id_suffixe'
+				WHERE lower(prototype_access.type) LIKE CONVERT('%$libelle_suffixe%' USING utf8) COLLATE utf8_unicode_ci ";
+	}
+	return $this->fetch($sql);
+    } 
     private function fetch($query)
     {
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

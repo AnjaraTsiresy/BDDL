@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="titreMenu">
-        <p>LE: {{ libelle_theme}}/prototype: {{ nom_prototype }}</p>
+        <p>LE: {{ libelle_theme  | convert_encoding('ISO-8859-1','UTF-8')   }}/prototype: {{ nom_prototype  | convert_encoding('ISO-8859-1','UTF-8')   }}</p>
     </div>
     <br/><br/>
     <table id="tableau">

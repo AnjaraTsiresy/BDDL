@@ -26,4 +26,19 @@ class SuffixeRepository extends EntityRepository
       
         return $query->getResult();
     }
+
+    private function fetch($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getSuffixesBySociete($id_societe)
+    {
+        $suffixe_query="select suffixe.id_suffixe as id_suffixe, suffixe.libelle_suffixe as libelle_suffixe from suffixe 
+									INNER JOIN suffixe_societe ON suffixe_societe.id_suffixe = suffixe.id_suffixe and suffixe_societe.id_societe != $id_societe
+									GROUP BY libelle_suffixe ";
+        return $this->fetch($suffixe_query);
+    }
 }

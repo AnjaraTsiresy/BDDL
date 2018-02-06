@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulairePrototypeAccessRepository extends EntityRepository
 {
+
     public function getTermesAssocies($id_prototype_access)
     {
         $query = $this
@@ -25,6 +26,7 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
 
         return $query->getSingleResult();
     }
+
 
     public function getLEGenAssocies( $id_prototype_access){
         $sql = "SELECT * FROM lexique WHERE id_prototype_access = '$id_prototype_access' AND id_societe = '653' ";
@@ -202,6 +204,7 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
 			INNER JOIN vocabulaire_societe ON vocabulaire_societe.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_societe.id_societe = '$id_societe'
 			INNER JOIN societe ON societe.id_societe = '$id_societe'
 			WHERE vocabulaire_prototype_access.id_prototype_access=$id";
+        
         return $this->fetch($sql);
     }
 
@@ -223,4 +226,20 @@ class VocabulairePrototypeAccessRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function getVocabulaireProtoByProtoAccessAndVocabulaire3($id,$id_vocabulaire)
+    {
+        $query = $this
+            ->createQueryBuilder('vpa')
+            ->select('vpa')
+            ->innerJoin('vpa.prototypeAccess', 'pa')
+            ->innerJoin('vpa.vocabulaire', 'v')
+            ->where('v.id = :id_vocabulaire AND pa.id = :id_prototype_access')
+           ->setParameter('id_prototype_access', $id)
+            ->setParameter('id_vocabulaire', $id_vocabulaire)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
 }

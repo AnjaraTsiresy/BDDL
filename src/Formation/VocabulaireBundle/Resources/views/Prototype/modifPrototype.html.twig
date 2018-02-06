@@ -177,7 +177,7 @@
             </table>
             <br/><br/>
             <div style="height : 30px;">
-                <a href="modifPrototypeLESoc1.php?id={{ id }}&id_societe={{ id_societe }}">Cliquer ici pour ajouter des
+                <a href="{{ path('modifPrototypeLEOtherSoc1') }}?id={{ id }}&id_societe={{ id_societe }}">Cliquer ici pour ajouter des
                     LE génériques</a>
             </div>
             <br/>
@@ -242,7 +242,7 @@
             <table>
                 <tr>
                     <td>
-                        <a href="modifPrototypeLEOtherSoc1.php?id={{ id }}&id_societe={{ id_societe }}">Groupés par prototype</a>
+                        <a href="{{ path('modifPrototypeLEOtherSoc1') }}?id={{ id }}&id_societe={{ id_societe }}">Groupés par prototype</a>
                     </td>
 
                 </tr>
@@ -254,7 +254,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="modifPrototypeLEOtherSoc.php?id={{ id }}&id_societe={{ id_societe }}">Non groupés par prototype</a>
+                        <a href="{{ path('modifPrototypeLEOtherSoc') }}?id={{ id }}&id_societe={{ id_societe }}">Non groupés par prototype</a>
                     </td>
                 </tr>
             </table>
@@ -299,35 +299,6 @@
             });
         });
     </script>
-    <script type="text/javascript">
-        function closeSelf(f) {
-            //alert("ato");
-            f.submit();
-            setTimeout(function () {
-                window.close();
-            }, 1000);
 
-        }
-
-        $i = 1;
-        $j = 1;
-
-        function imprimer() {
-            window.print();
-        }
-
-        function addTermes(id, id_societe, id_theme) {
-            width = 1000;
-            height = 1000;
-            if (window.innerWidth) {
-                var left = (window.innerWidth - width) / 2;
-                var top = (window.innerHeight - height) / 2;
-            } else {
-                var left = (document.body.clientWidth - width) / 2;
-                var top = (document.body.clientHeight - height) / 2;
-            }
-            window.open('modifContenuLE.php?id=' + id + '&id_societe=' + id_societe + '&id_theme=' + id_theme, 'nom_de_ma_popup', 'menubar=no, scrollbars=yes, top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + '');
-        }
-    </script>
 {% endblock %}
 

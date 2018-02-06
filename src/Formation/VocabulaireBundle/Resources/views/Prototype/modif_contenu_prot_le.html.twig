@@ -13,7 +13,7 @@
             var left = (document.body.clientWidth-width)/2;
             var top = (document.body.clientHeight-height)/2;
         }
-        window.open('modifContenuLE.php?id='+id+'&id_societe='+id_societe+'&id_theme='+id_theme,'nom_de_ma_popup','menubar=no, scrollbars=yes, top='+top+', left='+left+', width='+width+', height='+height+'');
+        window.open('{{ path('modif_contenu_le') }}?id='+id+'&id_societe='+id_societe+'&id_theme='+id_theme,'nom_de_ma_popup','menubar=no, scrollbars=yes, top='+top+', left='+left+', width='+width+', height='+height+'');
     }
     function sendData(value, i, id_societe, id_theme, id_prototype_access_origine, id){
         if (value==true){
