@@ -12,6 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class VocabulairePrototypeAccessRepository extends EntityRepository
 {
+    public function execute($sql)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function deleteVocab($id, $id_vocabulaire_to_delete)
+    {
+         $sql_test1 ="delete from vocabulaire_prototype_access where id_prototype_access='$id' and id_vocabulaire='$id_vocabulaire_to_delete' ";
+         $this->execute($sql_test1);
+    }
 
     public function getTermesAssocies($id_prototype_access)
     {

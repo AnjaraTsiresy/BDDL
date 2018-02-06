@@ -19,6 +19,18 @@ class LexiqueRepository extends EntityRepository {
         return  $stmt->fetchAll();
     }
 
+    private function execute($query)
+    {
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+    }
+
+    public function deleteLexique($id_societe, $id_theme, $id)
+    {
+        $sql_verif1 ="delete from lexique where id_societe='$id_societe' AND id_theme='$id_theme' AND id_prototype_access='$id' ";
+        $this->execute($sql_verif1);
+    }
+
     public function getDataTheme($id_prototype_access) {
         $query = $this
                 ->createQueryBuilder('l')

@@ -99,52 +99,82 @@ class BasePrototypeController extends Controller
     }
 
     /**
+     * @Route("/deleteData", name="deleteData")
+     */
+    public function deleteDataAction(Request $request) {
+        $id = intval($request->get("id"));
+        $id_societe = intval($request->get("id_societe"));
+        $id_theme = intval($request->get("id_theme"));
+        $date_today = date("Y-m-d");
+
+        //suppression du LE décoché
+        $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');
+        $repositoryVocabulaireLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
+        $sql = $repositoryVocabulairePrototypeAccess->getContenuLE($id, $id_societe, $id_theme);
+
+        foreach ($sql as $donnees){
+            $id_vocabulaire_to_delete = $donnees['id_vocabulaire'];
+            $repositoryVocabulairePrototypeAccess->deleteVocab($id, $id_vocabulaire_to_delete);
+            $repositoryVocabulaireLexique->deleteLexique($id_societe, $id_theme, $id);
+            
+        }
+         return $this->render('FormationVocabulaireBundle:Prototype:deleteData.html.twig', array(
+            
+        ));   
+    }
+
+    /**
+     * @Route("/modif_contenu_prot_le_table/{theme_eng}/{libelle_theme}/{id_societe}/{id_theme}/{id}/{i}/{id_prototype_access_origine}", name="modif_contenu_prot_le_table")
+     */
+    public function modif_contenu_prot_le_tableAction($theme_eng,$libelle_theme,$id_societe, $id_theme, $id, $i,$id_prototype_access_origine)
+    {
+        $repositoryLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
+        $id_lexique = $repositoryLexique->recupIdLE($id_societe, $id_theme, $id);
+        return $this->render('FormationVocabulaireBundle:Prototype:modif_contenu_prot_le_table.html.twig', array(
+            'id' => $id,
+            'i' => $i,
+            'id_societe' => $id_societe,
+            'id_theme' => $id_theme,
+            'id_prototype_access_origine' => $id_prototype_access_origine,
+            'libelle_theme' => $libelle_theme,
+            'theme_eng' => $theme_eng,
+            'id_lexique' => $id_lexique
+        ));
+    }
+
+    /**
      * @Route("/modif_contenu_prot_LE", name="modif_contenu_prot_LE")
      */
     public function modifContenuPrototypeLEAction(Request $request)
     {
+
         $id_prototype_access_origine = intval($request->get("id_prototype_access"));
         $id_societe = intval($request->get("id_societe"));
         $id = intval($request->get("id"));
-
+        $i = 0;
         $repositoryLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
 
         $lexiques = $repositoryLexique->rechercheContenuProtLE($id_prototype_access_origine, $id_societe);
 
-        echo '<table>';
-        $i = 0;
-        
-        foreach ($lexiques as $row) {
-            $id_lexique = $repositoryLexique->recupIdLE($row['id_societe'], $row['id_theme'], $id);
-            $i++;
-
-            echo '<tr>';
-            echo '<td>';
-            echo '<input type="checkbox" name="choix"';
-            if ($id_lexique != "" && $id_lexique != null) {
-                echo "checked='checked'";
-            }
-            echo 'onclick="sendData(this.checked, ' . $i . ', ' . $row['id_societe'] . ', ' . $row['id_theme'] . ',' . $id_prototype_access_origine . ',' . $id . ');"> </td>';
-            echo '<td><p class="terme_fr sous_titre_fr" >'.utf8_encode(html_entity_decode($row['libelle_theme']))."/".utf8_encode(html_entity_decode($row['theme_eng'])).'</p></td>';
-            echo '<td><input type="button" id="bouton'.$i.'"';
-            if ($id_lexique != "" && $id_lexique != null) { echo "enabled='enabled'" ; } else {echo "disabled=disabled style='background:#808080;'";} echo   'value="Modifier" onclick="modifLE('.$id.','.$row['id_societe'].','.$row['id_theme'].')"></td>';
-
-echo '</tr>';
-
-}
-
-        echo '</table>';
-
-        $url_send_data = $this->generateUrl(
-            'send_data',
-            array(),
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-
         return $this->render('FormationVocabulaireBundle:Prototype:modif_contenu_prot_le.html.twig', array(
-            'url_send_data' => $url_send_data
-
+           'lexiques' => $lexiques,
+            'id' => $id,
+            'i' => $i,
+            'id_prototype_access_origine' => $id_prototype_access_origine
         ));
+    }
+
+    private function fetch($query)
+    {
+        $stmt = $this->getDoctrine()->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    private function execute($query)
+    {
+        $stmt = $this->getDoctrine()->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
     }
 
     /**
@@ -152,58 +182,45 @@ echo '</tr>';
      */
     public function sendDataAction(Request $request)
     {
+
         $id_prototype_access_origine = intval($request->get("id_prototype_access_origine"));
         $id = intval($request->get("id"));
         $id_societe = intval($request->get("id_societe"));
         $id_theme = intval($request->get("id_theme"));
+        $date_today = date("Y-m-d");
 
         $repositoryVocabulairePrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:VocabulairePrototypeAccess');
-        $repositoryVocabulaire = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire');
-        $repositoryPrototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess');
-        $repositoryLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
-        $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
-        $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
+        $sql = $repositoryVocabulairePrototypeAccess->getContenuLE($id_prototype_access_origine, $id_societe, $id_theme);
+        $repositoryVocabulaireLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
 
-        $em = $this->getDoctrine()->getManager();
+        foreach ($sql as $donnees) {
 
-        $vocabulairePrototypeAccess = $repositoryVocabulairePrototypeAccess->getContenuLE($id_prototype_access_origine, $id_societe, $id_theme);
-
-
-        foreach ($vocabulairePrototypeAccess as $donnees)
-        {
             $id_vocabulaire = $donnees['id_vocabulaire'];
-            $vocProtos = $repositoryVocabulairePrototypeAccess->getVocabulaireProtoByProtoAccessAndVocabulaire($id, $id_vocabulaire);
-            foreach ($vocProtos as $row_test1)
-            {
-                if($row_test1['id_vocabulaire_prototype_acces'] == 0 || $row_test1['id_vocabulaire_prototype_acces'] == "")
-                {
-                    $vocabProtoAccess = new VocabulairePrototypeAccess();
-                    $vocabulaire = $repositoryVocabulaire->find($id_vocabulaire);
-                    $prototypeAccess = $repositoryPrototypeAccess->find($id);
-                    $vocabProtoAccess->setPrototypeAccess($prototypeAccess);
-                    $vocabProtoAccess->setVocabulaire($vocabulaire);
-                    $em->persist($vocabulairePrototypeAccess);
-                    $em->flush();
-                    $lexiques = $repositoryLexique->getLexiaueByProtoTypeAndThemeAndSociete($id, $id_theme, $id_societe);
-                    $rangLE = $repositoryLexique->getMaxRangLE($id);
-		            $rangLE = $rangLE+1;
-                    foreach($lexiques as $row1)
-                    {
-                        if($row1['id_lexique'] == 0 || $row1['id_lexique'] == ""){
-                            $societe = $repositorySociete->find($id_societe);
-                            $theme = $repositoryTheme->find($id_theme);
-                            $lexique = new Lexique();
-                            $lexique->setPrototypeAccess($prototypeAccess);
-                            $lexique->setRang($rangLE);
-                            $lexique->setSociete($societe);
-                            $lexique->setTheme($theme);
-                            $em->persist($lexique);
-                            $em->flush();
+            $sql_test1 = "select * from vocabulaire_prototype_access where id_prototype_access='$id' and id_vocabulaire='$id_vocabulaire' ";
+            $query_test1 = $this->fetch($sql_test1);
+            foreach ($query_test1 as $row_test1) {
+                if ($row_test1['id_vocabulaire_prototype_acces'] == 0 || $row_test1['id_vocabulaire_prototype_acces'] == "") {
+                    $vocab_soc_sql = "INSERT IGNORE INTO vocabulaire_prototype_access VALUES ('','$id_vocabulaire','$id')";
+
+                    $this->execute($vocab_soc_sql);
+                    //ajout dans la table lexique pour gerer les rangs des LE
+                    $sql_verif1 = "select * from lexique where id_societe='$id_societe' AND id_theme='$id_theme' AND id_prototype_access='$id' ";
+                    $query_verif1 = $this->fetch($sql_verif1);
+                    $rangLE = $repositoryVocabulaireLexique->getMaxRangLE($id);
+                    $rangLE = $rangLE + 1;
+                    foreach($query_verif1 as $row1) {
+                        if ($row1['id_lexique'] == 0 || $row1['id_lexique'] == "") {
+                            $sql_insert1 = "INSERT IGNORE INTO lexique VALUES ('', '$id_societe', '$id_theme', '$id', '$rangLE')";
+
+                            $this->execute($sql_insert1);
                         }
                     }
                 }
             }
         }
+        return $this->render('FormationVocabulaireBundle:Prototype:deleteData.html.twig', array(
+
+        ));
     }
 
     /**

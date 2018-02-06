@@ -62,7 +62,7 @@
                 document.getElementById("bouton" + i).setAttribute("disabled", "disabled");
                 document.getElementById("bouton" + i).setAttribute("style", "background: #808080;");
                 $.ajax({
-                    url: "deleteData.php",
+                    url: "{{ path('deleteData') }}",
                     data: 'id_societe=' + id_societe + '&id_theme=' + id_theme + '&id=' + id,
                     dataType: 'html',
                     success: function (html) {
