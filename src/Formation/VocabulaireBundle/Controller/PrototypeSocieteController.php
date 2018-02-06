@@ -200,7 +200,7 @@ class PrototypeSocieteController extends Controller
         $prototypeAccess = $repositoryPrototypeAccess->find($id);
         if($prototypeAccess != null )
         $nom_prototype = $prototypeAccess->getType();
-        echo json_encode($sql);
+
         $compteur = count($sql);
     
         return $this->render('FormationVocabulaireBundle:Prototype:modif_contenu_le.html.twig', array(

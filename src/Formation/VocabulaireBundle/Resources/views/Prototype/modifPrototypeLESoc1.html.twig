@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+<script type="text/javascript">
+
+    function modifLE(id, id_societe, id_theme){
+        width = 1000;
+        height = 1000;
+        if(window.innerWidth)
+        {
+            var left = (window.innerWidth-width)/2;
+            var top = (window.innerHeight-height)/2;
+        }
+        else
+        {
+            var left = (document.body.clientWidth-width)/2;
+            var top = (document.body.clientHeight-height)/2;
+        }
+        window.open('{{ path('modif_contenu_le') }}?id='+id+'&id_societe='+id_societe+'&id_theme='+id_theme,'nom_de_ma_popup','menubar=no, scrollbars=yes, top='+top+', left='+left+', width='+width+', height='+height+'');
+    }
+    function sendData(value, i, id_societe, id_theme, id_prototype_access_origine, id){
+        if (value==true){
+
+            document.getElementById("bouton"+i).removeAttribute("disabled");
+            document.getElementById("bouton"+i).setAttribute("style", "background: #284294;");
+            //#284294
+            $.ajax({
+                async: true,
+                url: "{{ path('send_data') }}",
+                data: 'id_societe='+ id_societe+'&id_theme='+id_theme+'&id_prototype_access_origine='+id_prototype_access_origine+'&id='+id,
+                dataType: 'html',
+                success:function(html){
+                }
+            });
+        }
+        else {
+            document.getElementById("bouton"+i).setAttribute("disabled", "disabled");
+            document.getElementById("bouton"+i).setAttribute("style", "background: #808080;");
+            $.ajax({
+
+                url: "{{ path('deleteData') }}",
+                data: 'id_societe='+ id_societe+'&id_theme='+id_theme+'&id='+id,
+                dataType: 'html',
+                success:function(html){
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}
+{% block body %}
+<br/><br/>
+<table id="tableau">
+{%   for row in lexiques %}
+	{% set i = i + 1 %}
+    {{ render(controller('FormationVocabulaireBundle:BasePrototype:modif_contenu_prot_le_table', {'theme_eng':row['theme_eng'],'id_prototype_access_origine':id_prototype_access_origine,'id_theme': row['id_theme'], 'libelle_theme':row['libelle_theme'],'id_societe':row['id_societe'], 'id' : id, 'i' : i})) }}
+
+{%  endfor %}
+
+</table>
+{% endblock %}

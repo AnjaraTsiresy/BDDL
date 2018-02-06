@@ -164,6 +164,35 @@ class BasePrototypeController extends Controller
         ));
     }
 
+
+    /**
+     * @Route("/modifPrototypeLESoc1Action", name="modifPrototypeLESoc1Action")
+     */
+    public function modifPrototypeLESoc1Action(Request $request)
+    {
+
+        $id_societe = intval($request->get("id_societe"));
+        $id = intval($request->get("id"));
+        $i = 0;
+        $id_prototype_access_origine = $id;
+        $sql = "SELECT theme.id_theme as id_theme, theme.libelle_theme as libelle_theme, theme.theme_eng as theme_eng, societe.id_societe as id_societe, societe.description as description FROM `vocabulaire`  
+            INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire 
+            INNER JOIN theme ON theme.id_theme = vocabulaire_theme.id_theme
+            INNER JOIN vocabulaire_societe ON vocabulaire_societe.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_societe.id_societe = '653'
+            INNER JOIN societe ON societe.id_societe = '653'  WHERE vocabulaire.date_modification = '0000-00-00 00:00:00' AND vocabulaire.isAffiche = '1' 
+            GROUP BY theme.id_theme ORDER BY theme.libelle_theme collate utf8_general_ci";
+    
+        $lexiques = $this->fetch($sql);
+
+        return $this->render('FormationVocabulaireBundle:Prototype:modifPrototypeLESoc1.html.twig', array(
+           'lexiques' => $lexiques,
+            'id' => $id,
+            'id_societe' => $id_societe,
+            'i' => $i,
+            'id_prototype_access_origine' => $id_prototype_access_origine
+        ));
+    }
+
     private function fetch($query)
     {
         $stmt = $this->getDoctrine()->getEntityManager()->getConnection()->prepare($query);
