@@ -103,7 +103,7 @@
 			{% set valuesIdtheme = valuesIdtheme ~ id_prototype_access %}
 		
 			<tr>
-				<td><p class="terme_fr sous_titre_fr" >{{ donnees2['type'] }} </p></td>
+				<td><p class="terme_fr sous_titre_fr" >{{ donnees2['type']   | convert_encoding('ISO-8859-1','UTF-8')  }} </p></td>
 				<td>
 					<div id="id{{ id_prototype_access }}">
 					<input id="idinput{{ id_prototype_access }}" type="button" style="background: none; border: none;text-decoration: none; color: #3333cc;font: bold 12px; box-shadow:none;" value="Cliquer ici pour afficher les LE présents" onclick="refresh1({{ id_prototype_access }}, {{ donnees2['id_societe'] }}, {{ id }}, this.id)"><br/>	
