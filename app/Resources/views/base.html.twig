@@ -13,19 +13,6 @@
     <script type="text/javascript" src="{{ asset('js/jquery-1.9.1.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.form.js') }}"></script>
-
-    <style>
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            color: white;
-            text-align: center;
-        }
-        #next { float: center; }
-    </style>
-
 </head>
 <body>
 <div class="header">
@@ -45,12 +32,5 @@
 </div>
 {% block body %}{% endblock %}
 {% block javascripts %}{% endblock %}
-<div class="footer">
-
-                <input action="action" id="next" onclick="window.history.go(-1); return false;" type="button" value="Terminer"/>
-
-
-
-</div>
 </body>
 </html>
