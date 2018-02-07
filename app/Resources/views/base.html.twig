@@ -18,19 +18,28 @@
         .footer {
             position: fixed;
             left: 0;
-            bottom: 5%;
+            bottom: 0;
             width: 100%;
             color: white;
             text-align: center;
         }
-        #prev { float: left; }
-        #next { float: right; }
+        #next { float: center; }
     </style>
 
 </head>
 <body>
 <div class="header">
-    <div class="retourMenu"><a href="{{ path('homepage') }}">Retour au menu</a></div>
+    <div class="retourMenu">
+        <a href="{{ path('homepage') }}">
+            Retour au menu
+        </a>
+        <br />
+        <br />
+        <br />
+        <a onclick="window.history.go(-1); return false;">
+            Retour à la page précédente
+        </a>
+    </div>
     <img src="{{ asset('images/logo.jpeg') }}" border="0" id="logo">
     <span>Base lexicale</span>
 </div>
@@ -38,10 +47,9 @@
 {% block javascripts %}{% endblock %}
 <div class="footer">
 
-                <input action="action" id="next" onclick="window.history.go(-1); return false;" type="button" value="TERMINER"/>
+                <input action="action" id="next" onclick="window.history.go(-1); return false;" type="button" value="Terminer"/>
 
-                <input action="action" id="prev"onclick="window.history.go(-1); return false;" type="button"
-                       value="RETOUR A LA PAGE PRECEDENTE"/>
+
 
 </div>
 </body>
