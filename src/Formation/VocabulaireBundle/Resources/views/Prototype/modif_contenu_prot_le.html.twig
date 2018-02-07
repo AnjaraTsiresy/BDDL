@@ -29,7 +29,6 @@
     }
     function sendData(value, i, id_societe, id_theme, id_prototype_access_origine, id){
         if (value==true){
-
             document.getElementById("bouton"+i).removeAttribute("disabled");
             document.getElementById("bouton"+i).setAttribute("style", "background: #284294;");
             //#284294
@@ -39,6 +38,7 @@
                 data: 'id_societe='+ id_societe+'&id_theme='+id_theme+'&id_prototype_access_origine='+id_prototype_access_origine+'&id='+id,
                 dataType: 'html',
                 success:function(html){
+                    console.log(html);
                 }
             });
         }

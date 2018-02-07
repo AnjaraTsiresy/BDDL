@@ -24,9 +24,10 @@
             document.getElementById("bouton"+i).removeAttribute("disabled");
             document.getElementById("bouton"+i).setAttribute("style", "background: #284294;");
             //#284294
+
             $.ajax({
-                async: true,
-                url: "{{ path('send_data') }}",
+
+                url: "{{ path('send_data1') }}",
                 data: 'id_societe='+ id_societe+'&id_theme='+id_theme+'&id_prototype_access_origine='+id_prototype_access_origine+'&id='+id,
                 dataType: 'html',
                 success:function(html){

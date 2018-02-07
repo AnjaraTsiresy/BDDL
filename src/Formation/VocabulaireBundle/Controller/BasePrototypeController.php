@@ -211,7 +211,6 @@ class BasePrototypeController extends Controller
      */
     public function sendDataAction(Request $request)
     {
-
         $id_prototype_access_origine = intval($request->get("id_prototype_access_origine"));
         $id = intval($request->get("id"));
         $id_societe = intval($request->get("id_societe"));
@@ -222,16 +221,20 @@ class BasePrototypeController extends Controller
         $sql = $repositoryVocabulairePrototypeAccess->getContenuLE($id_prototype_access_origine, $id_societe, $id_theme);
         $repositoryVocabulaireLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
 
+        echo count($sql);
+
         foreach ($sql as $donnees) {
 
             $id_vocabulaire = $donnees['id_vocabulaire'];
             $sql_test1 = "select * from vocabulaire_prototype_access where id_prototype_access='$id' and id_vocabulaire='$id_vocabulaire' ";
-            $query_test1 = $this->fetch($sql_test1);
-            foreach ($query_test1 as $row_test1) {
-                if ($row_test1['id_vocabulaire_prototype_acces'] == 0 || $row_test1['id_vocabulaire_prototype_acces'] == "") {
+            $row_test1 = $this->fetch($sql_test1);
+
+            if (count($row_test1) == 0) {
+
                     $vocab_soc_sql = "INSERT IGNORE INTO vocabulaire_prototype_access VALUES ('','$id_vocabulaire','$id')";
 
                     $this->execute($vocab_soc_sql);
+
                     //ajout dans la table lexique pour gerer les rangs des LE
                     $sql_verif1 = "select * from lexique where id_societe='$id_societe' AND id_theme='$id_theme' AND id_prototype_access='$id' ";
                     $query_verif1 = $this->fetch($sql_verif1);
@@ -243,6 +246,58 @@ class BasePrototypeController extends Controller
 
                             $this->execute($sql_insert1);
                         }
+                    }
+            }
+        }
+        return $this->render('FormationVocabulaireBundle:Prototype:deleteData.html.twig', array(
+
+        ));
+    }
+
+
+
+
+    /**
+     * @Route("/send_data1", name="send_data1")
+     */
+    public function sendData1Action(Request $request)
+    {
+        $id_prototype_access_origine = intval($request->get("id_prototype_access_origine"));
+        $id = intval($request->get("id"));
+        $id_societe = intval($request->get("id_societe"));
+        $id_theme = intval($request->get("id_theme"));
+        $date_today = date("Y-m-d");
+
+         $query = "SELECT * FROM `vocabulaire`
+		INNER JOIN vocabulaire_societe ON vocabulaire_societe.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_societe.id_societe = '$id_societe'
+		INNER JOIN societe ON societe.id_societe = '$id_societe' 
+		INNER JOIN vocabulaire_theme ON vocabulaire_theme.id_vocabulaire = vocabulaire.id_vocabulaire AND vocabulaire_theme.id_theme = '$id_theme'
+		INNER JOIN theme ON theme.id_theme = '$id_theme'";
+        $repositoryVocabulaireLexique = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique');
+
+        $sql = $this->fetch($query);
+        foreach ($sql as $donnees) {
+
+            $id_vocabulaire = $donnees['id_vocabulaire'];
+            $sql_test1 = "select * from vocabulaire_prototype_access where id_prototype_access='$id' and id_vocabulaire='$id_vocabulaire' ";
+            $row_test1 = $this->fetch($sql_test1);
+
+            if (count($row_test1) == 0) {
+
+                $vocab_soc_sql = "INSERT IGNORE INTO vocabulaire_prototype_access VALUES ('','$id_vocabulaire','$id')";
+
+                $this->execute($vocab_soc_sql);
+
+                //ajout dans la table lexique pour gerer les rangs des LE
+                $sql_verif1 = "select * from lexique where id_societe='$id_societe' AND id_theme='$id_theme' AND id_prototype_access='$id' ";
+                $query_verif1 = $this->fetch($sql_verif1);
+                $rangLE = $repositoryVocabulaireLexique->getMaxRangLE($id);
+                $rangLE = $rangLE + 1;
+                foreach($query_verif1 as $row1) {
+                    if ($row1['id_lexique'] == 0 || $row1['id_lexique'] == "") {
+                        $sql_insert1 = "INSERT IGNORE INTO lexique VALUES ('', '$id_societe', '$id_theme', '$id', '$rangLE')";
+
+                        $this->execute($sql_insert1);
                     }
                 }
             }
