@@ -190,8 +190,6 @@ class DefaultController extends Controller
         $id_traducteur = intval($request->get('id_traducteur'));
 
         $date = date("Y-m-d H:i:s");
-        $date_today = date("Y-m-d");
-
 
         $colonneDroite = $request->get('colonneDroite');
         $colonneGauche = $request->get('colonneGauche');
@@ -679,20 +677,33 @@ class DefaultController extends Controller
                             $formatEdition = $repositoryFormatEdition->find(3);
                             $repositoryTraducteur = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Traducteur');
                             $trad = $repositoryTraducteur->find($id_traducteur);
+                            $proto_access = $repositoryPrototypeAccess->findOneBy(array('type' => $prototype, 'societe' => $societe));
+
                             
-                            $sql_test_prot_access ="select * from prototype_access where type='$prototype' AND id_societe='$id_societe' ";
+                            $id_prot = 0;
+                            if ($proto_access != null) {
+                                $id_prot = $proto_access->getId();
+                            } else if ($societe != null && $formatEdition != null && $trad != null) {
 
+                                $date_today = date("Y-m-d H:i:s");
+                                $proto_access = new PrototypeAccess();
+                                $proto_access->setNumero(0);
+                                $proto_access->setType($prototype);
+                                $proto_access->setDate(new \DateTime($date_today));
+                                $proto_access->setNbPage(0);
+                                $proto_access->setStatut('');
+                                $proto_access->setTraducteur($trad);
+                                $proto_access->setMisAJour('');
+                                $proto_access->setPhase('');
+                                $proto_access->setPhaseEtat('');
+                                $proto_access->setPrioriteType('');
+                                $proto_access->setFormatEdition($formatEdition);
+                                $proto_access->setSociete($societe);
 
-                            $query_test_prot_access= $this->fetch($sql_test_prot_access);
-                            if(count($query_test_prot_access) == 0){
-                                $sql="INSERT IGNORE INTO `prototype_access` (`id_prototype_access`, `numero`, `type`, `date`, `nb_page`, `statut`, `createur`, `mis_a_jour`, `phase`, `phase_etat`, `priorite_type`, `id_format_edition`, `id_societe`) 
-                                VALUES (NULL, '', '$prototype', '$date_today', '', '', '$id_traducteur', '', '', '', '', '3', '$id_societe');";
-                                
-                                $id_prot = $this->execute($sql);
+                                $em->persist($proto_access);
+                                $em->flush();
+                                $id_prot = $proto_access->getId();
 
-                            }else{
-                                foreach($query_test_prot_access as $row_test_prot_access)
-                                    $id_prot = $row_test_prot_access['id_prototype_access'] ;
                             }
 
                             ////ajout dans la table lexique pour gerer les rangs des LE
@@ -759,7 +770,7 @@ class DefaultController extends Controller
                             //verif suffixe
                             //$suffixe_verif = strtolower($suffixe);
                             $repositorySuffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe');
-                            $suffixe_obj = $repositorySuffixe->findOneBy(array('libelle_suffixe' => $suffixe, 'millesime' => $millesime));
+                            $suffixe_obj = $repositorySuffixe->findOneBy(array('type' => $prototype, 'societe' => $societe));
 
                             if ($suffixe_obj != null) {
                                 $id_suffixe = $suffixe_obj->getId();
@@ -1430,7 +1441,7 @@ class DefaultController extends Controller
                             //verif suffixe
                             //$suffixe_verif = strtolower($suffixe);
                             $repositorySuffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe');
-                            $suffixe_obj = $repositorySuffixe->findOneBy(array('type' => $prototype, 'societe' => $societe));
+                            $suffixe_obj = $repositorySuffixe->findOneBy(array('libelle_suffixe' => $suffixe, 'millesime' => $millesime));
 
                             if ($suffixe_obj != null) {
                                 $id_suffixe = $suffixe_obj->getId();
@@ -1580,7 +1591,6 @@ class DefaultController extends Controller
     {
         $stmt = $this->getDoctrine()->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
-        return $stmt->lastInsertId();
     }
 
 }
