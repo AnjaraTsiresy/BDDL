@@ -107,14 +107,17 @@ class DefaultController extends Controller
      */
     public function uploadExcelAction(Request $request)
     {
-
-        $fileType = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
-        //$uploadDir = 'C:/wamp/www' . $request->getBasePath() . '/uploads/'; # serveur dev
-        $uploadDir = '/var/www/html' . $request->getBasePath() . '/uploads/'; # serveur prod
-        $file = $request->files->get('userfile');
-        $fileName = $file->getClientOriginalName();
-        $file->move($uploadDir, $fileName);
-
+        $file = "";
+        $fileType = "";
+        if($request->files->get('userfile'))
+        {
+            $fileType = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+            //$uploadDir = 'C:/wamp/www' . $request->getBasePath() . '/uploads/'; # serveur dev
+            $uploadDir = '/var/www/html' . $request->getBasePath() . '/uploads/'; # serveur prod
+            $file = $request->files->get('userfile');
+            $fileName = $file->getClientOriginalName();
+            $file->move($uploadDir, $fileName);
+        }
         if ($fileType == "xls" || $fileType == "xlsx" || $fileType == "ods") {
             $repositoryListColumn = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:ListColumn');
             $listColumns = $repositoryListColumn->findAll();
@@ -510,7 +513,7 @@ class DefaultController extends Controller
                             $repositoryTheme = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Theme');
                             $them = $repositoryTheme->findOneBy(array('libelleTheme' => $theme));
                             $id_theme = 0;
-                            if ($depart != null) {
+                            if ($them != null) {
                                 $id_theme = $them->getId();
                             } else {
                                 $them = new Theme();

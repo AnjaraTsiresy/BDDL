@@ -34,7 +34,7 @@ class Theme
      *
      * @ORM\Column(name="theme_eng", type="string", length=255)
      */
-    private $themeEng;
+    private $themeEng = "";
 
 	
 	/**
