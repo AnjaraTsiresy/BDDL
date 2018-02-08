@@ -780,6 +780,7 @@ class DefaultController extends Controller
                                 $suffixe_obj->setMillesime($millesime);
                                 $em->persist($suffixe_obj);
                                 $em->flush();
+                                 $id_suffixe = $suffixe_obj->getId();
                             }
                             $repositorySociete = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Societe');
                             $societe = $repositorySociete->find($id_societe);
