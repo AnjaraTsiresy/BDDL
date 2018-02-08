@@ -112,8 +112,10 @@ class DefaultController extends Controller
         if($request->files->get('userfile'))
         {
             $fileType = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
+
             //$uploadDir = 'C:/wamp/www' . $request->getBasePath() . '/uploads/'; # serveur dev
             $uploadDir = '/var/www/html' . $request->getBasePath() . '/uploads/'; # serveur prod
+            echo $uploadDir;
             $file = $request->files->get('userfile');
             $fileName = $file->getClientOriginalName();
             $file->move($uploadDir, $fileName);
