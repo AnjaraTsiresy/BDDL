@@ -103,6 +103,9 @@ $(document).ready(function() {
 			success:function(data){
 				$("#ajaxAff").html(data);
 			},
+			error:function(err){
+				$("#ajaxAff").html(err);
+			},
 			complete : function(){
 			    var nbreCol = parseInt($("#nbreCol").val());
 				$("#nbreColBody").val(nbreCol);
