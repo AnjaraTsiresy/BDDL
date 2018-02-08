@@ -190,7 +190,7 @@ class DefaultController extends Controller
         $id_traducteur = intval($request->get('id_traducteur'));
 
         $date = date("Y-m-d H:i:s");
-
+        $date_today = date("Y-m-d");
         $colonneDroite = $request->get('colonneDroite');
         $colonneGauche = $request->get('colonneGauche');
 
@@ -770,7 +770,7 @@ class DefaultController extends Controller
                             //verif suffixe
                             //$suffixe_verif = strtolower($suffixe);
                             $repositorySuffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe');
-                            $suffixe_obj = $repositorySuffixe->findOneBy(array('type' => $prototype, 'societe' => $societe));
+                            $suffixe_obj = $repositorySuffixe->findOneBy(array('suffixe' => $suffixe, 'millesime' => $millesime));
 
                             if ($suffixe_obj != null) {
                                 $id_suffixe = $suffixe_obj->getId();
