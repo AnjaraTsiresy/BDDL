@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ListColumn
  *
- * @ORM\Table(name="listcolumn")
+ * @ORM\Table(name="listColumn")
  * @ORM\Entity(repositoryClass="Formation\VocabulaireBundle\Entity\ListColumnRepository")
  */
 class ListColumn
