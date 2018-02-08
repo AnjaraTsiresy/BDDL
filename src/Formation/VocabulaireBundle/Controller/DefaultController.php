@@ -687,6 +687,7 @@ class DefaultController extends Controller
                                 VALUES (NULL, '', '$prototype', '$date_today', '', '', '$id_traducteur', '', '', '', '', '3', '$id_societe');";
                                 
                                 $id_prot = $this->execute($sql);
+                                
                             }else{
                                 foreach($query_test_prot_access as $row_test_prot_access)
                                     $id_prot = $row_test_prot_access['id_prototype_access'] ;
@@ -756,7 +757,7 @@ class DefaultController extends Controller
                             //verif suffixe
                             //$suffixe_verif = strtolower($suffixe);
                             $repositorySuffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe');
-                            $suffixe_obj = $repositorySuffixe->findOneBy(array('type' => $prototype, 'societe' => $societe));
+                            $suffixe_obj = $repositorySuffixe->findOneBy(array('libelle_suffixe' => $suffixe, 'millesime' => $millesime));
 
                             if ($suffixe_obj != null) {
                                 $id_suffixe = $suffixe_obj->getId();
