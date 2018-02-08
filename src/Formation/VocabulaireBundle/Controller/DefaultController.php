@@ -770,7 +770,7 @@ class DefaultController extends Controller
                             //verif suffixe
                             //$suffixe_verif = strtolower($suffixe);
                             $repositorySuffixe = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Suffixe');
-                            $suffixe_obj = $repositorySuffixe->findOneBy(array('suffixe' => $suffixe, 'millesime' => $millesime));
+                            $suffixe_obj = $repositorySuffixe->findOneBy(array('libelle_suffixe' => $suffixe, 'millesime' => $millesime));
 
                             if ($suffixe_obj != null) {
                                 $id_suffixe = $suffixe_obj->getId();
