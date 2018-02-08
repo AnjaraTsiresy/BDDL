@@ -110,10 +110,11 @@ class DefaultController extends Controller
         $file = "";
         $fileType = "";
         $uploadDir= "";
+        echo "Tafiditra";
         if($request->files->get('userfile'))
         {
             echo $request->files->get('userfile');
-            
+
             $fileType = pathinfo($_FILES['userfile']['name'], PATHINFO_EXTENSION);
 
             //$uploadDir = 'C:/wamp/www' . $request->getBasePath() . '/uploads/'; # serveur dev
