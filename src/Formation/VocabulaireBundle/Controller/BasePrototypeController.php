@@ -293,12 +293,12 @@ class BasePrototypeController extends Controller
                 $query_verif1 = $this->fetch($sql_verif1);
                 $rangLE = $repositoryVocabulaireLexique->getMaxRangLE($id);
                 $rangLE = $rangLE + 1;
-                foreach($query_verif1 as $row1) {
-                    if ($row1['id_lexique'] == 0 || $row1['id_lexique'] == "") {
+                if (count($query_verif1) == 0){
+                        
                         $sql_insert1 = "INSERT IGNORE INTO lexique VALUES ('', '$id_societe', '$id_theme', '$id', '$rangLE')";
 
                         $this->execute($sql_insert1);
-                    }
+                   
                 }
             }
         }
