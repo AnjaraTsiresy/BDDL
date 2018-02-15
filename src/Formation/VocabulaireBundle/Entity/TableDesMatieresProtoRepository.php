@@ -62,7 +62,7 @@ class TableDesMatieresProtoRepository extends EntityRepository
     public function getMinOrdreSousTheme($theme, $id_societe, $id)
     {
         $query = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="'.$theme.'" and id_societe="'.$id_societe.'" and No_prototype="'.$id.'"';
-        echo $query."<br />";
+       
 
         $result = $this->fetch($query);
         $numpge = 0;
