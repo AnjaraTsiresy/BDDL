@@ -546,7 +546,8 @@ class DefaultController extends Controller
 								
 								$id_prototype = $this->execute($prototype_sql) ;
 								$date_today = date("Y-m-d");
-								die();
+								
+								
 							}
 							$sql_test_prototype ="select * from vocabulaire_prototype where id_prototype='$id_prototype' AND id_vocabulaire='$id_vocabulaire' ";
 							$query_test_prototype= $this->fetch($sql_test_prototype);
