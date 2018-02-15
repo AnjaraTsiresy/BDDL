@@ -59,10 +59,10 @@
                             {% for theme_array in themes %}
                                 {% if theme_array['id_theme'] == id_theme %}
                                     <option value="{{ theme_array['id_theme'] }}"
-                                            selected="selected">{{ theme_array['libelle_theme'] | convert_encoding('ISO-8859-1','UTF-8') }}
+                                            selected="selected">{{ theme_array['libelle_theme'] | convert_utf8 }}
                                     </option>
                                 {% else %}
-                                    <option value="{{ theme_array['id_theme'] }}"> {{ theme_array['libelle_theme']  | convert_encoding('ISO-8859-1','UTF-8') }}</option>
+                                    <option value="{{ theme_array['id_theme'] }}"> {{ theme_array['libelle_theme']  | convert_utf8 }}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -154,9 +154,9 @@
             <tbody>
             {% for donnees2 in vocabulaires %}
             <tr>
-                <td><p class="terme_fr sous_titre_fr">{{  donnees2['langue_origine'] | convert_encoding('ISO-8859-1','UTF-8')   }} </p></td>
-                <td><p class="terme_en">{{ donnees2['langue_traduction']   | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
-                <td><p>{{ donnees2['libelle_theme']   | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
+                <td><p class="terme_fr sous_titre_fr">{{  donnees2['langue_origine'] | convert_utf8   }} </p></td>
+                <td><p class="terme_en">{{ donnees2['langue_traduction']   | convert_utf8 }}</p></td>
+                <td><p>{{ donnees2['libelle_theme']   | convert_utf8 }}</p></td>
                 <td><input type="button" value="Modifier"
                            onclick="modifier({{ donnees2['id_vocabulaire']  }})"></td>
                 <td>

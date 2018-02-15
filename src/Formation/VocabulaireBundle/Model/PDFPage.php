@@ -21,6 +21,14 @@ class PDFPage
     public $numpage = 0;
 
 
+    private function convert_utf8( $str ) {
+
+        $decoded = utf8_decode($str);
+        if (mb_detect_encoding($decoded , 'UTF-8', true) === false)
+            return $str;
+        return $decoded;
+    }
+
     function PrintChapter($data,$theme, $id_societe, $id)
     {
 

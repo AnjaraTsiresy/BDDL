@@ -13,14 +13,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TableDeMatiereController extends Controller
 {
 
-    private function convert_utf8( $string ) {
-        if ( mb_detect_encoding($string) != 'ASCII') {
-            // echo $string.' =====> '.mb_detect_encoding($string).'<br>';
-            return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
-        }
-
-        return $string;
+    private function execute($query)
+    {
+        $stmt = $this->getDoctrine()->getManager()->getConnection()->prepare($query);
+        $stmt->execute();
     }
+
     /**
      * @Route("/table_matiere/{id}/{id_societe}", name="table_matiere")
      */
@@ -41,7 +39,12 @@ class TableDeMatiereController extends Controller
         $nom_societe = $pdf->getClient($societe_obj);
         $em = $this->getDoctrine()->getManager();
         // Chargement des données
-        $tabledesMatieresProto = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getAllTableDesMatieresProtoBySocieteAndPrototype($id_societe, $id);
+        $sqlvidage = "DELETE FROM `table_des_matieres_proto` WHERE id_societe='$id_societe' and No_prototype='$id'";
+        $this->execute($sqlvidage);
+
+        $sqlvidage1 = "DELETE FROM `nb_page` WHERE id_prototype_access='$id'";
+        $this->execute($sqlvidage1);
+        /*$tabledesMatieresProto = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getAllTableDesMatieresProtoBySocieteAndPrototype($id_societe, $id);
 
         foreach ($tabledesMatieresProto as $tab)
         {
@@ -56,7 +59,7 @@ class TableDeMatiereController extends Controller
         {
             $em->remove($nbPage);
             $em->flush();
-        }
+        }*/
 
         $dataThemeResult = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TempPdfLoaddatatheme')->getThemes($id);
         $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TempPdfLoaddatatheme')->bigSelect();
@@ -100,7 +103,7 @@ class TableDeMatiereController extends Controller
             $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id);
             $em = $this->getDoctrine()->getManager();
             $numero = $pdfNumpage->numero();
-            if($prototypeAccess != null && $societe != null){
+            /*if($prototypeAccess != null && $societe != null){
                 $tableDesMatieresProto = new TableDesMatieresProto();
                 $tableDesMatieresProto->setNoPrototype($prototypeAccess);
                 $tableDesMatieresProto->setTheme($rowpips[0]);
@@ -110,7 +113,20 @@ class TableDeMatiereController extends Controller
                 $tableDesMatieresProto->setSociete($societe);
                 $em->persist($tableDesMatieresProto);
                 $em->flush();
-            }
+            }*/
+
+            $sql = 'INSERT INTO `table_des_matieres_proto` (
+				`No_prototype` ,
+				`theme` ,
+				`ordre_theme` ,
+				`sous_theme` ,
+				`ordre_sous_theme` ,
+				`id_societe`
+				)
+				VALUES ("'.$id.'", "'.$rowpips[0].'", "1", " ", "'.$numero.'", "'.$id_societe.'"
+				);';
+
+            $this->execute($sql);
             $pdfNumpage->PrintChapter($dataNum,$rowpips[0], $id_societe, $id);
             $nb_page = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:NbPage')->getPages($id);
 
@@ -143,6 +159,7 @@ class TableDeMatiereController extends Controller
                     $numpge = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:TableDesMatieresProto')->getMinOrdreSousTheme($row[0], $id_societe, $id);
                     $tableMatiereModel = new \Formation\VocabulaireBundle\Model\TableMatiere();
                     $tableMatiereModel->seTheme($row[0]);
+
                     $tableMatiereModel->setNbPage($numpge);
                     $table_matiere[] = $tableMatiereModel;
                     $tab_m1[] = "generique";

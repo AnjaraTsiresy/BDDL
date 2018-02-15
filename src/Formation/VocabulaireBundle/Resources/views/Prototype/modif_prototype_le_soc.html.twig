@@ -12,7 +12,7 @@
                 <td>
                     <input type="checkbox" name="choix" {% if lexique.id_lexique != "" and lexique.id_lexique != null %} checked='checked'  {% endif %} onclick="sendData(this.checked, {{ i }}, {{ lexique.id_societe }}, {{ lexique.id_theme }},{{ id }} );">
                 </td>
-                <td><p class="terme_fr sous_titre_fr" >{{ lexique.libelle_theme  | convert_encoding('ISO-8859-1','UTF-8') }}/ {{ lexique.theme_eng  | convert_encoding('ISO-8859-1','UTF-8') }} </p></td>
+                <td><p class="terme_fr sous_titre_fr" >{{ lexique.libelle_theme  | convert_utf8 }}/ {{ lexique.theme_eng  | convert_utf8 }} </p></td>
 
                 <td>
                     <input type="button" id="bouton{{ i }}"  {% if lexique.id_lexique != "" and lexique.id_lexique != null %} enabled='enabled' {% else %} disabled='disabled' style='background:#808080;'  {% endif %}  value="Modifier" onclick="modifLE({{ i }}, {{ lexique.id_societe }}, {{ lexique.id_theme }})">

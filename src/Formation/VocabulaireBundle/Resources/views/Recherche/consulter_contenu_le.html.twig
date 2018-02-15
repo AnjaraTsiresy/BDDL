@@ -12,8 +12,8 @@
     {% for vocab in vocabulaires %}
     <tr>
         <td></td>
-        <td><p class="terme_fr sous_titre_fr" >{{ vocab.langue_origine | convert_encoding('ISO-8859-1','UTF-8') }} </p></td>
-        <td><p class="terme_en">{{ vocab.langue_traduction | convert_encoding('ISO-8859-1','UTF-8') }}</p></td>
+        <td><p class="terme_fr sous_titre_fr" >{{ vocab.langue_origine | convert_utf8 }} </p></td>
+        <td><p class="terme_en">{{ vocab.langue_traduction | convert_utf8 }}</p></td>
     </tr>
     {% endfor %}
     <tbody>

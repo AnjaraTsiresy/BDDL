@@ -87,11 +87,11 @@
             <tbody>
             {% for proto in prototype_accesss_array %}
             <tr>
-                <td>{{ proto.societe | convert_encoding('ISO-8859-1','UTF-8') }}</td>
-                <td>{{ proto.type | convert_encoding('ISO-8859-1','UTF-8') }}</td>
+                <td>{{ proto.societe}}</td>
+                <td>{{ proto.type}}</td>
                 <td>{{ proto.date | date('d/m/Y') }}</td>
                 <!--<td><?php echo $nb_page; ?></td>-->
-                <td>{{ proto.traducteur | convert_encoding('ISO-8859-1','UTF-8') }}</td>
+                <td>{{ proto.traducteur}}</td>
                 <td>{{ proto.nb_soloc }}</td>
                 <td>{{ proto.nb_le_gen }}</td>
                 <td>{{ proto.nb_termes }}</td>

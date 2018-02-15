@@ -31,7 +31,7 @@
                             <select name="id_theme" id="id_theme">
                                 <option value="">choix indifférent</option>
                                 {% for t in themes %}
-                                    <option value="{{ t.id_theme }}" {% if id_theme == t.id_theme %} selected='selected' {% endif %}>{{ t.libelle_theme | convert_encoding('ISO-8859-1','UTF-8') }}</option>
+                                    <option value="{{ t.id_theme }}" {% if id_theme == t.id_theme %} selected='selected' {% endif %}>{{ t.libelle_theme | convert_utf8 }}</option>
                                 {% endfor %}
                             </select>
                             <input type="text" value="{{ theme }}" name="theme" id="theme">
@@ -71,7 +71,7 @@
             {% for theme in themes_array %}
                 <tr>
 			<td>
-				{{ theme.description  | convert_encoding('ISO-8859-1','UTF-8')}} {{ theme.libelle_theme | convert_encoding('ISO-8859-1','UTF-8') }}
+				{{ theme.description  | convert_utf8}} {{ theme.libelle_theme | convert_utf8 }}
 			</td>
 			<td>
 				<div id="id{{ theme.id_theme }}">

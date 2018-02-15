@@ -34,11 +34,11 @@
         <input name="id" type="hidden" value="{{ id }}" />
         <tr>
             <td>Terme en français</td>
-            <td><input type="text" name="langue_origine" value="{{ langue_origine  | convert_encoding('ISO-8859-1','UTF-8') }}"/></td>
+            <td><input type="text" name="langue_origine" value="{{ langue_origine  | convert_utf8 }}"/></td>
         </tr>
         <tr>
             <td>Terme en anglais</td>
-            <td><input type="text" name="langue_traduction" value="{{ langue_traduction  | convert_encoding('ISO-8859-1','UTF-8') }}"/></td>
+            <td><input type="text" name="langue_traduction" value="{{ langue_traduction  | convert_utf8 }}"/></td>
         </tr>
         <tr>
             <td><input type="submit" value="Enregistrer" /></td>

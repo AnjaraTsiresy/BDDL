@@ -22,6 +22,15 @@ class PDF
     public $numpage = 0;
     private $dataTheme;
 
+    function convert_utf8( $str ) {
+
+        $decoded = utf8_decode($str);
+        if (mb_detect_encoding($decoded , 'UTF-8', true) === false)
+            return $str;
+        return $decoded;
+    }
+
+
     public function setLoadDataTheme($dataTheme)
     {
         $this->dataTheme = $dataTheme;
@@ -325,7 +334,7 @@ class PDF
 					width: 200px;
 					height: 200px;
 					margin-left: 0;
-					margin-top: 0; '>$title</span>";
+					margin-top: 0; '>".$this->convert_utf8($title)."</span>";
 					echo "<div class='numpage1'>".$this->numpage."/".$nb_page."</div>";
 					echo '</div>';
 					echo "<div class='colonne2'>";
@@ -337,7 +346,7 @@ class PDF
 									width: 200px;
 									height: 200px;
 									margin-left: 0;
-									margin-top: 0; '>$title</span>";
+									margin-top: 0; '>".$this->convert_utf8($title)."</span>";
 					echo "<div class='numpage2'>".$this->numpage."/".$nb_page."</div>";
 					echo '</div>';
 					echo '</div>';
@@ -354,7 +363,7 @@ class PDF
 				if ($i==0){
 						//echo "<b  class='titremangamanga'>$title</b>";
 						//echo "<span class='titremangamanga'>$title</span>";
-						echo " <table class='titremangamanga'><tbody><tr><td><span>$title</span></td><td></td></tr></tbody></table>";
+						echo " <table class='titremangamanga'><tbody><tr><td><span>".$this->convert_utf8($title)."</span></td><td></td></tr></tbody></table>";
 						
 				}
 				
@@ -367,7 +376,7 @@ class PDF
 				if ($i==0){
 					//echo "<b class='titremangamanga' >$title</b>";
 					//echo "<span class='titremangamanga'>$title</span>";
-					echo " <table class='titremangamanga'><tbody><tr><td><span>$title</span></td><td></td></tr></tbody></table>";
+					echo " <table class='titremangamanga'><tbody><tr><td><span>".$this->convert_utf8($title)."</span></td><td></td></tr></tbody></table>";
 				}
 				$nbreMaj2 = $this->colonnedata($tab);
 				echo "<div class='numpage2'>".$this->numpage."/".$nb_page."</div>";
@@ -435,7 +444,7 @@ class PDF
                 $tab[] = $maj;
 
                 if($maj != ""){
-                    echo "<tr><td colspan='2' style='padding-top:2mm;'><b>$maj</b></td></tr>";
+                    echo "<tr><td colspan='2' style='padding-top:2mm;'><b>".$this->convert_utf8($maj)."</b></td></tr>";
                 }else{
                     echo "<tr><td colspan='2'></td></tr>";
                 }
@@ -447,9 +456,9 @@ class PDF
                 if ($i%2){
                     if($i == 1){
                         if($row[2] != ""){
-                            echo "<td style='width:70mm; padding-top:2mm; vertical-align:top;'><b>$row[2]</b></td>";
+                            echo "<td style='width:70mm; padding-top:2mm; vertical-align:top;'><b>".$this->convert_utf8($row[2])."</b></td>";
                         }else{
-                            echo "<td style='width:70mm; padding-top:2mm; vertical-align:top;'><b>".$row[0]."</b></td>";
+                            echo "<td style='width:70mm; padding-top:2mm; vertical-align:top;'><b>".$this->convert_utf8($row[0])."</b></td>";
                         }
                     }
                 }

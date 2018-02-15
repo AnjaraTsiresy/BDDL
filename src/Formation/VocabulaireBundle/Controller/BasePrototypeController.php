@@ -15,6 +15,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class BasePrototypeController extends Controller
 {
 
+    private function convert_utf8( $str ) { 
+        
+        $decoded = utf8_decode($str);
+        if (mb_detect_encoding($decoded , 'UTF-8', true) === false)
+            return $str;
+        return $decoded;
+    }
     /**
      * @Route("/consulter_prototype", name="consulter_prototype")
      */
@@ -50,11 +57,11 @@ class BasePrototypeController extends Controller
             $protoModel->setNb_termes($nb_termes);
             $protoModel->setId($prototype_access['id_prototype_access']);
             $societe = $repositorySociete->find($prototype_access['id_societe']);
-            if ($societe != null) $protoModel->setSociete($societe->getDescription());
+            if ($societe != null) $protoModel->setSociete($this->convert_utf8($societe->getDescription()));
 
             $traducteur = $repositoryTraducteur->find($prototype_access['createur']);
-            if ($traducteur != null) $protoModel->setTraducteur($traducteur->getNom());
-            $protoModel->setType($prototype_access['type']);
+            if ($traducteur != null) $protoModel->setTraducteur($this->convert_utf8($traducteur->getNom()));
+            $protoModel->setType($this->convert_utf8($prototype_access['type']));
             $protoModel->setDate(new \DateTime($prototype_access['date']));
             $prototype_accesss_array [] = $protoModel;
 

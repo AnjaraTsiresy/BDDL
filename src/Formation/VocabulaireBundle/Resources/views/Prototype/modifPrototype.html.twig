@@ -53,7 +53,7 @@
                 <input name="date_old" type="hidden" id="date_old" value="{{ prototypeAccess.date | date('Y-m-d') }}"/>
                 <tr>
                     <td><b>Prototype :</b></td>
-                    <td><input type="text" name="type" value="{{ prototypeAccess.type  }}" style="font-weight : bold;"/>
+                    <td><input type="text" name="type" value="{{ prototypeAccess_type  }}" style="font-weight : bold;"/>
                     </td>
                     <td>Client :</td>
                     <td>
@@ -61,8 +61,8 @@
                         <select  id="id_societe" disabled>
                             <option></option>
                             {% for societe in societes %}
-                                <option value="{{ societe.id }}" {% if societe.id == prototypeAccess.societe.id %} selected="selected" {% endif %}>{{ societe.description | convert_encoding('ISO-8859-1','UTF-8') }}
-                                    - {{ societe.codeTiers | convert_encoding('ISO-8859-1','UTF-8') }} </option>
+                                <option value="{{ societe.id }}" {% if societe.id == prototypeAccess.societe.id %} selected="selected" {% endif %}>{{ societe.description | convert_utf8 }}
+                                    - {{ societe.codeTiers | convert_utf8 }} </option>
                                 {% endfor %}
                         </select>
                     </td>
@@ -75,7 +75,7 @@
                     <td><select name="createur" id="createur">
                             <option></option>
                             {% for traducteur in traducteurs %}
-                                <option value="{{ traducteur.id }}" {% if traducteur.id == prototypeAccess.traducteur.id %} selected="selected" {% endif %} >{{ traducteur.nom | convert_encoding('ISO-8859-1','UTF-8') }} </option>
+                                <option value="{{ traducteur.id }}" {% if traducteur.id == prototypeAccess.traducteur.id %} selected="selected" {% endif %} >{{ traducteur.nom | convert_utf8 }} </option>
                             {% endfor %}
                         </select></td>
                 </tr>
@@ -87,7 +87,7 @@
                         <select name="format_edition" id="format_edition">
                             <option></option>
                             {% for format_edition in formatEditions %}
-                                <option value="{{ format_edition.id }}" {% if format_edition.id == prototypeAccess.formatEdition.id %} selected="selected" {% endif %} >{{ format_edition.nom | convert_encoding('ISO-8859-1','UTF-8') }} </option>
+                                <option value="{{ format_edition.id }}" {% if format_edition.id == prototypeAccess.formatEdition.id %} selected="selected" {% endif %} >{{ format_edition.nom | convert_utf8 }} </option>
                             {% endfor %}
                         </select>
                     </td>
@@ -152,7 +152,7 @@
                 {% for lexique in lexiques3 %}
                     <tr>
                         <td style="background: #e8edff none repeat scroll 0 0;color: #669;border-top: 1px solid #fff;">
-                            {{ lexique.libelle_theme | convert_encoding('ISO-8859-1','UTF-8') }} ({{ lexique.nb_termes }} termes)
+                            {{ lexique.libelle_theme | convert_utf8 }} ({{ lexique.nb_termes }} termes)
                         </td>
                         <td>
                             <input type="text" name="rangL{{ lexique.nb_lxq }}" value="{{ lexique.rang }}"
@@ -185,7 +185,7 @@
                 {% for lexique in lexiques2 %}
                     <tr>
                         <td style="background: #e8edff none repeat scroll 0 0;color: #669;border-top: 1px solid #fff;">
-                            {{ lexique.libelle_theme | convert_encoding('ISO-8859-1','UTF-8') }} ({{ lexique.nb_termes }} termes)
+                            {{ lexique.libelle_theme | convert_utf8 }} ({{ lexique.nb_termes }} termes)
                         </td>
                         <td>
                             <input type="text" name="rang{{ lexique.nb_lxq }}" value="{{ lexique.rang }}"

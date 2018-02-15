@@ -12,8 +12,8 @@
 	<tbody>
 	{% for lexique in lexiques %}
 	<tr>
-		<td><!--input type="checkbox" name="listeLE[]" value="<?php echo $id_theme ; ?>"/-->{{ lexique.libelle_theme | convert_encoding('ISO-8859-1','UTF-8') }} ( {{ lexique.nb_termes }} termes) </td>
-		<td>{{ lexique.nom_societe | convert_encoding('ISO-8859-1','UTF-8') }}</td>
+		<td><!--input type="checkbox" name="listeLE[]" value="<?php echo $id_theme ; ?>"/-->{{ lexique.libelle_theme | convert_utf8 }} ( {{ lexique.nb_termes }} termes) </td>
+		<td>{{ lexique.nom_societe | convert_utf8 }}</td>
 		<td>
 			<form method="post" action="{{ path('export_le') }}">
 				<input type="hidden" name="id_prototype_access" value="{{ lexique.id_prototype_access }}"/>

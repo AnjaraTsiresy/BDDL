@@ -13,7 +13,7 @@
 {% if compteur > 0 %}
 
 <div class="titreMenu">
-	<p>Ecran de modification du LE propre au prototype {{ nom_prototype  | convert_encoding('ISO-8859-1','UTF-8')   }}</p>
+	<p>Ecran de modification du LE propre au prototype {{ nom_prototype  | convert_utf8   }}</p>
 </div>
 <br/><br/>
 <table id="tableau">
@@ -38,8 +38,8 @@
 {% for donnees in sql  %}
 
 	<tr>
-		<td><p class="terme_fr sous_titre_fr" >{{ donnees['langue_origine'] | convert_encoding('ISO-8859-1','UTF-8')   }}</p></td>
-		<td><p class="terme_en">{{  donnees['langue_traduction']  | convert_encoding('ISO-8859-1','UTF-8')   }}</p></td>
+		<td><p class="terme_fr sous_titre_fr" >{{ donnees['langue_origine'] | convert_utf8   }}</p></td>
+		<td><p class="terme_en">{{  donnees['langue_traduction']  | convert_utf8   }}</p></td>
 		<td><a href="{{ path('suppr_vocab_le', {'id_vocabulaire': donnees['id_vocabulaire'], 'id': id, 'id_societe': id_societe, 'id_theme': id_theme}) }}" class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a></td>
 	</tr>
 {% endfor %}

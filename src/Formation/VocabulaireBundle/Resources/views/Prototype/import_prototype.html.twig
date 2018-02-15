@@ -36,7 +36,7 @@
             <td>
 				<select name="langue" id="langue">
 					{% for language in languages %}
-						<option  value="{{ language.id }}" >{{ language.libelle_language  | convert_encoding('ISO-8859-1','UTF-8') }} </option>
+						<option  value="{{ language.id }}" >{{ language.libelle_language  | convert_utf8 }} </option>
 				   {% endfor %}
 				</select>
 			</td>
@@ -47,7 +47,7 @@
 				<select name="id_traducteur" id="id_traducteur">
 					<option  value=""></option>
 					{% for traducteur in traducteurs %}
-						<option  value="{{ traducteur.id }}" >{{ traducteur.nom  | convert_encoding('ISO-8859-1','UTF-8')  }} </option>
+						<option  value="{{ traducteur.id }}" >{{ traducteur.nom  | convert_utf8  }} </option>
                     {% endfor %}
 				</select>
 			</td>
@@ -58,7 +58,7 @@
 				<select name="societe" id="societe">
 					<option  value=""></option>
                     {% for societe in societes %}
-						<option  value="{{ societe.id }}" >{{ societe.description   | convert_encoding('ISO-8859-1','UTF-8')  }} - {{ societe.codeTiers }} </option>
+						<option  value="{{ societe.id }}" >{{ societe.description   | convert_utf8  }} - {{ societe.codeTiers }} </option>
                     {% endfor %}
 				</select>
 			</td>

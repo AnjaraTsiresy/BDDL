@@ -15,7 +15,7 @@
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 {#<link rel="stylesheet" href="/var/www/html/e-learning/web/css/pdf1.css" type="text/css">#}
-<link rel="stylesheet" href="{{ asset('css/pdf1.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/pdf11.css') }}" type="text/css">
 
 {% for j, k in tablenbreParTable %}
     <page size= "A4">
@@ -24,37 +24,37 @@
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
 
                 {% if j==0 %}
-
+                    <b>{{ nom_societe | convert_utf8 }}</b>
                     <br/><br/>
                 {% endif %}
                 {% for table in table_matiere %}
                     {% if loop.index <= 8 and j  == 0 %}
-                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_utf8 }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% elseif loop.index >= (9 + (j-1)) and loop.index <= (8 * (j+1)) %}
-                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_utf8 }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% endif %}
                 {% endfor %}
-                <div class="nomprototype1">{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
+                <div class="nomprototype1">{{ prototypeTitle | convert_utf8 }}</div>
             </div>
             <div class='colonne2 tableMatiere'>
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
 
                 {% if j==0 %}
-
+                    <b>{{ nom_societe | convert_utf8 }}</b>
                     <br/><br/>
                 {% endif %}
                 {% for table in table_matiere %}
                     {% if loop.index <= 8 and j  == 0 %}
-                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_utf8 }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% elseif loop.index >= (9 + (j-1)) and loop.index <= (8 * (j+1)) %}
-                        <span style="float:left;">{{ table.theme | convert_encoding('ISO-8859-1','UTF-8') }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
+                        <span style="float:left;">{{ table.theme | convert_utf8 }}</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>{{ table.nbPage }}</span></br>
                         <br/>
                     {% endif %}
                 {% endfor %}
-                <div class="nomprototype2">{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
+                <div class="nomprototype2">{{ prototypeTitle | convert_utf8 }}</div>
             </div>
         </div>
     </page>
@@ -67,7 +67,7 @@
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
 
                 {% if j==0 %}
-
+                    <b>{{ nom_societe | convert_utf8 }}</b>
                     <br/><br/>
                 {% endif %}
                 {% set i = 0 %}
@@ -76,7 +76,7 @@
                     {% set k = ( (8 * j) +i ) %}
 
                     {% if k < table_matiere3 | length and k  <  ((8*(j + 1 )) ) %}
-                        <span style="float:left;">{{ table_matiere3[k].theme | convert_encoding('ISO-8859-1','UTF-8') }}</span>
+                        <span style="float:left;">{{ table_matiere3[k].theme | convert_utf8 }}</span>
                         <span class='pointpoint'>&nbsp; </span><span
                             style='margin-right:60px;float:right;'>{{ table_matiere3[k].nbPage }}</span></br>
                         <br/>
@@ -84,20 +84,20 @@
 
                     {% set i = i + 1 %}
                 {% endfor %}
-                <div class="nomprototype1">{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
+                <div class="nomprototype1">{{ prototypeTitle | convert_utf8 }}</div>
             </div>
             <div class='colonne2 tableMatiere'>
                 <p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;'>TABLE DES MATIERES</p><br/><br/>
 
                 {% if j==0 %}
-
+                    <b>{{ nom_societe | convert_utf8 }}</b>
                     <br/><br/>
                 {% endif %}
                 {% set i = 0 %}
                 {% for table in table_matiere3 %}
                     {% set k = ( (8 * j) + i ) %}
                     {% if k < table_matiere3 | length and k  <  ((8*(j + 1 ))) %}
-                        <span style="float:left;">{{ table_matiere3[k].theme | convert_encoding('ISO-8859-1','UTF-8') }}</span>
+                        <span style="float:left;">{{ table_matiere3[k].theme | convert_utf8 }}</span>
                         <span class='pointpoint'>&nbsp; </span><span
                             style='margin-right:60px;float:right;'>{{ table_matiere3[k].nbPage }}</span></br>
                         <br/>
@@ -105,7 +105,7 @@
                     {% set i = i + 1 %}
 
                 {% endfor %}
-                <div class="nomprototype2">{{ prototypeTitle | convert_encoding('ISO-8859-1','UTF-8') }}</div>
+                <div class="nomprototype2">{{ prototypeTitle | convert_utf8 }}</div>
             </div>
         </div>
     </page>

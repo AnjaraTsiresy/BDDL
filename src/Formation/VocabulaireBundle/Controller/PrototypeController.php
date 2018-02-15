@@ -10,6 +10,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PrototypeController extends Controller
 {
+     private function convert_utf8( $str ) { 
+        
+        $decoded = utf8_decode($str);
+        if (mb_detect_encoding($decoded , 'UTF-8', true) === false)
+            return $str;
+        return $decoded;
+    }
+
+
     /**
      * @Route("/modif_prototype/{id}", name="modif_prototype")
      */
@@ -54,7 +63,7 @@ class PrototypeController extends Controller
                 $lexique = new \Formation\VocabulaireBundle\Model\Lexique();
                 $lexique->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
                 $lexique->setRang($lexique_obj[0]->getRang());
-                $lexique->setLibelle_theme($lexique_obj[0]->getTheme()->getLibelleTheme());
+                $lexique->setLibelle_theme($this->convert_utf8($lexique_obj[0]->getTheme()->getLibelleTheme()));
                 $lexique->setIdLexique($lexique_obj[0]->getId());
                 $lexique->setNb_lxq($nb_lxq1);
                 $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
@@ -66,7 +75,7 @@ class PrototypeController extends Controller
                 $lexique->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
                 $lexique->setNom_societe($lexique_obj[0]->getSociete()->getDescription());
                 $lexique->setRang($lexique_obj[0]->getRang());
-                $lexique->setLibelle_theme($lexique_obj[0]->getTheme()->getLibelleTheme());
+                $lexique->setLibelle_theme($this->convert_utf8($lexique_obj[0]->getTheme()->getLibelleTheme()));
                 $lexique->setIdLexique($lexique_obj[0]->getId());
                 $lexique->setNb_lxq($nb_lxq2);
                 $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
@@ -78,23 +87,27 @@ class PrototypeController extends Controller
                 $lexique_3->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
                 $lexique_3->setNom_societe($lexique_obj[0]->getSociete()->getDescription());
                 $lexique_3->setRang($lexique_obj[0]->getRang());
-                $lexique_3->setLibelle_theme($lexique_obj[0]->getTheme()->getLibelleTheme());
+                $lexique_3->setLibelle_theme($this->convert_utf8($lexique_obj[0]->getTheme()->getLibelleTheme()));
                 $lexique_3->setIdLexique($lexique_obj[0]->getId());
                 $lexique_3->setId_theme($lexique_obj[0]->getTheme()->getId());
                 $lexique_3->setNb_lxq($nb_lxq3);
                 $lexiques3_array[] = $lexique_3;
             }
         }
+        $prototypeAccess_type = "";
+        if($prototypeAccess != null)
+            $prototypeAccess_type = $this->convert_utf8($prototypeAccess->getType());
         return $this->render('FormationVocabulaireBundle:Prototype:modifPrototype.html.twig', array(
             'id' => $id,
             'nb_termes' => $nb_termes,
-            'traducteur' => $traducteur,
+            'traducteur' => $this->convert_utf8($traducteur),
             'lexiques1' => $lexiques1_array,
             'lexiques2' => $lexiques2_array,
             'lexiques3' => $lexiques3_array,
             'id_societe' => $id_societe,
-            'nom_societe' => $nom_societe,
+            'nom_societe' => $this->convert_utf8($nom_societe),
             'prototypeAccess' => $prototypeAccess,
+            'prototypeAccess_type' => $prototypeAccess_type,
             'societes' => $societes,
             'traducteurs' => $traducteurs,
             'formatEditions' => $formatEditions,
@@ -245,8 +258,8 @@ class PrototypeController extends Controller
             'id' => $id,
             'id_theme' => $id_theme,
             'id_societe' => $id_societe,
-            'libelle_theme' => $libelle_theme,
-            'nom_prototype' => $nom_prototype,
+            'libelle_theme' => $this->convert_utf8($libelle_theme),
+            'nom_prototype' => $this->convert_utf8($nom_prototype),
             'vocabulairePrototypeAccess' => $vocabulairePrototypeAccess
         ));
 
@@ -262,7 +275,11 @@ class PrototypeController extends Controller
         $prototypeAccess = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:PrototypeAccess')->find($id);
         $libelle_theme = "";
         $nom_prototype = "";
-
+        $url_add_new_termes = $this->generateUrl(
+            'add_new_termes',
+            array(),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
         if($theme != null && $prototypeAccess != "")
         {
             $libelle_theme = $theme->getLibelleTheme();
@@ -273,13 +290,19 @@ class PrototypeController extends Controller
         {
 
         }
-
+        $url = $this->generateUrl(
+            'modif_contenu_le',
+            array(),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
         return $this->render('FormationVocabulaireBundle:Prototype:modifLe.html.twig', array(
             'id' => $id,
             'id_theme' => $id_theme,
             'id_societe' => $id_societe,
             'libelle_theme' => $libelle_theme,
-            'nom_prototype' => $nom_prototype
+            'nom_prototype' => $nom_prototype,
+            'url_add_new_termes' => $url_add_new_termes,
+            'url' => $url
         ));
 
     }

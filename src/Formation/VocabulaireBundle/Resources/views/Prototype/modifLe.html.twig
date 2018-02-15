@@ -19,7 +19,7 @@
 </style>
 {% block body %}
 <div class="titreMenu">
-	<p>Ecran d'ajout de nouveaux termes au LE propre au prototype {{ nom_prototype | convert_encoding('ISO-8859-1','UTF-8')  }}</p>
+	<p>Ecran d'ajout de nouveaux termes au LE propre au prototype {{ nom_prototype | convert_utf8  }}</p>
 </div>
 <form action="{{ path('modif_le_action') }}" method="post" enctype="multipart/form-data"  name="certform">
 <input type="hidden" name="id" value="{{ id }}"/>

@@ -58,7 +58,7 @@
 				<select name="id_secteur" id="id_secteur">
 					<option value="">choix indifférent</option>
 					{% for secteur_array in secteurs %}
-						<option value="{{ secteur_array['id_secteur']  }}" {% if secteur_array['id_secteur'] == id_secteur %} selected='selected' {% endif %}> {{ secteur_array['libelle_secteur'] | convert_encoding('ISO-8859-1','UTF-8')  }} </option>
+						<option value="{{ secteur_array['id_secteur']  }}" {% if secteur_array['id_secteur'] == id_secteur %} selected='selected' {% endif %}> {{ secteur_array['libelle_secteur'] | convert_utf8  }} </option>
 					{% endfor %}
 				</select>
 			</td>
@@ -69,7 +69,7 @@
 				<select name="id_suffixe" id="id_suffixe">
 					<option value="">choix indifférent</option>
 						{% for suffixe_array in suffixes %}
-						<option value="{{ suffixe_array['id_suffixe']  }}" {% if suffixe_array['id_suffixe'] == id_suffixe %} selected='selected' {% endif %}> {{ suffixe_array['libelle_suffixe'] | convert_encoding('ISO-8859-1','UTF-8')  }} </option>
+						<option value="{{ suffixe_array['id_suffixe']  }}" {% if suffixe_array['id_suffixe'] == id_suffixe %} selected='selected' {% endif %}> {{ suffixe_array['libelle_suffixe'] | convert_utf8  }} </option>
 					    {% endfor %}
 				</select>
 			</td>
@@ -103,7 +103,7 @@
 			{% set valuesIdtheme = valuesIdtheme ~ id_prototype_access %}
 		
 			<tr>
-				<td><p class="terme_fr sous_titre_fr" >{{ donnees2['type']   | convert_encoding('ISO-8859-1','UTF-8')  }} </p></td>
+				<td><p class="terme_fr sous_titre_fr" >{{ donnees2['type']   | convert_utf8  }} </p></td>
 				<td>
 					<div id="id{{ id_prototype_access }}">
 					<input id="idinput{{ id_prototype_access }}" type="button" style="background: none; border: none;text-decoration: none; color: #3333cc;font: bold 12px; box-shadow:none;" value="Cliquer ici pour afficher les LE présents" onclick="refresh1({{ id_prototype_access }}, {{ donnees2['id_societe'] }}, {{ id }}, this.id)"><br/>	

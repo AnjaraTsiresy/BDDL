@@ -12,13 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 class GlossaireController extends Controller
 {
 
-    private function convert_utf8( $string ) {
-       if ( mb_detect_encoding($string) != 'ASCII') {
-         // echo $string.' =====> '.mb_detect_encoding($string).'<br>';
-           return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8');
-       }
+    private function convert_utf8( $str ) {
 
-       return $string;
+        $decoded = utf8_decode($str);
+        if (mb_detect_encoding($decoded , 'UTF-8', true) === false)
+            return $str;
+        $decoded = str_replace("?", "'", $decoded);
+        return $decoded;
     }
 
 
@@ -29,7 +29,7 @@ class GlossaireController extends Controller
         ini_set('max_execution_time', -1); //0=NOLIMIT
         ini_set('memory_limit', '2048M');
 
-        echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
+      /*  echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';*/
         echo '<link rel="stylesheet" type="text/css" href="../../../css/pdf1_tato.css">';
 
         $id = intval($id);

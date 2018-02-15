@@ -13,4 +13,11 @@
         </service>
     </services>
     -->
+
+    <services>
+        <service id="formation_vocabulaire.twig.vocabulaire_extension" class="Formation\VocabulaireBundle\Twig\VocabulaireExtension">
+        <tag name="twig.extension"/>
+        </service>
+    </services>
+
 </container>
