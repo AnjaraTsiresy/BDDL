@@ -62,6 +62,8 @@ table tr td{
 	height: 20.9cm;
  	width: 29.7cm;
 	position: relative;
+	padding-left: 18mm;
+    padding-right: 18mm;
 	top : 0;
 }
 .colonne1 {
