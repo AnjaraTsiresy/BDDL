@@ -21,7 +21,7 @@ body{
     float: right;
     font-size: 8.5pt;
     position: absolute;
-    top : 50mm;
+    top : 130mm;
 	margin-left: 105mm;
 }
 .nomprototype1 {
@@ -40,7 +40,7 @@ body{
     /*float: right;*/
     font-size: 7.5pt;
     position: relative;
-    top : 110mm;
+    top : 50mm;
 	margin-left: 45mm;
 }
 table tr td{
@@ -62,7 +62,7 @@ table tr td{
 	height: 20.9cm;
  	width: 29.7cm;
 	position: relative;
-	top : 0;
+	top : 18mm;
 }
 .colonne1 {
 	/*border: 1px solid yellow;*/
@@ -82,5 +82,5 @@ table tr td{
 	padding-left: 18mm;
     padding-right: 18mm;
 	position: relative;
-	top : 0;
+	top : 18mm;
 }
