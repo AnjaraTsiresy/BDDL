@@ -69,8 +69,8 @@ table tr td{
 	width: 111mm;
 	height: 138.5mm;
 	float: left;
-	padding-left: 16mm;
-    padding-right: 18mm;
+	padding-left: 10mm;
+    padding-right: 10mm;
 	position: relative;
 	top : 0;
 }
@@ -79,8 +79,8 @@ table tr td{
 	width: 111mm;
 	height: 138.5mm;
 	float: right;
-	padding-left: 18mm;
-    padding-right: 18mm;
+	padding-left: 10mm;
+    padding-right: 10mm;
 	position: relative;
 	top : 0;
 }
