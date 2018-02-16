@@ -21,7 +21,7 @@ body{
     float: right;
     font-size: 8.5pt;
     position: absolute;
-    top : 130mm;
+    top : 50mm;
 	margin-left: 105mm;
 }
 .nomprototype1 {
@@ -30,7 +30,7 @@ body{
     /*float: right;*/
     font-size: 7.5pt;
 	position: relative;
-    top : 110mm;
+    top : 50mm;
 	margin-left: 45mm;
 }
 
