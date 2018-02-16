@@ -27,9 +27,9 @@ body{
 .nomprototype1 {
 	/*border: 2px solid green;*/
     clear: both;
-    float: right;
+    /*float: right;*/
     font-size: 7.5pt;
-	/*position: absolute;*/
+	position: absolute;
     top : 110mm;
 	margin-left: 45mm;
 }
@@ -37,9 +37,9 @@ body{
 .nomprototype2 {
 	/*border: 2px solid green;*/
     clear: both;
-    float: right;
+    /*float: right;*/
     font-size: 7.5pt;
-   /*position: absolute;*/
+    position: absolute;
     top : 110mm;
 	margin-left: 45mm;
 }
