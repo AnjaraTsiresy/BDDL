@@ -29,7 +29,7 @@ body{
     clear: both;
     float: right;
     font-size: 7.5pt;
-	position: absolute;
+	/*position: absolute;*/
     top : 110mm;
 	margin-left: 45mm;
 }
@@ -39,7 +39,7 @@ body{
     clear: both;
     float: right;
     font-size: 7.5pt;
-    position: absolute;
+   /*position: absolute;*/
     top : 110mm;
 	margin-left: 45mm;
 }
@@ -69,8 +69,8 @@ table tr td{
 	width: 111mm;
 	height: 138.5mm;
 	float: left;
-	padding-left: 10mm;
-    padding-right: 10mm;
+	padding-left: 16mm;
+    padding-right: 18mm;
 	position: relative;
 	top : 0;
 }
@@ -79,8 +79,8 @@ table tr td{
 	width: 111mm;
 	height: 138.5mm;
 	float: right;
-	padding-left: 10mm;
-    padding-right: 10mm;
+	padding-left: 18mm;
+    padding-right: 18mm;
 	position: relative;
 	top : 0;
 }
