@@ -29,7 +29,7 @@ body{
     clear: both;
     /*float: right;*/
     font-size: 7.5pt;
-	position: absolute;
+	position: relative;
     top : 110mm;
 	margin-left: 45mm;
 }
@@ -39,7 +39,7 @@ body{
     clear: both;
     /*float: right;*/
     font-size: 7.5pt;
-    position: absolute;
+    position: relative;
     top : 110mm;
 	margin-left: 45mm;
 }
