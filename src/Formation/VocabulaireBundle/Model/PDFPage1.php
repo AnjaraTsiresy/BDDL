@@ -13,7 +13,7 @@ namespace Formation\VocabulaireBundle\Model;
  *
  * @author Jims
  */
-class PDFPage
+class PDFPage1
 {
     // Chargement des données
     public $theme = "";
@@ -46,6 +46,7 @@ class PDFPage
         //  return $this->em->lastInsertId();
     }
 
+
     function PrintChapter($num, $theme, $title,$data, $id, $id_societe)
     {
         $this->BasicTable($data, $title, $num, $theme, $id, $id_societe);
@@ -68,6 +69,12 @@ class PDFPage
         $id_societe=intval($id_societe);
         $id=intval($id);
         $numero = $this->numpage +1;
+        $initial = 0;
+        if ($numero % 2 == 0 && $initial == 0)
+        {
+            $numero = $numero + 1 ;
+        }
+
         $nb_page = 0;
         $sql = 'INSERT INTO `table_des_matieres_proto` (
 				`No_prototype` ,
@@ -117,8 +124,8 @@ class PDFPage
 
         $pourcent = ($compteurMatavy * 100)/$isany;
         $pourcent = (int)$pourcent;
-        $initiallettre = "";
 
+        $initiallettre = "";
         for ($i = 0; $i < $isany; $i ++){
             $lettre = substr($data[$i][0],0,5);
             $dorig = $data[$i][4];
@@ -142,7 +149,7 @@ class PDFPage
 
             if ($premierLettre!=$initiallettre){
                 $premierLettre = $premierLettre;
-               // $premierLettre = stripslashes(utf8_decode($premierLettre));
+                $premierLettre = stripslashes(utf8_decode($premierLettre));
                 $nbreLigneInterne = $nbreLigneInterne + 1;
                 $nbMajk = $nbMajk + 1;
             }
@@ -182,10 +189,11 @@ class PDFPage
 
 
 
+        //echo count($tab0);
 
 
-        for ($i = 0; $i < $totaltableau; $i ++){
-            if ($i < 19){
+
+        for ($i = 0; $i < 19; $i ++){
             $tailleTable = count(${"tab$i"});
 
             if ($tailleTable!=1 && $tailleTable!=0){
@@ -193,10 +201,12 @@ class PDFPage
                 if ($i==0){
                     if ($this->numpage % 2 == 0)
                     {
+
                         // Affichage page blache
-                        $this->numpage = $this->numpage +1;
+                        $this->numpage = $this->numpage + 2;
+                        //echo "domoina $this->numpage <br />";
                         // Affichage titre centré
-                        $this->numpage = $this->numpage +1;
+                        //$this->numpage = $this->numpage +1;
                     }
                     else {
                         // Affichage titre centré
@@ -209,9 +219,10 @@ class PDFPage
 
         }
         $nb_page = $this->numpage;
+
         $this->execute("INSERT INTO `nb_page` (`id_nb_page` ,`id_prototype_access` ,`nbDepage`) VALUES (NULL , '$id', '$nb_page')");
-        }
-        }
+        $initial ++;
+    }
     //fin ts toto
 
     function colonnedataNombre($data){
@@ -223,7 +234,7 @@ class PDFPage
             $premierLettre = substr($row[0],0,1);
             if ($premierLettre!=$initiallettre){
                 $premierLettre = $premierLettre;
-              //  $premierLettre = stripslashes(utf8_decode($premierLettre));
+                $premierLettre = stripslashes(utf8_decode($premierLettre));
 
                 $maj = strtoupper($premierLettre);
                 $nbreMajuscule = $nbreMajuscule + 1;
@@ -240,7 +251,7 @@ class PDFPage
         $sql = "select max(nbDepage) as nbDepage from nb_page where id_prototype_access='$id' " ;
         $requete = $this->fetch($sql);
         foreach ($requete as $resp)
-             $nbDepage = $resp['nbDepage'];
+            $nbDepage = $resp['nbDepage'];
         return $nbDepage;
     }
 }

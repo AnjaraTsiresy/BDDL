@@ -8,21 +8,21 @@ body{
 .numpage1 {
 	/*border: 2px solid green;*/
     clear: both;
-    float: right;
-    font-size: 8.5pt;
-	position: absolute;
-    top : 130mm;
-	margin-left: 105mm;
-}
+	/*float: right;*/
+     font-size: 8.5pt;
+     position: absolute;
+     top : 150mm;
+     margin-left: 35%;
+ }
 
-.numpage2 {
-	/*border: 2px solid green;*/
+ .numpage2 {
+     /*border: 2px solid green;*/
     clear: both;
-    float: right;
+	 /*float: right;*/
     font-size: 8.5pt;
     position: absolute;
-    top : 130mm;
-	margin-left: 105mm;
+	 top : 150mm;
+	 margin-left: 35%;
 }
 .nomprototype1 {
 	/*border: 2px solid green;*/

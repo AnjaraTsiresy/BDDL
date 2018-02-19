@@ -17,17 +17,33 @@ class Propriete
 {
     public $largeur = "561.2602px";
     public $longueur = "793.7013px";
+    private $em = array();
+    public function __construct($em)
+    {
+        $this->em = $em;
+    }
 
-    public function getFormatEdition($prototypeAccess){
+    private function fetch($query)
+    {
+        $stmt = $this->em->prepare($query);
+        $stmt->execute();
+        return  $stmt->fetchAll();
+    }
+
+    public function getFormatEdition($id){
         $id_format_edition = 0;
-        if($prototypeAccess != null)
-            $id_format_edition = $prototypeAccess->getFormatEdition()->getId();
+        $sql = "SELECT id_format_edition FROM prototype_access where id_prototype_access='$id'" ;
+        $requete = $this->fetch($sql);
+        foreach ($requete as $resp)
+            $id_format_edition = $resp['id_format_edition'];
         return $id_format_edition;
     }
-    public function getPrototypeTitle($prototypeAccess){
+    public function getPrototypeTitle($id){
         $type = '';
-        if($prototypeAccess != null)
-            $type = $prototypeAccess->getType();
+        $sql = "SELECT type FROM prototype_access where id_prototype_access='$id'" ;
+        $requete = $this->fetch($sql);
+        foreach ($requete as $resp)
+            $type = $resp['type'];
         return $type;
     }
 

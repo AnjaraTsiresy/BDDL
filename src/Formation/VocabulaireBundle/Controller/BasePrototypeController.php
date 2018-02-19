@@ -15,11 +15,27 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class BasePrototypeController extends Controller
 {
 
-    private function convert_utf8( $str ) { 
-        
-        $decoded = utf8_decode($str);
-        if (mb_detect_encoding($decoded , 'UTF-8', true) === false)
-            return $str;
+    private function convert_utf8( $str ) {
+
+        $decoded = str_replace("â€™", "<<<<<<<<<<", $str);
+        $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
+        $decoded = str_replace("â€œ", "??", $decoded);
+        $decoded = str_replace("â€¦â€", "++++", $decoded);
+        $decoded = str_replace("â€¦", ">>>>>>>>>>>>>>>>>>>", $decoded);
+        $decoded = str_replace("â€", "----", $decoded);
+        $decoded = str_replace("Å“", "======", $decoded);
+
+
+        $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
+
+        $decoded = str_replace("??", "'", $decoded);
+        $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "'", $decoded);
+        $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
+        $decoded = str_replace("----", "“", $decoded);
+        $decoded = str_replace("++++", "…”", $decoded);
+        $decoded = str_replace(">>>>>>>>>>>>>>>>>>>", "…", $decoded);
+        $decoded = str_replace("======", "œ", $decoded);
+
         return $decoded;
     }
     /**
@@ -74,6 +90,22 @@ class BasePrototypeController extends Controller
             'prototype_accesss_array' => $prototype_accesss_array
         ));
     }
+
+    /**
+     * @Route("/deletePrototype/{id}", name="deletePrototype")
+     */
+    public function deletePrototypeAction($id)
+    {
+        $id = intval($id);
+        $sql="DELETE FROM prototype_access WHERE id_prototype_access = $id";
+        $this->execute($sql);
+        $sql1="DELETE FROM vocabulaire_prototype_access WHERE id_prototype_access = $id";
+        $this->execute($sql1);
+        $sql2="DELETE FROM lexique WHERE id_prototype_access = $id";
+        $this->execute($sql2);
+        return $this->redirect($this->generateUrl('consulter_prototype'));
+    }
+
 
     /**
      * @Route("/modif_prot_LE/{id}/{id_societe}", name="modif_prot_LE")
