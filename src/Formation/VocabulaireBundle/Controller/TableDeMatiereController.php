@@ -22,12 +22,36 @@ class TableDeMatiereController extends Controller
 
     private function convert_utf8( $str ) {
 
-        $decoded = str_replace("â€™", "??", $str);
-        // $decoded = utf8_decode($str);
+        if (strpos($str, 'é') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'è') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'à') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ç') !== false) {
+            return $str;
+        }
+        $decoded = str_replace("â€™", "<<<<<<<<<<", $str);
+        $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
+        $decoded = str_replace("â€œ", "??", $decoded);
+        $decoded = str_replace("â€¦â€", "++++", $decoded);
+        $decoded = str_replace("â€¦", ">>>>>>>>>>>>>>>>>>>", $decoded);
+        $decoded = str_replace("â€", "----", $decoded);
+        $decoded = str_replace("Å“", "======", $decoded);
+
+
         $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
-        //  if (mb_detect_encoding($decoded , 'UTF-8', true) === false)
-        //    return $str;
+
         $decoded = str_replace("??", "'", $decoded);
+        $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "'", $decoded);
+        $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
+        $decoded = str_replace("----", "“", $decoded);
+        $decoded = str_replace("++++", "…”", $decoded);
+        $decoded = str_replace(">>>>>>>>>>>>>>>>>>>", "…", $decoded);
+        $decoded = str_replace("======", "œ", $decoded);
 
         return $decoded;
     }

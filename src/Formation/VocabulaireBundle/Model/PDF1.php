@@ -42,6 +42,18 @@ class PDF1
 
     private function convert_utf8( $str ) {
 
+        if (strpos($str, 'é') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'è') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'à') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ç') !== false) {
+            return $str;
+        }
         $decoded = str_replace("â€™", "<<<<<<<<<<", $str);
         $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
         $decoded = str_replace("â€œ", "??", $decoded);
