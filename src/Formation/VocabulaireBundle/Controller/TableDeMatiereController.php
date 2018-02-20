@@ -41,6 +41,8 @@ class TableDeMatiereController extends Controller
         $decoded = str_replace("â€¦", ">>>>>>>>>>>>>>>>>>>", $decoded);
         $decoded = str_replace("â€", "----", $decoded);
         $decoded = str_replace("Å“", "======", $decoded);
+        $decoded = str_replace("Ã‰", "@@@@@@@@@@@@@@@@@@@@@@@@@@", $decoded);
+
 
 
         $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
@@ -52,8 +54,10 @@ class TableDeMatiereController extends Controller
         $decoded = str_replace("++++", "…”", $decoded);
         $decoded = str_replace(">>>>>>>>>>>>>>>>>>>", "…", $decoded);
         $decoded = str_replace("======", "œ", $decoded);
+        $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
 
         return $decoded;
+      // return $str;
     }
 
     private function execute($query)

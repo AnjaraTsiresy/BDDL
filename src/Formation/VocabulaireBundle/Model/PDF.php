@@ -41,8 +41,7 @@ class PDF
         //  return $this->em->lastInsertId();
     }
 
-    private function convert_utf8($str)
-    {
+    private function convert_utf8( $str ) {
 
         if (strpos($str, 'é') !== false) {
             return $str;
@@ -63,6 +62,8 @@ class PDF
         $decoded = str_replace("â€¦", ">>>>>>>>>>>>>>>>>>>", $decoded);
         $decoded = str_replace("â€", "----", $decoded);
         $decoded = str_replace("Å“", "======", $decoded);
+        $decoded = str_replace("Ã‰", "@@@@@@@@@@@@@@@@@@@@@@@@@@", $decoded);
+
 
 
         $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
@@ -74,9 +75,10 @@ class PDF
         $decoded = str_replace("++++", "…”", $decoded);
         $decoded = str_replace(">>>>>>>>>>>>>>>>>>>", "…", $decoded);
         $decoded = str_replace("======", "œ", $decoded);
+        $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
 
         return $decoded;
-
+        // return $str;
     }
 
     // Chargement des données
