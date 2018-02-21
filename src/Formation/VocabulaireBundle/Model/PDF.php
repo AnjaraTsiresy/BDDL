@@ -130,7 +130,7 @@ class PDF
             return $str;
         }
 
-        $decoded = str_replace("â€™", "<<<<<<<<<<", $decoded);
+        $decoded = str_replace("â€™", "<<<<<<<<<<", $str);
         $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
         $decoded = str_replace("â€œ", "??", $decoded);
         $decoded = str_replace("â€¦â€", "++++", $decoded);
