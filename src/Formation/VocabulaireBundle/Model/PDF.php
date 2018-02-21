@@ -65,6 +65,9 @@ class PDF
             return $str;
         }
         if (strpos($str, 'â') !== false) {
+        	 if (strpos($str, 'â') !== false) {
+        		$str = str_replace("â€™", "’", $str);
+        	}
             return $str;
         }
         if (strpos($str, 'ï') !== false) {
@@ -106,8 +109,27 @@ class PDF
         if (strpos($str, 'contra') !== false) {
             return $str;
         }
+        if (strpos($str, 'law') !== false) {
+            return $str;
+        }
+         if (strpos($str, 'intellectual ') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'employ') !== false) {
+            return $str;
+        }
 
-        $decoded = str_replace(" ", "/////", $str);
+         if (strpos($str, 'what') !== false) {
+            return $str;
+        }
+
+        if (strpos($str, 'how') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'director') !== false) {
+            return $str;
+        }
+
         $decoded = str_replace("â€™", "<<<<<<<<<<", $decoded);
         $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
         $decoded = str_replace("â€œ", "??", $decoded);
@@ -121,7 +143,7 @@ class PDF
 
         $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
 
-        $decoded = str_replace("/////", " ", $decoded);
+       
         $decoded = str_replace("??", "'", $decoded);
         $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "'", $decoded);
         $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
