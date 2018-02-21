@@ -11,6 +11,93 @@ use Formation\VocabulaireBundle\Entity\Source;
 
 class ProducteurController extends Controller {
 
+    private function convert_utf8( $str ) {
+
+        if (strpos($str, 'é') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'è') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'à') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ç') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'î') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ê') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ë') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'â') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ï') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ô') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ù') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'û') !== false) {
+            return $str;
+        }
+        if (strpos($str, '’') !== false) {
+            return $str;
+        }
+        if (strpos($str, '”') !== false) {
+            return $str;
+        }
+        if (strpos($str, '“') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'É') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'applications') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'intervenants') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'phase') !== false) {
+            return $str;
+        }
+
+        $decoded = str_replace(" ", "/////", $str);
+        $decoded = str_replace("â€™", "<<<<<<<<<<", $decoded);
+        $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
+        $decoded = str_replace("â€œ", "??", $decoded);
+        $decoded = str_replace("â€¦â€", "++++", $decoded);
+        $decoded = str_replace("â€¦", ">>>>>>>>>>>>>>>>>>>", $decoded);
+        $decoded = str_replace("â€", "----", $decoded);
+        $decoded = str_replace("Å“", "======", $decoded);
+        $decoded = str_replace("Ã‰", "@@@@@@@@@@@@@@@@@@@@@@@@@@", $decoded);
+
+
+
+        $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
+
+        $decoded = str_replace("/////", " ", $decoded);
+        $decoded = str_replace("??", "'", $decoded);
+        $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "'", $decoded);
+        $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
+        $decoded = str_replace("----", "“", $decoded);
+        $decoded = str_replace("++++", "…”", $decoded);
+        $decoded = str_replace(">>>>>>>>>>>>>>>>>>>", "…", $decoded);
+        $decoded = str_replace("======", "œ", $decoded);
+        $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
+
+        return $decoded;
+        // return $str;
+    }
     /**
      * @Route("/recherche_thematique", name="recherche_thematique")
      */
@@ -652,28 +739,7 @@ class ProducteurController extends Controller {
         ));
     }
 
-    private function convert_utf8( $string ) {
-        $decoded = str_replace("â€™", "<<<<<<<<<<", $str);
-        $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
-        $decoded = str_replace("â€œ", "??", $decoded);
-        $decoded = str_replace("â€¦â€", "++++", $decoded);
-        $decoded = str_replace("â€¦", ">>>>>>>>>>>>>>>>>>>", $decoded);
-        $decoded = str_replace("â€", "----", $decoded);
-        $decoded = str_replace("Å“", "======", $decoded);
 
-
-        $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
-
-        $decoded = str_replace("??", "'", $decoded);
-        $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "'", $decoded);
-        $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
-        $decoded = str_replace("----", "“", $decoded);
-        $decoded = str_replace("++++", "…”", $decoded);
-        $decoded = str_replace(">>>>>>>>>>>>>>>>>>>", "…", $decoded);
-        $decoded = str_replace("======", "œ", $decoded);
-
-        return $decoded;
-    }
 
 
     /**

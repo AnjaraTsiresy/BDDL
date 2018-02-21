@@ -54,7 +54,54 @@ class PDF1
         if (strpos($str, 'ç') !== false) {
             return $str;
         }
-        $decoded = str_replace("â€™", "<<<<<<<<<<", $str);
+        if (strpos($str, 'î') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ê') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ë') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'â') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ï') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ô') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'ù') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'û') !== false) {
+            return $str;
+        }
+        if (strpos($str, '’') !== false) {
+            return $str;
+        }
+        if (strpos($str, '”') !== false) {
+            return $str;
+        }
+        if (strpos($str, '“') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'É') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'applications') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'intervenants') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'phase') !== false) {
+            return $str;
+        }
+
+        $decoded = str_replace(" ", "/////", $str);
+        $decoded = str_replace("â€™", "<<<<<<<<<<", $decoded);
         $decoded = str_replace("â€", "wwwwwwwwwwwwwwwwwww", $decoded);
         $decoded = str_replace("â€œ", "??", $decoded);
         $decoded = str_replace("â€¦â€", "++++", $decoded);
@@ -67,6 +114,7 @@ class PDF1
 
         $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
 
+        $decoded = str_replace("/////", " ", $decoded);
         $decoded = str_replace("??", "'", $decoded);
         $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "'", $decoded);
         $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
@@ -79,7 +127,6 @@ class PDF1
         return $decoded;
         // return $str;
     }
-
     // Chargement des données
     function LoadDataTheme($id) {
         //data checkimpression.php
