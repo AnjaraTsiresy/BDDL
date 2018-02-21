@@ -65,7 +65,7 @@ class PDF
             return $str;
         }
         if (strpos($str, 'â') !== false) {
-        	 if (strpos($str, 'â') !== false) {
+        	 if (strpos($str, 'â€™') !== false) {
         		$str = str_replace("â€™", "’", $str);
         	}
             return $str;
