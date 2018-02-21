@@ -66,9 +66,9 @@ class PDF
         }
         if (strpos($str, 'â') !== false) {
         	 if (strpos($str, 'â€™') !== false) {
-        		$str = str_replace("â€™", "’", $str);
+        		$str1 = str_replace("â€™", "’", $str);
         	}
-            return $str;
+            return $str1;
         }
         if (strpos($str, 'ï') !== false) {
             return $str;
@@ -112,7 +112,7 @@ class PDF
         if (strpos($str, 'law') !== false) {
             return $str;
         }
-         if (strpos($str, 'intellectual ') !== false) {
+         if (strpos($str, 'intellectual') !== false) {
             return $str;
         }
         if (strpos($str, 'employ') !== false) {
