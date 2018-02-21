@@ -125,8 +125,8 @@ class PDF
         $decoded = str_replace("======", "œ", $decoded);
         $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
 
-         return $decoded;
-        // return $str;
+       //  return $decoded;
+         return $str;
     }
 
     // Chargement des données
