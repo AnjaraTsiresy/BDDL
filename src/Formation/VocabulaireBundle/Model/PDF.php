@@ -100,6 +100,12 @@ class PDF
         if (strpos($str, 'phase') !== false) {
             return $str;
         }
+        if (strpos($str, 'licensing') !== false) {
+            return $str;
+        }
+        if (strpos($str, 'contra') !== false) {
+            return $str;
+        }
 
         $decoded = str_replace(" ", "/////", $str);
         $decoded = str_replace("â€™", "<<<<<<<<<<", $decoded);
@@ -125,8 +131,8 @@ class PDF
         $decoded = str_replace("======", "œ", $decoded);
         $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
 
-       //  return $decoded;
-         return $str;
+         return $decoded;
+       //  return $str;
     }
 
     // Chargement des données
