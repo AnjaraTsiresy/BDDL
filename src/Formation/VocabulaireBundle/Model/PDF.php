@@ -64,11 +64,7 @@ class PDF
         if (strpos($str, 'ë') !== false) {
             return $str;
         }
-        if (strpos($str, 'Ã©') !== false) {
-        	 	$str1 = str_replace("Ã©", "è", $str);
-        	
-            return $str1;
-        }
+       
          if (strpos($str, 'â') !== false) {
         	 if (strpos($str, 'â€™') !== false) {
         		$str1 = str_replace("â€™", "’", $str);
@@ -158,6 +154,11 @@ class PDF
         $decoded = str_replace("======", "œ", $decoded);
         $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
 
+        	 if (strpos($decoded, 'Ã©') !== false) {
+        	 	$str1 = str_replace("Ã©", "è",$decoded);
+        	
+            return $str1;
+        }
          return $decoded;
        //  return $str;
     }
