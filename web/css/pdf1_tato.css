@@ -6,7 +6,7 @@ body{
     width:100px;
 }
 .numpage1 {
-    border: 2px solid green;
+    /*border: 2px solid green;*/
     clear: both;
     float: right;
    
@@ -16,7 +16,7 @@ body{
 }
 
 .numpage2 {
-    border: 2px solid green;
+   /* border: 2px solid green;*/
     clear: both;
     float: right;
    
@@ -58,7 +58,7 @@ table tr td{
     display: block; 
 }
 .colonne1 {
-    border: 1px double red;
+    /*border: 1px double red;*/
     width: 48%;
     height: 16.35cm;
     float: left;
@@ -67,7 +67,7 @@ table tr td{
 
 }
 .colonne2 {
-    border: 1px double red;
+   /* border: 1px double red;*/
     width: 48%;
     height: 16.35cm;
     float: right;
