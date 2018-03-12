@@ -52,7 +52,7 @@ table tr td{
     font-family: times new roman;
 }
 .conteneur {
-    height: 23.40cm;
+    height: 23.90cm;
     width: 100%;
     overflow: hidden; /* Empêche le dépassement des flottants. */
     display: block; 
