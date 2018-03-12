@@ -13,35 +13,31 @@ namespace Formation\VocabulaireBundle\Model;
  *
  * @author Jims
  */
+class PDF {
 
-class PDF
-{
     // Chargement des données
     public $theme = "";
     public $dataS = array();
     public $numpage = 0;
     private $em = array();
 
-    public function __construct($em)
-    {
+    public function __construct($em) {
         $this->em = $em;
     }
 
-    private function fetch($query)
-    {
+    private function fetch($query) {
         $stmt = $this->em->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    private function execute($query)
-    {
+    private function execute($query) {
         $stmt = $this->em->prepare($query);
         $stmt->execute();
         //  return $this->em->lastInsertId();
     }
 
-    private function convert_utf8( $str ) {
+    private function convert_utf8($str) {
 
         if (strpos($str, 'é') !== false) {
             return $str;
@@ -64,11 +60,11 @@ class PDF
         if (strpos($str, 'ë') !== false) {
             return $str;
         }
-       
-         if (strpos($str, 'â') !== false) {
-        	 if (strpos($str, 'â€™') !== false) {
-        		$str1 = str_replace("â€™", "’", $str);
-        	}
+
+        if (strpos($str, 'â') !== false) {
+            if (strpos($str, 'â€™') !== false) {
+                $str1 = str_replace("â€™", "’", $str);
+            }
             return $str1;
         }
         if (strpos($str, 'ï') !== false) {
@@ -113,14 +109,14 @@ class PDF
         if (strpos($str, 'law') !== false) {
             return $str;
         }
-         if (strpos($str, 'intellectual') !== false) {
+        if (strpos($str, 'intellectual') !== false) {
             return $str;
         }
         if (strpos($str, 'employ') !== false) {
             return $str;
         }
 
-         if (strpos($str, 'what') !== false) {
+        if (strpos($str, 'what') !== false) {
             return $str;
         }
 
@@ -144,7 +140,7 @@ class PDF
 
         $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
 
-       
+
         $decoded = str_replace("??", "'", $decoded);
         $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "'", $decoded);
         $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
@@ -154,18 +150,17 @@ class PDF
         $decoded = str_replace("======", "œ", $decoded);
         $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
 
-        	 if (strpos($decoded, 'Ã©') !== false) {
-        	 	$str1 = str_replace("Ã©", "è",$decoded);
-        	
-            return $str1;
+        if (strpos($decoded, 'Ã©') !== false) {
+            $str = str_replace("Ã©", "è", $decoded);
+
+            return $str;
         }
-         return $decoded;
-       //  return $str;
+        return $decoded;
+        //  return $str;
     }
 
     // Chargement des données
-    function LoadDataTheme($id)
-    {
+    function LoadDataTheme($id) {
         //data checkimpression.php
         $SQL = "SELECT lib, idT, description, id_societe FROM `temp_Pdf_LoadDataTheme` where id=$id";
         $this->execute("set sql_big_selects=1");
@@ -181,73 +176,65 @@ class PDF
         return $data;
     }
 
-    function clean($string)
-    {
+    function clean($string) {
         //$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
         // $string = str_replace(' ', '', $string);
-
         //return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         // return preg_replace('/[^A-Za-z\-]/', '', $string); // Removes special chars.
         return $string;
     }
 
-
-    function mb_ucfirst($stringMaj)
-    {
+    function mb_ucfirst($stringMaj) {
 
         /*  $stringMaj = explode(" ", $stringMaj);
           $stringMaj = str_replace(
-              array('é', 'è', 'ê', 'ë', 'à', 'â', 'î', 'ï', 'ô', 'ù', 'û'),
-              array('E', 'E', 'E', 'E', 'A', 'A', 'I', 'I', 'O', 'U', 'U'),
-              $stringMaj
+          array('é', 'è', 'ê', 'ë', 'à', 'â', 'î', 'ï', 'ô', 'ù', 'û'),
+          array('E', 'E', 'E', 'E', 'A', 'A', 'I', 'I', 'O', 'U', 'U'),
+          $stringMaj
           );
-          return mb_strtoupper(mb_substr( $stringMaj, 0, 1 )).mb_substr( $stringMaj, 1 );*/
+          return mb_strtoupper(mb_substr( $stringMaj, 0, 1 )).mb_substr( $stringMaj, 1 ); */
         return $stringMaj;
     }
 
-    function strtoupperFrFirst($string)
-    {
+    function strtoupperFrFirst($string) {
         /* $keywords = array('é', 'è', 'ê', 'ë', 'à', 'â', 'î', 'ï', 'ô', 'ù', 'û');
-         $string1 = $string[0];
-         $hasString = true;
-         $string = stripslashes(utf8_decode($string));
-         $stringMaj = strtoupper($string);
-         $stringMaj = str_replace(
-             array('é', 'è', 'ê', 'ë', 'à', 'â', 'î', 'ï', 'ô', 'ù', 'û'),
-             array('E', 'E', 'E', 'E', 'A', 'A', 'I', 'I', 'O', 'U', 'U'),
-             $stringMaj
-         );
-         $premierLettre =  substr($stringMaj[0],0,1);
-         $nombre_caract_a_suppr=1;
-         $chaine=substr($string,-strlen($string)+$nombre_caract_a_suppr);
-         $string =stripslashes($premierLettre.$chaine) ;
-         $string = stripslashes(utf8_decode($string));*/
+          $string1 = $string[0];
+          $hasString = true;
+          $string = stripslashes(utf8_decode($string));
+          $stringMaj = strtoupper($string);
+          $stringMaj = str_replace(
+          array('é', 'è', 'ê', 'ë', 'à', 'â', 'î', 'ï', 'ô', 'ù', 'û'),
+          array('E', 'E', 'E', 'E', 'A', 'A', 'I', 'I', 'O', 'U', 'U'),
+          $stringMaj
+          );
+          $premierLettre =  substr($stringMaj[0],0,1);
+          $nombre_caract_a_suppr=1;
+          $chaine=substr($string,-strlen($string)+$nombre_caract_a_suppr);
+          $string =stripslashes($premierLettre.$chaine) ;
+          $string = stripslashes(utf8_decode($string)); */
         return $string;
     }
 
-
-    function trim_ucfirst_strtolower_utf8($stri)
-    {
+    function trim_ucfirst_strtolower_utf8($stri) {
         //Met le premier caractère de la chaîne en majuscule et le reste de la chaîne en minuscule (accentué ou non)
-        /*$stri = trim(($stri)," "); //On supprime les espases en début et fin de chaînes ..
-        $stringMaj = strtoupper($stri);
-        $stringMaj = str_replace(
-            array('é', 'è', 'ê', 'ë', 'à', 'â', 'î', 'ï', 'ô', 'ù', 'û'),
-            array('E', 'E', 'E', 'E', 'A', 'A', 'I', 'I', 'O', 'U', 'U'),
-            $stringMaj
-        );
-        //$premierLettre =  substr($stringMaj[0],0,1);
-        $premierLettre = mb_strtoupper(mb_substr($stringMaj[0], 0, 1,'utf-8'),'utf-8');
+        /* $stri = trim(($stri)," "); //On supprime les espases en début et fin de chaînes ..
+          $stringMaj = strtoupper($stri);
+          $stringMaj = str_replace(
+          array('é', 'è', 'ê', 'ë', 'à', 'â', 'î', 'ï', 'ô', 'ù', 'û'),
+          array('E', 'E', 'E', 'E', 'A', 'A', 'I', 'I', 'O', 'U', 'U'),
+          $stringMaj
+          );
+          //$premierLettre =  substr($stringMaj[0],0,1);
+          $premierLettre = mb_strtoupper(mb_substr($stringMaj[0], 0, 1,'utf-8'),'utf-8');
 
-        $ucfirst = mb_strtoupper(mb_substr($stri, 0, 1,'utf-8'),'utf-8');
-        $strtolower = mb_strtolower(mb_substr($stri, 1, 1000,'utf-8'),'utf-8');
-        $stri = $premierLettre.$strtolower;
-        //$stri = $ucfirst.$strtolower;*/
+          $ucfirst = mb_strtoupper(mb_substr($stri, 0, 1,'utf-8'),'utf-8');
+          $strtolower = mb_strtolower(mb_substr($stri, 1, 1000,'utf-8'),'utf-8');
+          $stri = $premierLettre.$strtolower;
+          //$stri = $ucfirst.$strtolower; */
         return $stri;
     }
 
-    function LoadDtaWithTheme($id, $id_theme)
-    {
+    function LoadDtaWithTheme($id, $id_theme) {
 
         $query = "SELECT distinct vocabulaire.langue_origine as langue_origine, vocabulaire.langue_traduction as langue_traduction,
 		vocabulaire.langue_origine_sans_modif as langue_origine_sans_modif, vocabulaire.nbreLigneLo as nbreLigneLo, vocabulaire.nbreCaractLo as nbreCaractLo, vocabulaire.nbreLigneLt as nbreLigneLt FROM vocabulaire_prototype_access
@@ -257,9 +244,9 @@ class PDF
 		WHERE vocabulaire_prototype_access.id_prototype_access=$id  order by langue_origine_clean collate utf8_general_ci";
 
         /*
-        $sql = "SELECT * FROM t1 LEFT JOIN t2 ON (column1) WHERE t2.column2=5;"
-        $sql = "SELECT * FROM t1, t2 WHERE t2.column2=5 AND t1.column1=t2.column1;"
-        */
+          $sql = "SELECT * FROM t1 LEFT JOIN t2 ON (column1) WHERE t2.column2=5;"
+          $sql = "SELECT * FROM t1, t2 WHERE t2.column2=5 AND t1.column1=t2.column1;"
+         */
         //echo $query."<br />";
         $this->execute("set sql_big_selects=1");
         $k = 0;
@@ -280,27 +267,22 @@ class PDF
         return $data;
     }
 
-    function PrintChapter($num, $theme, $title, $data, $societe, $nb_page)
-    {
+    function PrintChapter($num, $theme, $title, $data, $societe, $nb_page) {
         $this->BasicTable($data, $title, $num, $theme, $societe, $nb_page);
     }
 
-    function array_insert(&$array, $position, $insert)
-    {
+    function array_insert(&$array, $position, $insert) {
         if (is_int($position)) {
             array_splice($array, $position, 0, $insert);
         } else {
             $pos = array_search($position, array_keys($array));
             $array = array_merge(
-                array_slice($array, 0, $pos),
-                $insert,
-                array_slice($array, $pos)
+                    array_slice($array, 0, $pos), $insert, array_slice($array, $pos)
             );
         }
     }
 
-    function nombreIsP1($tab)
-    {
+    function nombreIsP1($tab) {
         $isanyInterne = $i * $nbreParPage;
         $k = ($i - 1) * $nbreParPage;
         $tabNbrePartieALaliggne = array();
@@ -316,7 +298,7 @@ class PDF
             $totalNbrecaractData = $totalNbrecaractData + $nbreCaractere;
             //$fixeNbreCaractreLigne = 98;
             $fixeNbreCaractreLigne = 70;
-            $partieEntiere = (int)($nbreCaractere / $fixeNbreCaractreLigne);
+            $partieEntiere = (int) ($nbreCaractere / $fixeNbreCaractreLigne);
             $tabNbrePartieALaliggne[] = $partieEntiere;
 
             $tab1[] = $data[$j];
@@ -337,8 +319,7 @@ class PDF
     }
 
     // Tableau simple
-    function BasicTable($data, $title, $num, $theme, $societe, $nb_page)
-    {
+    function BasicTable($data, $title, $num, $theme, $societe, $nb_page) {
         //echo "-------------- Initial <br/>";
 
 
@@ -407,7 +388,7 @@ class PDF
         }
 
         $pourcent = ($compteurMatavy * 100) / $isany;
-        $pourcent = (int)$pourcent;
+        $pourcent = (int) $pourcent;
 
         $initiallettre = "";
         for ($i = 0; $i < $isany; $i++) {
@@ -466,7 +447,6 @@ class PDF
                 $nbMajk = 1;
                 $count = 1;
             }
-
         }
 
 
@@ -553,8 +533,6 @@ class PDF
                         echo '</page>';
                         $this->numpage = $this->numpage + 1;
                     }
-
-
                 }
 
                 echo '<page size="A4">';
@@ -601,15 +579,11 @@ class PDF
                 echo "</div>";
                 echo "</div>";
                 echo '</page>';
-
             }
-
         }
-
     }
 
-    function colonnedataNombre($data)
-    {
+    function colonnedataNombre($data) {
         $nbreMajuscule = 0;
         $tab = array();
         $initiallettre = "";
@@ -624,26 +598,21 @@ class PDF
                 $tab[] = $maj;
             }
             $initiallettre = $premierLettre;
-
         }
         return $nbreMajuscule;
     }
 
-
-    function colonnedataNombreCaract($data)
-    {
+    function colonnedataNombreCaract($data) {
         $nbreCaract = 0;
         $tab = array();
         foreach ($data as $row) {
             $nbre = strlen($row);
             $nbreCaract = $nbreCaract + $nbre;
-
         }
         return $nbreCaract;
     }
 
-    function colonnedata($data)
-    {
+    function colonnedata($data) {
         $nbreMajuscule = 0;
         $tab = array();
 
@@ -691,7 +660,6 @@ class PDF
                             echo "<td><i>" . $this->convert_utf8($col) . "</i></td>";
                             //milalao colonnedata
                         }
-
                     } else {
                         //echo "<td></td>";
                     }
@@ -700,16 +668,13 @@ class PDF
             }
             echo "</tr>";
             $initiallettre = $premierLettre;
-
         }
         echo "</table>";
         return $nbreMajuscule;
         //return $tab;
     }
 
-
-    function colonnedataBigData($data)
-    {
+    function colonnedataBigData($data) {
         $nbreMajuscule = 0;
         $tab = array();
         $initiallettre = "";
@@ -747,7 +712,6 @@ class PDF
                         if (!is_numeric($col)) {
                             echo "<td style='padding-top:2.4mm;'><i>" . $this->convert_utf8($col) . "</i></td>";
                         }
-
                     } else {
                         //echo "<td></td>";
                     }
@@ -756,16 +720,13 @@ class PDF
             }
             echo "</tr>";
             $initiallettre = $premierLettre;
-
         }
         echo "</table>";
         return $nbreMajuscule;
         //return $tab;
     }
 
-
-    function getClient($id_societe)
-    {
+    function getClient($id_societe) {
         $societe = "Aucun";
         $sql = "select * from societe where id_societe ='$id_societe' ";
         $requete = $this->fetch($sql);
@@ -773,4 +734,5 @@ class PDF
             $societe = $row['description'];
         return $societe;
     }
+
 }
