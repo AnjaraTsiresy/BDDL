@@ -43,7 +43,7 @@ font-size: 20pt;
     position: relative;
 	top: 26cm; 
 	padding-right: 1cm;
-    margin-left: 23cm;
+    margin-left: 21cm;
 	padding-top: 0.5cm;
 }
 
@@ -54,7 +54,7 @@ font-size: 20pt;
 font-size: 20pt;
     position: relative;
 	top: 26cm;  
-    margin-left: 23cm;
+    margin-left: 21cm;
 	padding-right: 1cm;
 	padding-top: 0.5cm;
 	
@@ -78,7 +78,7 @@ font-size: 20pt;
 }
 table tr td{
     font-family: times new roman;
-    font-size: 20pt;
+    font-size: 15pt;
 	padding-top: 0.25cm;
 	padding-bottom: 0.25cm;
 }
