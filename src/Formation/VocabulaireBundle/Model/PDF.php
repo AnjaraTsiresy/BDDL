@@ -110,9 +110,7 @@ class PDF {
         if (strpos($str, 'intellectual') !== false) {
             return $str;
         }
-        if (strpos($str, 'employ') !== false) {
-            return $str;
-        }
+      
 
         if (strpos($str, 'what') !== false) {
             return $str;
