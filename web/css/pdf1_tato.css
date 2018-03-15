@@ -5,73 +5,127 @@ body{
 {
     width:100px;
 }
+.titremangamanga
+{
+    color: #0000ff;
+	font: bold;
+}
 .numpage1 {
     /*border: 2px solid green;*/
     clear: both;
     float: right;
-   
-    top : 95%;
-    position: absolute; 
-    margin-left: 90%;
+font-size: 20pt;
+    top : 37cm;
+    position: inherit; 
+	padding-right: 1cm;
+    margin-left: 23cm;
+	padding-top: 0.5cm;
 }
 
 .numpage2 {
-   /* border: 2px solid green;*/
+    /* border: 2px solid green;*/
     clear: both;
     float: right;
-   
-    top : 95%;
-    position: absolute; 
-    margin-left: 90%;
+font-size: 20pt;
+    top : 37cm;
+    position: inherit; 
+    margin-left: 23cm;
+	padding-right: 1cm;
+	padding-top: 0.5cm;
+	
 }
-.nomprototype1 {
+
+.numpage11 {
     /*border: 2px solid green;*/
     clear: both;
     float: right;
-    font-size: 9pt;
+font-size: 20pt;
     position: relative;
-    /*top : 18mm;*/
-    margin-left: 45mm;
+	top: 26cm; 
+	padding-right: 1cm;
+    margin-left: 23cm;
+	padding-top: 0.5cm;
+}
+
+.numpage22 {
+    /* border: 2px solid green;*/
+    clear: both;
+    float: right;
+font-size: 20pt;
+    position: relative;
+	top: 26cm;  
+    margin-left: 23cm;
+	padding-right: 1cm;
+	padding-top: 0.5cm;
+	
+}
+.nomprototype1 {
+    /* border: 2px solid green;*/
+    font-size: 20pt;
+    position: relative;
+	top: 16cm;
+    color: #0000ff;
+	
 }
 
 .nomprototype2 {
-    /*border: 2px solid green;*/
-    clear: both;
-    float: right;
-    font-size: 9pt;
+    /* border: 2px solid green;*/
+    font-size: 20pt;
     position: relative;
-    /*top : 18mm;*/
-    margin-left: 45mm;
+    color: #0000ff;
+	
+	top: 16cm;
 }
 table tr td{
     font-family: times new roman;
-    font-size: 11pt;
+    font-size: 20pt;
+	padding-top: 0.25cm;
+	padding-bottom: 0.25cm;
 }
+
 .tableMatiere {
     font-size: 9pt;
     font-family: times new roman;
 }
 .conteneur {
-    height: 23.90cm;
+    /* border: 2px solid green;*/
+    height: 23cm;
     width: 100%;
-    overflow: hidden; /* Empêche le dépassement des flottants. */
-    display: block; 
+    position: inherit;
 }
 .colonne1 {
-    /*border: 1px double red;*/
-    width: 48%;
-    height: 16.35cm;
+    /* border: 2px solid green;*/
+    width: 26cm;
+    height: 37cm;
     float: left;
-
-    position: relative;
+    position: inherit;
 
 }
 .colonne2 {
-   /* border: 1px double red;*/
-    width: 48%;
-    height: 16.35cm;
+    /* border: 2px solid green;*/
+    width: 26cm;
+    height: 37cm;
     float: right;
 
-    position: relative;
+    position: inherit;
 
+}
+
+.glossaire {
+    /* border: 2px solid green;*/
+    height: 26cm;
+    width: 100%;
+    position: inherit;
+}
+
+.spacer{
+    height: 1cm;
+}
+
+.page {
+    /* border: 2px solid green;*/
+    height: 37cm;
+    width: 53cm;
+    position: inherit;
+    margin: 1cm;
 }
