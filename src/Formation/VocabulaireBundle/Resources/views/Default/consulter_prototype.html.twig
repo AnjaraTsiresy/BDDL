@@ -43,7 +43,7 @@
                         <select name="id_societe" id="id_societe">
                             <option  value=""></option>
                             {% for societe in societes %}
-                                <option  value="{{ societe.id_societe }}" {% if id_societe == societe.id_societe %} selected='selected' {% endif %}>{{ societe.description }}</option>
+                                <option  value="{{ societe.id_societe }}" {% if id_societe == societe.id_societe %} selected='selected' {% endif %}>{{ societe.description     | convert_utf8 }}</option>
                             {% endfor %}
                         </select>
                     </td>
@@ -87,11 +87,11 @@
             <tbody>
             {% for proto in prototype_accesss_array %}
             <tr>
-                <td>{{ proto.societe}}</td>
-                <td>{{ proto.type}}</td>
+                <td>{{ proto.societe     | convert_utf8 }}</td>
+                <td>{{ proto.type     | convert_utf8 }}</td>
                 <td>{{ proto.date | date('d/m/Y') }}</td>
                 <!--<td><?php echo $nb_page; ?></td>-->
-                <td>{{ proto.traducteur}}</td>
+                <td>{{ proto.traducteur     | convert_utf8 }}</td>
                 <td>{{ proto.nb_soloc }}</td>
                 <td>{{ proto.nb_le_gen }}</td>
                 <td>{{ proto.nb_termes }}</td>
