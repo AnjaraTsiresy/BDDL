@@ -18,7 +18,7 @@ font-size: 16pt;
     top : 37cm;
     position: inherit; 
 	padding-right: 1cm;
-    margin-left: 21cm;
+    margin-left: 15cm;
 	padding-top: 0.5cm;
 }
 
@@ -29,7 +29,7 @@ font-size: 16pt;
 font-size: 16pt;
     top : 37cm;
     position: inherit; 
-    margin-left: 21cm;
+    margin-left: 15cm;
 	padding-right: 1cm;
 	padding-top: 0.5cm;
 	
@@ -43,7 +43,7 @@ font-size: 16pt;
     position: relative;
 	top: 26cm; 
 	padding-right: 1cm;
-    margin-left: 21cm;
+    margin-left: 19cm;
 	padding-top: 0.5cm;
 }
 
@@ -54,7 +54,7 @@ font-size: 16pt;
 font-size: 16pt;
     position: relative;
 	top: 26cm;  
-    margin-left: 21cm;
+    margin-left: 19cm;
 	padding-right: 1cm;
 	padding-top: 0.5cm;
 	
@@ -95,7 +95,7 @@ table tr td{
 }
 .colonne1 {
     /* border: 2px solid green;*/
-    width: 26cm;
+    width: 24cm;
     height: 37cm;
     float: left;
     position: inherit;
@@ -103,7 +103,7 @@ table tr td{
 }
 .colonne2 {
     /* border: 2px solid green;*/
-    width: 26cm;
+    width: 24cm;
     height: 37cm;
     float: right;
 

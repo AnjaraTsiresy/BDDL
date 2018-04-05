@@ -140,17 +140,31 @@ class PrototypeController extends Controller
                 $nb_lxq1++;
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
                 $lexique = new \Formation\VocabulaireBundle\Model\Lexique();
+                if(count($lexique_obj ) > 0){
                 $lexique->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
                 $lexique->setRang($lexique_obj[0]->getRang());
                 $lexique->setLibelle_theme($this->convert_utf8($lexique_obj[0]->getTheme()->getLibelleTheme()));
                 $lexique->setIdLexique($lexique_obj[0]->getId());
                 $lexique->setNb_lxq($nb_lxq1);
                 $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
+               
                 $lexiques1_array[] = $lexique;
+                 }
+                else{
+                $lexique->setNb_termes(0);
+                $lexique->setRang(2);
+                $lexique->setLibelle_theme("");
+                $lexique->setIdLexique(0);
+                $lexique->setNb_lxq($nb_lxq1);
+                $lexique->setId_theme(0);
+               
+                $lexiques1_array[] = $lexique;
+                }
             }elseif ($lx->getSociete()->getId() == 653){
                 $nb_lxq2++;
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
                 $lexique = new \Formation\VocabulaireBundle\Model\Lexique();
+                 if(count($lexique_obj ) > 0){
                 $lexique->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
                 $lexique->setNom_societe($lexique_obj[0]->getSociete()->getDescription());
                 $lexique->setRang($lexique_obj[0]->getRang());
@@ -159,9 +173,11 @@ class PrototypeController extends Controller
                 $lexique->setNb_lxq($nb_lxq2);
                 $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
                 $lexiques2_array[] = $lexique;
+                 }
             }else{
                 $nb_lxq3++;
                 $lexique_obj = $this->getDoctrine()->getRepository('FormationVocabulaireBundle:Lexique')->getLexiqueBySocieteAndThemeAndPrototypeAccess($lx->getSociete()->getId(), $lx->getTheme()->getId(), $id);
+                 if(count($lexique_obj ) > 0){
                 $lexique_3 = new \Formation\VocabulaireBundle\Model\Lexique();
                 $lexique_3->setNb_termes($this->getDoctrine()->getRepository('FormationVocabulaireBundle:Vocabulaire')->recupNbTermes($id, $lx->getSociete()->getId(), $lx->getTheme()->getId()));
                 $lexique_3->setNom_societe($lexique_obj[0]->getSociete()->getDescription());
@@ -171,6 +187,7 @@ class PrototypeController extends Controller
                 $lexique_3->setId_theme($lexique_obj[0]->getTheme()->getId());
                 $lexique_3->setNb_lxq($nb_lxq3);
                 $lexiques3_array[] = $lexique_3;
+                 }
             }
         }
         $prototypeAccess_type = "";
