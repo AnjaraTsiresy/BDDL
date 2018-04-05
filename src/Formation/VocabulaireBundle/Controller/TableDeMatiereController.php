@@ -234,7 +234,7 @@ class TableDeMatiereController extends Controller
             echo '<page size="A4">';
             echo "<div class='conteneur'>";
             echo "<div class='colonne1 tableMatiere'>";
-            $tabmatiere = "<p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
+            $tabmatiere = "<p style='margin-top:50px;font-size: 18pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
             echo $tabmatiere;
             if ($i==0){
                 echo "<b>".$nom_societe."</b>";
@@ -246,7 +246,7 @@ class TableDeMatiereController extends Controller
             echo "<div class='nomprototype1'>".$this->convert_utf8($prototypeTitle)."</div>";
             echo "</div>";
             echo "<div class='colonne2 tableMatiere'>";
-            $tabmatiere = "<p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
+            $tabmatiere = "<p style='margin-top:50px;font-size: 18pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
             echo $tabmatiere;
             if ($i==0){
                 echo "<b>".$nom_societe."</b>";
@@ -277,7 +277,7 @@ class TableDeMatiereController extends Controller
             echo '<page size="A4">';
             echo "<div class='conteneur'>";
             echo "<div class='colonne1 tableMatiere'>";
-            $tabmatiere = "<p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
+            $tabmatiere = "<p style='margin-top:50px;font-size: 18pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
             echo $tabmatiere;
             if ($i==0){
                 //echo "<b>".$nom_societe."</b>";
@@ -289,7 +289,7 @@ class TableDeMatiereController extends Controller
             echo "<div class='nomprototype1'>".$this->convert_utf8($prototypeTitle)."</div>";
             echo "</div>";
             echo "<div class='colonne2 tableMatiere'>";
-            $tabmatiere = "<p style='margin-top:50px;font-size: 12pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
+            $tabmatiere = "<p style='margin-top:50px;font-size: 18pt;color: blue; font-style : italic;' >TABLE DES MATIERES</p><br/><br/>";
             echo $tabmatiere;
             if ($i==0){
                 //echo "<b>".$nom_societe."</b>";
