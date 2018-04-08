@@ -135,7 +135,7 @@
                         </td>
                         <td>
 
-                            <a href="{{ path('supprimer_prototype_le', {'id_lexique': lexique.id_lexique,'id_societe': id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': id}) }}"
+                            <a href="{{ path('supprimer_prototype_le', {'id_lexique': lexique.id_lexique,'id_societe': lexique.id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': id}) }}"
                                class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>
 
                         </td>
@@ -167,7 +167,7 @@
                         </td>
                         <td>
 
-                            <a href="{{ path('supprimer_prototype_le', {'id_lexique': lexique.id_lexique,'id_societe': id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': id}) }}"
+                            <a href="{{ path('supprimer_prototype_le', {'id_lexique': lexique.id_lexique,'id_societe': lexique.id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': id}) }}"
                                class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>
 
                         </td>
@@ -194,13 +194,13 @@
                                    name="id_lxq{{ lexique.nb_lxq }}" value="{{ lexique.id_lexique }}"/>
                         </td>
                         <td>
-                            <a href="{{ path('voir_le', {'id_societe': id_societe, 'id_theme': lexique.id_theme, 'id': id, 'dic': 'dic'}) }}"
+                            <a href="{{ path('voir_le', {'id_societe': lexique.id_societe, 'id_theme': lexique.id_theme, 'id': id, 'dic': 'dic'}) }}"
                                class="deleteCritere"><img src="{{ asset('images/oeil.jpeg') }}"
                                                        style="width:20px;height:20px;"/></a>
                         </td>
                         <td>
 
-                            <a href="{{ path('supprimer_prototype_le', {'id_lexique': lexique.id_lexique,'id_societe': id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': id}) }}"
+                            <a href="{{ path('supprimer_prototype_le', {'id_lexique': lexique.id_lexique,'id_societe': lexique.id_societe, 'id_theme': lexique.id_theme, 'id_prototype_access': id}) }}"
                                class="deleteCritere"><img src="{{ asset('images/delete.png') }}"/></a>
 
                         </td>

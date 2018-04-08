@@ -147,6 +147,7 @@ class PrototypeController extends Controller
                 $lexique->setIdLexique($lexique_obj[0]->getId());
                 $lexique->setNb_lxq($nb_lxq1);
                 $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
+                $lexique->setIdSociete($lx->getSociete()->getId());
                
                 $lexiques1_array[] = $lexique;
                  }
@@ -172,6 +173,7 @@ class PrototypeController extends Controller
                 $lexique->setIdLexique($lexique_obj[0]->getId());
                 $lexique->setNb_lxq($nb_lxq2);
                 $lexique->setId_theme($lexique_obj[0]->getTheme()->getId());
+                $lexique->setIdSociete($lx->getSociete()->getId());
                 $lexiques2_array[] = $lexique;
                  }
             }else{
@@ -186,6 +188,7 @@ class PrototypeController extends Controller
                 $lexique_3->setIdLexique($lexique_obj[0]->getId());
                 $lexique_3->setId_theme($lexique_obj[0]->getTheme()->getId());
                 $lexique_3->setNb_lxq($nb_lxq3);
+                $lexique->setIdSociete($lx->getSociete()->getId());
                 $lexiques3_array[] = $lexique_3;
                  }
             }

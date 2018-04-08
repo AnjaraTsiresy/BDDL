@@ -180,7 +180,7 @@ class TableDeMatiereController extends Controller
                     foreach ($resulttheme as $rowpp)
                         {
                             //echo "<h1>".$sqlpp."</h1><br />";
-
+                        
                         $datagenerique[] = "<span style='float:left;'>".$this->convert_utf8($row[0]) ."</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>".$rowpp['numpge']."</span></br>";
 
                         }
@@ -188,7 +188,7 @@ class TableDeMatiereController extends Controller
                 $htme = $row[0];
             }
         }
-       // die();
+      //die();
 
         $texteGenerique =  "<span style='float:left;'></span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'></span></br>";
         $texteGenerique = $texteGenerique."<span style='float:left;'><b>".$sommaire_generique."</b></span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'></span></br>";
@@ -203,10 +203,13 @@ class TableDeMatiereController extends Controller
 
                     $numpp = 0;
 
-                    $sqlpp = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="'.$this->convert_utf8($row[0]).'" and id_societe="'.$id_societe.'" and No_prototype="'.$id.'"';
+                    $sqlpp = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="'.$row[0].'" and id_societe="'.$id_societe.'" and No_prototype="'.$id.'"';
                     $resulttheme =  $this->fetch($sqlpp);
                     foreach ($resulttheme as $rowpp)
+                    {
+                        //echo "<h1>".$sqlpp."</h1><br />";
                         $datanongenerique[] = "<span style='float:left;'>".$this->convert_utf8($row[0]) ."</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>".$rowpp['numpge']."</span></br>";
+                    }
                 }
                 $htme = $row[0];
             }
@@ -261,7 +264,7 @@ class TableDeMatiereController extends Controller
             echo '</page>';
         }
 
-
+    //die();
 
 //non generiques
         $tabletotal = array();

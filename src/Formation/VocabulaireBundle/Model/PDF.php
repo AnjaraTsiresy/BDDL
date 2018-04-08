@@ -38,9 +38,7 @@ class PDF {
     }
 
     private function convert_utf8($str) {
-        
-        
-		
+
         if (strpos($str, 'é') !== false) {
             return $str;
         }
@@ -63,8 +61,8 @@ class PDF {
             return $str;
         }
 
-        
-		 
+
+
         if (strpos($str, 'ï') !== false) {
             return $str;
         }
@@ -110,7 +108,7 @@ class PDF {
         if (strpos($str, 'intellectual') !== false) {
             return $str;
         }
-      
+
 
         if (strpos($str, 'what') !== false) {
             return $str;
@@ -131,15 +129,15 @@ class PDF {
         $decoded = str_replace("â€", "----", $decoded);
         $decoded = str_replace("Å“", "======", $decoded);
         $decoded = str_replace("Ã‰", "@@@@@@@@@@@@@@@@@@@@@@@@@@", $decoded);
-		$decoded = str_replace("Ã¨", "XDXDXDDXDXDXDXDDDX", $decoded);
-
-
+        $decoded = str_replace("Ã¨", "XDXDXDDXDXDXDXDDDX", $decoded);
+        $decoded = str_replace("Ã©", "ZZZZKLM", $decoded);
+        
 
         $decoded = mb_convert_encoding($decoded, 'ISO-8859-1', 'UTF-8');
 
 
         $decoded = str_replace("XDXDXDDXDXDXDXDDDX", "è", $decoded);
-		$decoded = str_replace("??", "'", $decoded);
+        $decoded = str_replace("??", "'", $decoded);
         $decoded = str_replace("wwwwwwwwwwwwwwwwwww", "’", $decoded);
         $decoded = str_replace("<<<<<<<<<<", "'", $decoded);
         $decoded = str_replace("----", "“", $decoded);
@@ -147,13 +145,18 @@ class PDF {
         $decoded = str_replace(">>>>>>>>>>>>>>>>>>>", "…", $decoded);
         $decoded = str_replace("======", "œ", $decoded);
         $decoded = str_replace("@@@@@@@@@@@@@@@@@@@@@@@@@@", "É", $decoded);
-		$decoded = str_replace("â€™", "’", $decoded);
-		$decoded = str_replace("Ã¨", "è", $decoded);
-		$decoded = str_replace("Ã©", "é", $decoded);
-		$decoded = str_replace("Å“", "œu", $decoded);
-		
-        return $decoded;
+        $decoded = str_replace("â€™", "’", $decoded);
+        $decoded = str_replace("Ã¨", "è", $decoded);
         
+        if (strpos($decoded, 'ZZZZKLM') !== false) {
+            $decoded = str_replace("ZZZZKLM", "é", $decoded);
+        }
+        
+        $decoded = str_replace("Ã©", "é", $decoded);
+        $decoded = str_replace("Å“", "œu", $decoded);
+        
+
+        return $decoded;
     }
 
     // Chargement des données
@@ -449,18 +452,18 @@ class PDF {
 
         for ($i = 0; $i < 19; $i++) {
             $tailleTable = count(${"tab$i"});
-            
-            /*echo "<div class='page'>";
-            echo "<div class='colonne1'>";
-                echo "A";
-            echo "</div>";
-            echo "<div class='colonne2'>";
-                echo "B";
-            echo "</div>";
-            echo "</div>";
-           */
-            
-           
+
+            /* echo "<div class='page'>";
+              echo "<div class='colonne1'>";
+              echo "A";
+              echo "</div>";
+              echo "<div class='colonne2'>";
+              echo "B";
+              echo "</div>";
+              echo "</div>";
+             */
+
+
 
             if ($tailleTable != 1 && $tailleTable != 0) {
                 $this->numpage = $this->numpage + 1;
@@ -468,17 +471,17 @@ class PDF {
                 if ($i == 0) {
 
                     if ($this->numpage % 2 == 0) {
-                        /* Affichage page blache
+                        // Affichage page blache
                         echo "<div class='page'>";
                         echo "<div class='colonne1'>";
-                        echo "<div class='numpage1'>" . $this->numpage . " " . $nb_page . "</div>";
+                        echo "<div class='numpage11'>" . $this->numpage . " " . $nb_page . "</div>";
                         echo '</div>';
                         echo "<div class='colonne2'>";
-                        echo "<div class='numpage2'>" . $this->numpage . " " . $nb_page . "</div>";
+                        echo "<div class='numpage22'>" . $this->numpage . " " . $nb_page . "</div>";
                         echo '</div>';
                         echo '</div>';
-                        $this->numpage = $this->numpage + 1; */
-                        
+                        $this->numpage = $this->numpage + 1;
+
                         // Affichage titre centré
                         echo "<div class='page'>";
                         echo "<div class='colonne1'>";
@@ -548,8 +551,6 @@ class PDF {
                 echo "<div class='numpage2'>" . $this->numpage . " " . $nb_page . "</div>";
                 echo "</div>";
                 echo "</div>";
-                
-                
             }
         }
     }
