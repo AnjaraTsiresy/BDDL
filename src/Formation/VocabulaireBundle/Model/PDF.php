@@ -587,7 +587,7 @@ class PDF {
     function colonnedata($data) {
         $nbreMajuscule = 0;
         $tab = array();
-
+        echo "<div class='cadre'>";
         echo "<table class='colonnedata'>";
         $initiallettre = "";
         foreach ($data as $row) {
@@ -642,6 +642,7 @@ class PDF {
             $initiallettre = $premierLettre;
         }
         echo "</table>";
+        echo "</div>";
         return $nbreMajuscule;
         //return $tab;
     }
@@ -650,6 +651,7 @@ class PDF {
         $nbreMajuscule = 0;
         $tab = array();
         $initiallettre = "";
+        echo "<div class='cadre'>";
         echo "<table class='colonnedata'>";
         foreach ($data as $row) {
             $string_clean = $row[0];
@@ -694,6 +696,7 @@ class PDF {
             $initiallettre = $premierLettre;
         }
         echo "</table>";
+        echo "</div>";
         return $nbreMajuscule;
         //return $tab;
     }

@@ -8,64 +8,70 @@ body{
 .titremangamanga
 {
     color: #0000ff;
-	font: bold;
+    font: bold;
+    margin-top: 0.9cm;
 }
 .numpage1 {
     /*border: 2px solid green;*/
     clear: both;
     float: right;
-font-size: 16pt;
+    font-size: 16pt;
     top : 37cm;
     position: inherit; 
-	padding-right: 1cm;
+    padding-right: 1cm;
     margin-left: 15cm;
-	padding-top: 0.5cm;
+    padding-top: 0.5cm;
 }
 
 .numpage2 {
     /* border: 2px solid green;*/
     clear: both;
     float: right;
-font-size: 16pt;
+    font-size: 16pt;
     top : 37cm;
     position: inherit; 
     margin-left: 15cm;
-	padding-right: 1cm;
-	padding-top: 0.5cm;
-	
+    padding-right: 1cm;
+    padding-top: 0.5cm;
+
+}
+.cadre{
+   /* border: 2px solid green; */
+    height: 30cm;
+    position: inherit;
 }
 
 .numpage11 {
     /*border: 2px solid green;*/
     clear: both;
     float: right;
-font-size: 16pt;
+    font-size: 16pt;
     position: relative;
-	top: 26cm; 
-	padding-right: 1cm;
+    top: 26cm; 
+    padding-right: 1cm;
     margin-left: 19cm;
-	padding-top: 0.5cm;
+    padding-top: 0.5cm;
 }
 
 .numpage22 {
     /* border: 2px solid green;*/
     clear: both;
     float: right;
-font-size: 16pt;
+    font-size: 16pt;
     position: relative;
-	top: 26cm;  
+    top: 26cm;  
     margin-left: 19cm;
-	padding-right: 1cm;
-	padding-top: 0.5cm;
-	
+    padding-right: 1cm;
+    padding-top: 0.5cm;
+
 }
 .nomprototype1 {
     /* border: 2px solid green;*/
     font-size: 17pt;
     position: relative;
-	top: 16cm;
+    top: 16cm;
     color: #0000ff;
-	
+
 }
 
 .nomprototype2 {
@@ -73,14 +79,14 @@ font-size: 16pt;
     font-size: 17pt;
     position: relative;
     color: #0000ff;
-	
-	top: 16cm;
+
+    top: 16cm;
 }
 table tr td{
     font-family: times new roman;
     font-size: 16pt;
-	padding-top: 0.25cm;
-	padding-bottom: 0.25cm;
+    padding-top: 0.25cm;
+    padding-bottom: 0.25cm;
 }
 
 .tableMatiere {
