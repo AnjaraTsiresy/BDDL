@@ -119,6 +119,35 @@ class TableDeMatiereController extends Controller
     {
         return $this->getDoctrine()->getManager()->getConnection()->quote($str);
     }
+	
+	
+	private function formattingStr($str)
+	{
+		$result = "";
+	$length = 60;
+	$str .= "&nbsp;&nbsp;";
+	$str_size = strlen($str);
+	if($str_size > $length) return $str;
+	$result = $str;
+	$length = $length - $str_size;
+	
+	for($i=0; $i < $length; $i++)
+	{
+		$result .= ".&nbsp;";
+		
+	}	
+	return $result;
+	}
+	
+	private function getNbPage($id, $theme, $id_societe){
+        $nbDepage = 0;
+		$sql = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="'.$theme.'" and id_societe="'.$id_societe.'" and No_prototype="'.$id.'"';
+        $requete = $this->fetch($sql);
+        foreach ($requete as $resp)
+             $nbDepage = $resp['numpge'];
+         if($nbDepage > 0) return ($nbDepage - 1);
+        return $nbDepage;
+    }
     /**
      * @Route("/table_matiere/{id}/{id_societe}", name="table_matiere")
      */
@@ -166,52 +195,69 @@ class TableDeMatiereController extends Controller
 
         $datagenerique = array();
         $datanongenerique = array();
-        foreach($dataTheme as $row)
-        {
+        //foreach($dataTheme as $row)
+        for($i = 0; $i < count($dataTheme); $i++)
+		{
             //$id_soc = $row[5];
-            $id_soc = $row[3];
+            $id_soc = $dataTheme[$i][3];
             if($id_societe == $id_soc){
-                if ($htme!=$row[0]) {
+                if ($htme!=$dataTheme[$i][0]) {
                     $numpp = 0;
-                    $sqlpp = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="' . $row[0]. '" and id_societe="' . $id_societe . '" and No_prototype="' . $id . '"';
+                    $sqlpp = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="' . $dataTheme[$i][0]. '" and id_societe="' . $id_societe . '" and No_prototype="' . $id . '"';
+					
+					//echo $sqlpp;
 
                     $resulttheme = $this->fetch($sqlpp);
                   //  echo "<h1>".count($resulttheme)."</h1><br />";
+				  $k = $i + 1;
+					if($i + 1 == count($dataTheme)){
+						$nbPage = $nb_page;
+					}
+					else $nbPage = $this->getNbPage($id, $dataTheme[$k][0], $id_societe);
                     foreach ($resulttheme as $rowpp)
                         {
                             //echo "<h1>".$sqlpp."</h1><br />";
                         
-                        $datagenerique[] = "<span style='float:left;'>".$this->convert_utf8($row[0]) ."</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>".$rowpp['numpge']."</span></br>";
+                        $datagenerique[] = "<span style='float:left;'>".$this->formattingStr($this->convert_utf8($dataTheme[$i][0]))."</span><span style='margin-right:60px;float:right;'>".$rowpp['numpge']."&nbsp;&nbsp;&nbsp;&nbsp;".$nbPage."</span></br>";
 
                         }
                 }
-                $htme = $row[0];
+                $htme = $dataTheme[$i][0];
             }
         }
       //die();
 
-        $texteGenerique =  "<span style='float:left;'></span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'></span></br>";
-        $texteGenerique = $texteGenerique."<span style='float:left;'><b>".$sommaire_generique."</b></span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'></span></br>";
-        $texteGenerique = $texteGenerique."<span style='float:left;'></span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'></span></br>";
-
-        foreach($dataTheme as $row)
-        {
+        $texteGenerique =  "<span style='float:left;'></span><span style='margin-right:60px;float:right;'></span></br>";
+        $texteGenerique = $texteGenerique."<span style='float:left;'><b>".$sommaire_generique."</b></span><span style='margin-right:60px;float:right;'></span></br>";
+        $texteGenerique = $texteGenerique."<span style='float:left;'></span><span style='margin-right:60px;float:right;'></span></br>";
+$k = 0;
+$nbPage = 0;
+        //foreach($dataTheme as $row)
+        for($i = 0; $i < count($dataTheme); $i++)
+		{
             //$id_soc = $row[5];
-            $id_soc = $row[3];
+            $id_soc = $dataTheme[$i][3];
+			
             if($id_societe != $id_soc){
-                if ($htme!=$row[0]){
+                if ($htme!=$dataTheme[$i][0]){
 
                     $numpp = 0;
 
-                    $sqlpp = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="'.$row[0].'" and id_societe="'.$id_societe.'" and No_prototype="'.$id.'"';
+                    $sqlpp = 'select min(ordre_sous_theme) as numpge from table_des_matieres_proto where theme="'.$dataTheme[$i][0].'" and id_societe="'.$id_societe.'" and No_prototype="'.$id.'"';
                     $resulttheme =  $this->fetch($sqlpp);
+					$k = $i + 1;
+					if($i + 1 == count($dataTheme)){
+						$nbPage = $nb_page;
+					}
+					else $nbPage = $this->getNbPage($id, $dataTheme[$k][0], $id_societe);
+					
                     foreach ($resulttheme as $rowpp)
                     {
                         //echo "<h1>".$sqlpp."</h1><br />";
-                        $datanongenerique[] = "<span style='float:left;'>".$this->convert_utf8($row[0]) ."</span><span class='pointpoint'>&nbsp; </span><span style='margin-right:60px;float:right;'>".$rowpp['numpge']."</span></br>";
+                        $datanongenerique[] = "<span style='float:left;'>".$this->formattingStr($this->convert_utf8($dataTheme[$i][0])) ."</span><span style='margin-right:60px;float:right;'>".$rowpp['numpge']."&nbsp;&nbsp;&nbsp;&nbsp;".$nbPage."</span></br>";
                     }
                 }
-                $htme = $row[0];
+                $htme = $dataTheme[$i][0];
             }
 
         }

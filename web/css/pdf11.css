@@ -27,21 +27,23 @@ body{
 .nomprototype1 {
     /*border: 2px solid green;*/
     clear: both;
-    /*float: right;*/
+    float: right;
     font-size: 12pt;
     position: relative;
     top : 50mm;
     margin-left: 45mm;
+	color: #D2C8D4;
 }
 
 .nomprototype2 {
     /*border: 2px solid green;*/
     clear: both;
-    /*float: right;*/
+    float: right;
     font-size: 12pt;
     position: relative;
     top : 50mm;
     margin-left: 45mm;
+	color: #D2C8D4;
 }
 table tr td{
     font-family: times new roman;
