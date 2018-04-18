@@ -124,7 +124,7 @@ class TableDeMatiereController extends Controller
 	private function formattingStr($str)
 	{
 		$result = "";
-	$length = 60;
+	$length = 45;
 	$str .= "&nbsp;&nbsp;";
 	$str_size = strlen($str);
 	if($str_size > $length) return $str;
