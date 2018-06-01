@@ -93,20 +93,17 @@ knp_snappy:
         options:    []
 
 easy_admin:
-    site_name: 'NewsLetter'
-    design:
-        assets:
-            css:
-                - 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css'
-
+    site_name: 'NewsLetters'
+    easy_admin:
+        design:
+            assets:
+                css:
+                    # HTTP protocol-relative URL
+                    - 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css'
     entities:
         Articles:
                 class: Article\NewsletterBundle\Entity\nl_article
         Termes:
                 class: Article\NewsletterBundle\Entity\nl_termes
-
-
-
-
 
 
