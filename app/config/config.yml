@@ -94,12 +94,11 @@ knp_snappy:
 
 easy_admin:
     site_name: 'NewsLetters'
-    easy_admin:
-        design:
-            assets:
-                css:
-                    # HTTP protocol-relative URL
-                    - 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css'
+    design:
+       assets:
+          css:
+              # HTTP protocol-relative URL
+              - 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css'
     entities:
         Articles:
                 class: Article\NewsletterBundle\Entity\nl_article
