@@ -1,3 +1,13 @@
+easy_admin_bundle:
+    resource: "@EasyAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /newsletter
+
+article_newsletter:
+    resource: "@ArticleNewsletterBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 formation_vocabulaire:
     resource: "@FormationVocabulaireBundle/Controller/"
     type:     annotation

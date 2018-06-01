@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>nl_termes</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Terme</th>
+                <td>{{ entity.terme }}</td>
+            </tr>
+            <tr>
+                <th>Definition</th>
+                <td>{{ entity.definition }}</td>
+            </tr>
+            <tr>
+                <th>Eg</th>
+                <td>{{ entity.eG }}</td>
+            </tr>
+            <tr>
+                <th>Datecreate</th>
+                <td>{{ entity.dateCreate|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('termes') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('termes_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

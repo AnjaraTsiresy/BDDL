@@ -20,6 +20,8 @@ class AppKernel extends Kernel
 			new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new AppBundle\AppBundle(),
             new Formation\VocabulaireBundle\FormationVocabulaireBundle(),
+            new Article\NewsletterBundle\ArticleNewsletterBundle(),
+            new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

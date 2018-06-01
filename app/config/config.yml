@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
         resource: '%kernel.root_dir%/config/routing.yml'
@@ -91,3 +91,17 @@ knp_snappy:
         enabled:    true
         binary:     "\"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe\""
         options:    []
+
+easy_admin:
+    site_name: 'NewsLetter'
+    entities:
+        Articles:
+                class: Article\NewsletterBundle\Entity\nl_article
+        Termes:
+                class: Article\NewsletterBundle\Entity\nl_termes
+
+
+
+
+
+
