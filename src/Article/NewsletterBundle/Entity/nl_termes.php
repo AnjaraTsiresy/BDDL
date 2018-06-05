@@ -32,8 +32,17 @@ class nl_termes
     /**
      * @var string
      *
+     * @ORM\Column(name="traduction_fr", type="string", length=500)
+     */
+    private $traduction_fr;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="definition", type="string", length=500)
      */
+
+
     private $definition;
 
     /**
@@ -193,5 +202,28 @@ class nl_termes
     public function getNlSelection()
     {
         return $this->nl_selection;
+    }
+
+    /**
+     * Set traduction_fr
+     *
+     * @param string $traductionFr
+     * @return nl_termes
+     */
+    public function setTraductionFr($traductionFr)
+    {
+        $this->traduction_fr = $traductionFr;
+
+        return $this;
+    }
+
+    /**
+     * Get traduction_fr
+     *
+     * @return string 
+     */
+    public function getTraductionFr()
+    {
+        return $this->traduction_fr;
     }
 }

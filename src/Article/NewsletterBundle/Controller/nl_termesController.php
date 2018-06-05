@@ -13,7 +13,7 @@ use Article\NewsletterBundle\Form\nl_termesType;
 /**
  * nl_termes controller.
  *
- * @Route("/termes")
+ * @Route("/nl_termes")
  */
 class nl_termesController extends Controller
 {
@@ -21,7 +21,7 @@ class nl_termesController extends Controller
     /**
      * Lists all nl_termes entities.
      *
-     * @Route("/", name="termes")
+     * @Route("/", name="nl_termes")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class nl_termesController extends Controller
     /**
      * Creates a new nl_termes entity.
      *
-     * @Route("/", name="termes_create")
+     * @Route("/", name="nl_termes_create")
      * @Method("POST")
      * @Template("ArticleNewsletterBundle:nl_termes:new.html.twig")
      */
@@ -53,7 +53,7 @@ class nl_termesController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('termes_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('nl_termes_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class nl_termesController extends Controller
     private function createCreateForm(nl_termes $entity)
     {
         $form = $this->createForm(new nl_termesType(), $entity, array(
-            'action' => $this->generateUrl('termes_create'),
+            'action' => $this->generateUrl('nl_termes_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class nl_termesController extends Controller
     /**
      * Displays a form to create a new nl_termes entity.
      *
-     * @Route("/new", name="termes_new")
+     * @Route("/new", name="nl_termes_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class nl_termesController extends Controller
     /**
      * Finds and displays a nl_termes entity.
      *
-     * @Route("/{id}", name="termes_show")
+     * @Route("/{id}", name="nl_termes_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class nl_termesController extends Controller
     /**
      * Displays a form to edit an existing nl_termes entity.
      *
-     * @Route("/{id}/edit", name="termes_edit")
+     * @Route("/{id}/edit", name="nl_termes_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class nl_termesController extends Controller
     private function createEditForm(nl_termes $entity)
     {
         $form = $this->createForm(new nl_termesType(), $entity, array(
-            'action' => $this->generateUrl('termes_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('nl_termes_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class nl_termesController extends Controller
     /**
      * Edits an existing nl_termes entity.
      *
-     * @Route("/{id}", name="termes_update")
+     * @Route("/{id}", name="nl_termes_update")
      * @Method("PUT")
      * @Template("ArticleNewsletterBundle:nl_termes:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class nl_termesController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('termes_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('nl_termes_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class nl_termesController extends Controller
     /**
      * Deletes a nl_termes entity.
      *
-     * @Route("/{id}", name="termes_delete")
+     * @Route("/{id}", name="nl_termes_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class nl_termesController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('termes'));
+        return $this->redirect($this->generateUrl('nl_termes'));
     }
 
     /**
@@ -238,7 +238,7 @@ class nl_termesController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('termes_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('nl_termes_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

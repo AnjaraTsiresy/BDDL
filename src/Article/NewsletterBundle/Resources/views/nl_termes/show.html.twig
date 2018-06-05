@@ -14,6 +14,10 @@
                 <td>{{ entity.terme }}</td>
             </tr>
             <tr>
+                <th>Traduction_fr</th>
+                <td>{{ entity.traductionfr }}</td>
+            </tr>
+            <tr>
                 <th>Definition</th>
                 <td>{{ entity.definition }}</td>
             </tr>
@@ -30,12 +34,12 @@
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('termes') }}">
+        <a href="{{ path('nl_termes') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('termes_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('nl_termes_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>
