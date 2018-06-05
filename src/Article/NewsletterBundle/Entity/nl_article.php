@@ -32,6 +32,13 @@ class nl_article
     /**
      * @var string
      *
+     * @ORM\Column(name="editeur", type="string", length=50)
+     */
+    private $editeur;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="theme", type="string", length=5000)
      */
     private $theme;
@@ -288,5 +295,28 @@ class nl_article
     public function getTheme()
     {
         return $this->theme;
+    }
+
+    /**
+     * Set editeur
+     *
+     * @param string $editeur
+     * @return nl_article
+     */
+    public function setEditeur($editeur)
+    {
+        $this->editeur = $editeur;
+
+        return $this;
+    }
+
+    /**
+     * Get editeur
+     *
+     * @return string 
+     */
+    public function getEditeur()
+    {
+        return $this->editeur;
     }
 }
