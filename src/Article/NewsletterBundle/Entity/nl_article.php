@@ -50,13 +50,7 @@ class nl_article
      */
 
 
-    private $monthNewsLetter;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="origine", type="string", length=500)
-     */
     private $origine;
 
     /**
@@ -84,6 +78,12 @@ class nl_article
      * @ORM\OneToMany(targetEntity="nl_selection", mappedBy="nl_article")
      */
     protected $nl_selection;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="nl_monthnewsletter", inversedBy="nl_articles")
+     * @ORM\JoinColumn(name="monthNewsLetter", referencedColumnName="id")
+     */
+    protected $nl_monthnewsletter;
 
 
 
@@ -319,4 +319,30 @@ class nl_article
     {
         return $this->editeur;
     }
+
+    /**
+     * Set nl_monthnewsletter
+     *
+     * @param \Article\NewsletterBundle\Entity\nl_monthnewsletter $nlMonthnewsletter
+     * @return nl_article
+     */
+    public function setNlMonthnewsletter(\Article\NewsletterBundle\Entity\nl_monthnewsletter $nlMonthnewsletter = null)
+    {
+        $this->nl_monthnewsletter = $nlMonthnewsletter;
+
+        return $this;
+    }
+
+    /**
+     * Get nl_monthnewsletter
+     *
+     * @return \Article\NewsletterBundle\Entity\nl_monthnewsletter 
+     */
+    public function getNlMonthnewsletter()
+    {
+        return $this->nl_monthnewsletter;
+    }
+
+    public function __toString() {
+        return (string) $this->id; }
 }

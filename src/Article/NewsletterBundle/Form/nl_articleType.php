@@ -16,7 +16,6 @@ class nl_articleType extends AbstractType
     {
         $builder
             ->add('article')
-            ->add('monthNewsLetter')
             ->add('origine')
             ->add('journaliste')
             ->add('texte')

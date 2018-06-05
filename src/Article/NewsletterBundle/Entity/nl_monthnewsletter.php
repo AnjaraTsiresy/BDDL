@@ -2,6 +2,7 @@
 
 namespace Article\NewsletterBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +28,11 @@ class nl_monthnewsletter
      * @ORM\Column(name="monthNewsletter", type="string", length=50)
      */
     private $monthNewsletter;
+
+    /**
+     * @ORM\OneToMany(targetEntity="nl_article", mappedBy="nl_monthnewsletter")
+     */
+    protected $nl_articles;
 
 
     /**
@@ -60,5 +66,47 @@ class nl_monthnewsletter
     public function getMonthNewsletter()
     {
         return $this->monthNewsletter;
+    }
+
+    public function __construct()
+    {
+        $this->nl_articles = new ArrayCollection();
+
+    }
+
+    public function __toString() {
+        return (string) $this->monthNewsletter; }
+
+    /**
+     * Add nl_articles
+     *
+     * @param \Article\NewsletterBundle\Entity\nl_article $nlArticles
+     * @return nl_monthnewsletter
+     */
+    public function addNlArticle(\Article\NewsletterBundle\Entity\nl_article $nlArticles)
+    {
+        $this->nl_articles[] = $nlArticles;
+
+        return $this;
+    }
+
+    /**
+     * Remove nl_articles
+     *
+     * @param \Article\NewsletterBundle\Entity\nl_article $nlArticles
+     */
+    public function removeNlArticle(\Article\NewsletterBundle\Entity\nl_article $nlArticles)
+    {
+        $this->nl_articles->removeElement($nlArticles);
+    }
+
+    /**
+     * Get nl_articles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNlArticles()
+    {
+        return $this->nl_articles;
     }
 }
