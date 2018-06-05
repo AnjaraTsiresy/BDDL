@@ -106,9 +106,12 @@ easy_admin:
                    #- 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js'
 
     entities:
+        Months:
+                class: Article\NewsletterBundle\Entity\nl_monthnewsletter
         Articles:
                 class: Article\NewsletterBundle\Entity\nl_article
         Termes:
                 class: Article\NewsletterBundle\Entity\nl_termes
+
 
 
