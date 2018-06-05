@@ -8,6 +8,7 @@
             <tr>
                 <th>Id</th>
                 <th>Article</th>
+                <th>Theme</th>
                 <th>Monthnewsletter</th>
                 <th>Origine</th>
                 <th>Journaliste</th>
@@ -19,8 +20,9 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('articles_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><a href="{{ path('nl_article_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.article }}</td>
+                <td>{{ entity.theme }}</td>
                 <td>{{ entity.monthNewsLetter }}</td>
                 <td>{{ entity.origine }}</td>
                 <td>{{ entity.journaliste }}</td>
@@ -29,10 +31,10 @@
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('articles_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('nl_article_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('articles_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('nl_article_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -43,7 +45,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('articles_new') }}">
+            <a href="{{ path('nl_article_new') }}">
                 Create a new entry
             </a>
         </li>

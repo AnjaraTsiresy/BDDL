@@ -32,8 +32,17 @@ class nl_article
     /**
      * @var string
      *
+     * @ORM\Column(name="theme", type="string", length=5000)
+     */
+    private $theme;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="monthNewsLetter", type="string", length=10)
      */
+
+
     private $monthNewsLetter;
 
     /**
@@ -256,5 +265,28 @@ class nl_article
     public function getNlSelection()
     {
         return $this->nl_selection;
+    }
+
+    /**
+     * Set theme
+     *
+     * @param string $theme
+     * @return nl_article
+     */
+    public function setTheme($theme)
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * Get theme
+     *
+     * @return string 
+     */
+    public function getTheme()
+    {
+        return $this->theme;
     }
 }

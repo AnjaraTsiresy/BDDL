@@ -13,7 +13,7 @@ use Article\NewsletterBundle\Form\nl_articleType;
 /**
  * nl_article controller.
  *
- * @Route("/articles")
+ * @Route("/nl_article")
  */
 class nl_articleController extends Controller
 {
@@ -21,7 +21,7 @@ class nl_articleController extends Controller
     /**
      * Lists all nl_article entities.
      *
-     * @Route("/", name="articles")
+     * @Route("/", name="nl_article")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class nl_articleController extends Controller
     /**
      * Creates a new nl_article entity.
      *
-     * @Route("/", name="articles_create")
+     * @Route("/", name="nl_article_create")
      * @Method("POST")
      * @Template("ArticleNewsletterBundle:nl_article:new.html.twig")
      */
@@ -53,7 +53,7 @@ class nl_articleController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('articles_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('nl_article_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class nl_articleController extends Controller
     private function createCreateForm(nl_article $entity)
     {
         $form = $this->createForm(new nl_articleType(), $entity, array(
-            'action' => $this->generateUrl('articles_create'),
+            'action' => $this->generateUrl('nl_article_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class nl_articleController extends Controller
     /**
      * Displays a form to create a new nl_article entity.
      *
-     * @Route("/new", name="articles_new")
+     * @Route("/new", name="nl_article_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class nl_articleController extends Controller
     /**
      * Finds and displays a nl_article entity.
      *
-     * @Route("/{id}", name="articles_show")
+     * @Route("/{id}", name="nl_article_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class nl_articleController extends Controller
     /**
      * Displays a form to edit an existing nl_article entity.
      *
-     * @Route("/{id}/edit", name="articles_edit")
+     * @Route("/{id}/edit", name="nl_article_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class nl_articleController extends Controller
     private function createEditForm(nl_article $entity)
     {
         $form = $this->createForm(new nl_articleType(), $entity, array(
-            'action' => $this->generateUrl('articles_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('nl_article_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class nl_articleController extends Controller
     /**
      * Edits an existing nl_article entity.
      *
-     * @Route("/{id}", name="articles_update")
+     * @Route("/{id}", name="nl_article_update")
      * @Method("PUT")
      * @Template("ArticleNewsletterBundle:nl_article:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class nl_articleController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('articles_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('nl_article_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class nl_articleController extends Controller
     /**
      * Deletes a nl_article entity.
      *
-     * @Route("/{id}", name="articles_delete")
+     * @Route("/{id}", name="nl_article_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class nl_articleController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('articles'));
+        return $this->redirect($this->generateUrl('nl_article'));
     }
 
     /**
@@ -238,7 +238,7 @@ class nl_articleController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('articles_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('nl_article_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
