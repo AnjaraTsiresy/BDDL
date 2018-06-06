@@ -93,7 +93,7 @@ knp_snappy:
         options:    []
 
 easy_admin:
-    site_name: 'Gestion newsletter'
+    site_name: '<em style="font-size: 80%;">Gestion des newsletter</em>'
     design:
             assets:
                 css:
@@ -108,10 +108,23 @@ easy_admin:
     entities:
         Months:
                 class: Article\NewsletterBundle\Entity\nl_monthnewsletter
+                label: 'Months'
+                list:
+                    title: "Liste des mois"
+                    max_results: 15
+
         Articles:
                 class: Article\NewsletterBundle\Entity\nl_article
+                label: 'Articles'
+                list:
+                    title: "Liste des articles"
+                    max_results: 15
         Termes:
                 class: Article\NewsletterBundle\Entity\nl_termes
+                label: 'Termes'
+                list:
+                    title: "Liste des termes"
+                    max_results: 15
 
 
 
