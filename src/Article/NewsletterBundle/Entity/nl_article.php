@@ -75,9 +75,11 @@ class nl_article
     private $date;
 
     /**
-     * @ORM\OneToMany(targetEntity="nl_selection", mappedBy="nl_article")
+     * @ORM\OneToMany(targetEntity="nl_termes", mappedBy="nl_article")
      */
-    protected $nl_selection;
+    protected $nl_terms;
+
+
 
     /**
      * @ORM\ManyToOne(targetEntity="nl_monthnewsletter", inversedBy="nl_articles")
@@ -239,6 +241,7 @@ class nl_article
     public function __construct()
     {
         $this->nl_selection = new ArrayCollection();
+        $this->nl_terms = new ArrayCollection();
     }
 
     /**
@@ -345,4 +348,37 @@ class nl_article
 
     public function __toString() {
         return (string) $this->id; }
+
+    /**
+     * Add nl_terms
+     *
+     * @param \Article\NewsletterBundle\Entity\nl_termes $nlTerms
+     * @return nl_article
+     */
+    public function addNlTerm(\Article\NewsletterBundle\Entity\nl_termes $nlTerms)
+    {
+        $this->nl_terms[] = $nlTerms;
+
+        return $this;
+    }
+
+    /**
+     * Remove nl_terms
+     *
+     * @param \Article\NewsletterBundle\Entity\nl_termes $nlTerms
+     */
+    public function removeNlTerm(\Article\NewsletterBundle\Entity\nl_termes $nlTerms)
+    {
+        $this->nl_terms->removeElement($nlTerms);
+    }
+
+    /**
+     * Get nl_terms
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNlTerms()
+    {
+        return $this->nl_terms;
+    }
 }

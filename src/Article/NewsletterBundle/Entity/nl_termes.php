@@ -59,10 +59,13 @@ class nl_termes
      */
     private $dateCreate;
 
+
+
     /**
-     * @ORM\OneToMany(targetEntity="nl_selection", mappedBy="nl_article")
+     * @ORM\ManyToOne(targetEntity="nl_article", inversedBy="nl_terms")
+     * @ORM\JoinColumn(name="Id_article", referencedColumnName="id")
      */
-    protected $nl_selection;
+    protected $nl_article;
 
 
     /**
@@ -226,4 +229,29 @@ class nl_termes
     {
         return $this->traduction_fr;
     }
+
+    /**
+     * Set nl_article
+     *
+     * @param \Article\NewsletterBundle\Entity\nl_article $nlArticle
+     * @return nl_termes
+     */
+    public function setNlArticle(\Article\NewsletterBundle\Entity\nl_article $nlArticle = null)
+    {
+        $this->nl_article = $nlArticle;
+
+        return $this;
+    }
+
+    /**
+     * Get nl_article
+     *
+     * @return \Article\NewsletterBundle\Entity\nl_article 
+     */
+    public function getNlArticle()
+    {
+        return $this->nl_article;
+    }
+    public function __toString() {
+        return (string) $this->id; }
 }
