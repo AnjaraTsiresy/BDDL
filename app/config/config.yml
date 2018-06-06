@@ -93,7 +93,7 @@ knp_snappy:
         options:    []
 
 easy_admin:
-    site_name: 'NewsLetters'
+    site_name: 'Gestion newsletter'
     design:
             assets:
                 css:
