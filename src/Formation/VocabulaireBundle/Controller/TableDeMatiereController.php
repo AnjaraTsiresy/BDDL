@@ -368,6 +368,9 @@ $nbPage = 0;
     public function impressionTableMatiere1Action($id, $id_societe) {
         ini_set('max_execution_time', -1); //0=NOLIMIT
         ini_set('memory_limit', '2048M');
+
+        //$response->setContent($this->get('knp_snappy.pdf')->getOutputFromHtml($html,array('page-height' =>  200,'page-width' => 50)));
+
         $snappy = $this->get('knp_snappy.pdf');
         $snappy->getInternalGenerator()->setTimeout(1500);
         $id = intval($id);
@@ -388,7 +391,9 @@ $nbPage = 0;
             ], UrlGeneratorInterface::ABSOLUTE_URL
         );
         return new Response($snappy->getOutput($link,array(
-            'orientation' => 'landscape'
+            'orientation' => 'landscape',
+            'page-height' =>  400,
+            'page-width' => 200
         )), 200, array(
                 'Content-Type' => 'application/pdf',
                 'Content-Disposition' => 'inline; filename="' . $filename . '.pdf"'
